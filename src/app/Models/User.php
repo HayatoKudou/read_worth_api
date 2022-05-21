@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -10,26 +12,24 @@ use Laravel\Sanctum\HasApiTokens;
 /**
  * App\Models\User.
  *
+ * @property number $id
+ * @property number $client_id
  * @property string $name
  * @property string $email
  * @property string $password
+ * @property Client $client
  *
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|\App\Models\User query()
- * @mixin \Eloquent
+ * @method static Builder|\App\Models\User newModelQuery()
+ * @method static Builder|\App\Models\User newQuery()
+ * @method static Builder|\App\Models\User query()
+ * @mixin Builder
  */
 
 class User extends Authenticate
 {
     use HasApiTokens, HasFactory, Notifiable;
 
-    protected $fillable = [
-        'name',
-        'email',
-        'password',
-        'api_token',
-    ];
+    protected $guarded = [];
 
     protected $hidden = [
         'password',
@@ -39,4 +39,9 @@ class User extends Authenticate
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
+    }
 }

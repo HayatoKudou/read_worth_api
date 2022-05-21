@@ -3,15 +3,21 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClientController;
 
-Route::post('/signUp', [UserController::class, 'create']);
+Route::post('/signIn', [AuthController::class, 'login']);
 Route::post('/signUp', [UserController::class, 'create']);
 Route::post('/createClient', [ClientController::class, 'create']);
 
-Route::group(['middleware' => ['auth:api']], function () {
-    Route::get('/main/list','MainController@list')->name('main.list');
-    Route::get('/main/edit','MainController@edit')->name('main.edit');
-    Route::get('/main/search','MainController@main')->name('main.search');
+Route::group(['prefix' => '{clientId}','middleware' => ['auth:api']], function () {
+    Route::prefix('book')->group(function (): void {
+        Route::get('/list', [BookController::class, 'list']);
+        Route::post('/register', [BookController::class, 'create']);
+    });
+    Route::prefix('user')->group(function (): void {
+        Route::get('/me', [UserController::class, 'me']);
+        Route::get('/list', [BookController::class, 'list']);
+    });
 });

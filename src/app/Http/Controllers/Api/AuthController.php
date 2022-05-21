@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -26,10 +27,17 @@ class AuthController
             return response()->json([], 401);
         }
 
-        session([
-            'authenticatedUserId' => $user->id,
+        return response()->json([
+            'user' => [
+                'clientId'  => $user->client_id,
+                'name'  => $user->name,
+                'email'  => $user->email,
+                'apiToken'  => $user->api_token,
+            ],
+            'client' => [
+                'id' =>  $user->client->id,
+                'name' =>  $user->client->name
+            ]
         ]);
-
-        return response()->json([]);
     }
 }

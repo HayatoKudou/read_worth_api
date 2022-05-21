@@ -14,9 +14,9 @@ class ClientController
     public function create(StoreRequest $request): JsonResponse
     {
         $client = $request->makePost();
-        Client::create([
+        $client = Client::create([
             'name' => $client->name,
         ]);
-        return response()->json();
+        return response()->json(['client' => $client], 201);
     }
 }
