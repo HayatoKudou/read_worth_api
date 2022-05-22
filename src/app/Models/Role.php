@@ -8,34 +8,27 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Book.
+ * App\Models\Role.
  *
  * @property number $client_id
- * @property number $book_category_id
- * @property string $title
- * @property string $description
- * @property string $image_path
+ * @property boolean $is_account_manager
+ * @property boolean $is_book_manager
+ * @property boolean $is_client_manager
  *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
- * @method static Builder|\App\Models\User organization()
  * @mixin Builder
  */
 
-class Book extends Model
+class Role extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function client(): BelongsTo
+    public function user(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
-    }
-
-    public function scopeOrganization(Builder $query, string $clientId): Builder
-    {
-        return $query->where('client_id', $clientId);
+        return $this->belongsTo(User::class);
     }
 }

@@ -8,7 +8,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ClientController;
 
 Route::post('/signIn', [AuthController::class, 'login']);
-Route::post('/signUp', [UserController::class, 'create']);
+Route::post('/signUp', [AuthController::class, 'signUp']);
 Route::post('/createClient', [ClientController::class, 'create']);
 
 Route::group(['prefix' => '{clientId}','middleware' => ['auth:api']], function () {
@@ -19,5 +19,6 @@ Route::group(['prefix' => '{clientId}','middleware' => ['auth:api']], function (
     Route::prefix('user')->group(function (): void {
         Route::get('/me', [UserController::class, 'me']);
         Route::get('/list', [UserController::class, 'list']);
+        Route::post('/create', [UserController::class, 'create']);
     });
 });

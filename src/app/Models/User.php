@@ -5,9 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use phpDocumentor\Reflection\Types\Self_;
 
 /**
  * App\Models\User.
@@ -19,10 +22,12 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $password
  * @property string $api_token
  * @property Client $client
+ * @property Role $role
  *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
+ * @method static Builder|\App\Models\User organization()
  * @mixin Builder
  */
 
@@ -44,5 +49,15 @@ class User extends Authenticate
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function role(): HasOne
+    {
+        return $this->hasOne(Role::class);
+    }
+
+    public function scopeOrganization(Builder $query, string $clientId): Builder
+    {
+        return $query->where('client_id', $clientId);
     }
 }
