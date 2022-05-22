@@ -18,6 +18,6 @@ Route::group(['prefix' => '{clientId}','middleware' => ['auth:api']], function (
     });
     Route::prefix('user')->group(function (): void {
         Route::get('/me', [UserController::class, 'me']);
-        Route::get('/list', [BookController::class, 'list']);
+        Route::get('/list', [UserController::class, 'list']);
     });
 });

@@ -17,6 +17,7 @@ use Laravel\Sanctum\HasApiTokens;
  * @property string $name
  * @property string $email
  * @property string $password
+ * @property string $api_token
  * @property Client $client
  *
  * @method static Builder|\App\Models\User newModelQuery()

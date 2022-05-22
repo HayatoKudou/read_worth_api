@@ -17,6 +17,7 @@ class BookController
 {
     public function list($clientId): JsonResponse
     {
+        Log::debug("list");
         $books = Book::all();
         return response()->json([
             'books' => $books->map(fn (Book $book) => [
@@ -27,17 +28,17 @@ class BookController
         ]);
     }
 
-    public function create(StoreRequest $request): JsonResponse
+    public function create(string $clientId, StoreRequest $request): JsonResponse
     {
         @list(, $file_data) = explode(';', $request->get("image"));
         @list(, $file_data) = explode(',', $request->get("image"));
         $book = $request->makePost();
-        Log::debug($book);
         $user = Auth::user();
         assert($user instanceof  User);
         $imagePath = '/'.$user->client_id.'/'.$user->id.'/'. Str::random(10).'.'.'png';
         Storage::put($imagePath, base64_decode($file_data));
         Book::create([
+            'client_id' => $clientId,
             'book_category_id' => $book->book_category_id,
             'title' => $book->title,
             'description' => $book->description,

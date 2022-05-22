@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\User;
 use App\Http\Requests\User\StoreRequest;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -25,10 +26,22 @@ class UserController extends Controller
         ]]);
     }
 
-    public function list()
+    public function list($clientId)
     {
-        $this->authorize('store', [Client::class, $community]);
-        $users = User::all();
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            $users = User::all();
+            return response()->json([
+                'users' => $users->map(fn (User $user) => [
+                    'clientId'  => $user->client_id,
+                    'name'  => $user->name,
+                    'email'  => $user->email,
+                ]),
+            ]);
+        } catch (AuthorizationException $e) {
+            Log::error($e->getMessage());
+        }
     }
 
     public function create(StoreRequest $request): JsonResponse

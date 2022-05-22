@@ -2,19 +2,21 @@
 
 namespace App\Policies;
 
-use App\Models\User;
+use App\Models\user;
 use App\Models\Client;
 use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
+use Illuminate\Support\Facades\Log;
 
 class ClientPolicy
 {
     use HandlesAuthorization;
 
-    public function store(Client $client): Response
+    public function affiliation(user $user, Client $client): Response
     {
         $userBelongsToClient = $client
             ->users()
+            ->where('id', $user->id)
             ->exists();
 
         return $userBelongsToClient
