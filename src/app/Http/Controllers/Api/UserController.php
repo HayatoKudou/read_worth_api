@@ -89,4 +89,10 @@ class UserController extends Controller
             return response()->json([], 402);
         }
     }
+
+    public function update(string $clientId): JsonResponse
+    {
+        Log::debug("update");
+        return response()->json();
+    }
 }
