@@ -17,5 +17,5 @@ Route::group(['prefix' => '{clientId}','middleware' => ['auth:api']], function (
     Route::get('/user', [UserController::class, 'me']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
-    Route::put('/users', [UserController::class, 'list']);
+    Route::get('/users', [UserController::class, 'list']);
 });

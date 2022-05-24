@@ -23,8 +23,6 @@ class UserController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $user = User::find(Auth::id());
-            Log::debug( $user);
-            Log::debug( $user->role);
             return response()->json(['user' => [
                 'clientId'  => $user->client_id,
                 'name'  => $user->name,
