@@ -10,15 +10,15 @@ class SignUpRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => 'required',
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|email',
+            'email' => 'required|string|max:255|email|unique:users',
             'password' => 'required|string|max:255',
+            'client_name' => 'required|string|max:255', //TODO: ユニーク制約
         ];
     }
 
-    public function makePost(): User
+    public function store()
     {
-        return new User($this->validated());
+        return $this->validated();
     }
 }
