@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Book;
+use App\Models\BookCategory;
 use App\Models\Client;
 use App\Models\User;
 use App\Http\Requests\Book\StoreRequest;
@@ -23,11 +24,15 @@ class BookController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $books = Book::organization($clientId)->get();
+            $bookCategories = BookCategory::organization($clientId)->get();
             return response()->json([
                 'books' => $books->map(fn (Book $book) => [
                     'title' => $book->title,
                     'description' => $book->description,
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
+                ]),
+                'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
+                    'name' => $bookCategory->name,
                 ]),
             ]);
         } catch (AuthorizationException $e) {
