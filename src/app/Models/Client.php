@@ -18,7 +18,6 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  * @method static Builder|\App\Models\User query()
  * @mixin Builder
  */
-
 class Client extends Authenticate
 {
     protected $guarded = [];

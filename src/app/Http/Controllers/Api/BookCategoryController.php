@@ -2,14 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\BookCategory;
-use App\Http\Requests\BookCategory\StoreRequest;
-use App\Models\Client;
-use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Str;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\BookCategory\StoreRequest;
 
 class BookCategoryController extends Controller
 {

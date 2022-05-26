@@ -2,19 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use App\Models\Book;
-use App\Models\BookCategory;
-use App\Models\Client;
 use App\Models\User;
+use App\Models\Client;
+use Illuminate\Support\Str;
+use App\Models\BookCategory;
+use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Book\StoreRequest;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
 
 class BookController extends Controller
 {
@@ -45,12 +43,12 @@ class BookController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            @list(, $file_data) = explode(';', $request->get("image"));
-            @list(, $file_data) = explode(',', $request->get("image"));
+            @[, $file_data] = explode(';', $request->get('image'));
+            @[, $file_data] = explode(',', $request->get('image'));
             $book = $request->makePost();
             $user = User::find(Auth::id());
-            $imagePath = '/'.$user->client_id.'/'.$user->id.'/'. Str::random(10).'.'.'png';
-            Storage::put($imagePath, base64_decode($file_data));
+            $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
+            Storage::put($imagePath, base64_decode($file_data, true));
             Book::create([
                 'client_id' => $clientId,
                 'book_category_id' => $book->book_category_id,

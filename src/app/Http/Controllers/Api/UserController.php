@@ -2,18 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
-use App\Models\Client;
-use App\Models\User;
 use App\Models\Role;
+use App\Models\User;
+use App\Models\Client;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\StoreRequest;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -24,15 +22,15 @@ class UserController extends Controller
             $this->authorize('affiliation', $client);
             $user = User::find(Auth::id());
             return response()->json(['user' => [
-                'clientId'  => $user->client_id,
-                'name'  => $user->name,
-                'email'  => $user->email,
-                'apiToken'  => $user->api_token,
+                'clientId' => $user->client_id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'apiToken' => $user->api_token,
                 'role' => [
                     'is_account_manager' => $user->role->is_account_manager,
                     'is_book_manager' => $user->role->is_book_manager,
                     'is_client_manager' => $user->role->is_client_manager,
-                ]
+                ],
             ]]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
@@ -47,14 +45,14 @@ class UserController extends Controller
             $users = User::organization($clientId)->get();
             return response()->json([
                 'users' => $users->map(fn (User $user) => [
-                    'clientId'  => $user->client_id,
-                    'name'  => $user->name,
-                    'email'  => $user->email,
+                    'clientId' => $user->client_id,
+                    'name' => $user->name,
+                    'email' => $user->email,
                     'role' => [
                         'is_account_manager' => $user->role->is_account_manager,
                         'is_book_manager' => $user->role->is_book_manager,
                         'is_client_manager' => $user->role->is_client_manager,
-                    ]
+                    ],
                 ]),
             ]);
         } catch (AuthorizationException $e) {
@@ -69,17 +67,17 @@ class UserController extends Controller
             $this->authorize('affiliation', $client);
             $user = $request->makePost();
             DB::transaction(function () use ($user, $request, $clientId): void {
-                 $user = User::create([
+                $user = User::create([
                     'client_id' => $clientId,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'password' => "",
+                    'password' => '',
                 ]);
                 Role::create([
                     'user_id' => $user->id,
-                    'is_account_manager' => in_array('アカウント管理', $request->roles),
-                    'is_book_manager' => in_array('書籍管理', $request->roles),
-                    'is_client_manager' => in_array('組織管理', $request->roles),
+                    'is_account_manager' => in_array('アカウント管理', $request->roles, true),
+                    'is_book_manager' => in_array('書籍管理', $request->roles, true),
+                    'is_client_manager' => in_array('組織管理', $request->roles, true),
                 ]);
             });
             return response()->json();
@@ -90,7 +88,7 @@ class UserController extends Controller
 
     public function update(string $clientId): JsonResponse
     {
-        Log::debug("update");
+        Log::debug('update');
         return response()->json();
     }
 }

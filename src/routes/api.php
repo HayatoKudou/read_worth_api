@@ -1,15 +1,15 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\AuthController;
+use App\Http\Controllers\Api\BookController;
+use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\BookCategoryController;
 
 Route::post('/signIn', [AuthController::class, 'login']);
 Route::post('/signUp', [AuthController::class, 'signUp']);
 
-Route::group(['prefix' => '{clientId}','middleware' => ['auth:api']], function () {
+Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/user', [UserController::class, 'me']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);

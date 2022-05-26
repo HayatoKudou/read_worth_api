@@ -4,9 +4,8 @@ namespace App\Policies;
 
 use App\Models\user;
 use App\Models\Client;
-use Illuminate\Auth\Access\HandlesAuthorization;
 use Illuminate\Auth\Access\Response;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Auth\Access\HandlesAuthorization;
 
 class ClientPolicy
 {
