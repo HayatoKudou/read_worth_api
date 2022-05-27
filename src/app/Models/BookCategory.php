@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * App\Models\BookCategory.
  *
+ * @property number $id
  * @property number $client_id
  * @property string $name
  *

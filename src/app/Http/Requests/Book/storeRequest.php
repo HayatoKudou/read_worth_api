@@ -10,15 +10,15 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'categoryId' => '',
+            'bookCategoryName' => 'required|string|max:255',
             'title' => 'required|string|max:255',
             'description' => '',
             'image' => '',
         ];
     }
 
-    public function makePost(): Book
+    public function store()
     {
-        return new Book($this->validated());
+        return $this->validated();
     }
 }

@@ -45,15 +45,16 @@ class BookController extends Controller
             $this->authorize('affiliation', $client);
             @[, $file_data] = explode(';', $request->get('image'));
             @[, $file_data] = explode(',', $request->get('image'));
-            $book = $request->makePost();
+            $validated = $request->store();
+            $bookCategory = BookCategory::where("name", $validated["bookCategoryName"])->firstOrFail();
             $user = User::find(Auth::id());
             $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
             Storage::put($imagePath, base64_decode($file_data, true));
             Book::create([
                 'client_id' => $clientId,
-                'book_category_id' => $book->book_category_id,
-                'title' => $book->title,
-                'description' => $book->description,
+                'book_category_id' => $bookCategory->id,
+                'title' => $validated["title"],
+                'description' => $validated["description"],
                 'image_path' => $imagePath,
             ]);
             return response()->json([], 201);
