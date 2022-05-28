@@ -25,6 +25,8 @@ class BookController extends Controller
             $bookCategories = BookCategory::organization($clientId)->get();
             return response()->json([
                 'books' => $books->map(fn (Book $book) => [
+                    'status' => $book->status,
+                    'category' => $book->category->name,
                     'title' => $book->title,
                     'description' => $book->description,
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
@@ -46,15 +48,16 @@ class BookController extends Controller
             @[, $file_data] = explode(';', $request->get('image'));
             @[, $file_data] = explode(',', $request->get('image'));
             $validated = $request->store();
-            $bookCategory = BookCategory::where("name", $validated["bookCategoryName"])->firstOrFail();
+            $bookCategory = BookCategory::where('name', $validated['bookCategoryName'])->firstOrFail();
             $user = User::find(Auth::id());
             $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
             Storage::put($imagePath, base64_decode($file_data, true));
             Book::create([
                 'client_id' => $clientId,
                 'book_category_id' => $bookCategory->id,
-                'title' => $validated["title"],
-                'description' => $validated["description"],
+                'status' => Book::STATUS_CAN_LEND,
+                'title' => $validated['title'],
+                'description' => $validated['description'],
                 'image_path' => $imagePath,
             ]);
             return response()->json([], 201);

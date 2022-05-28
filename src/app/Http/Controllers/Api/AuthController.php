@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Support\Str;
+use App\Models\BookCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,10 @@ class AuthController
                 'is_account_manager' => 1,
                 'is_book_manager' => 1,
                 'is_client_manager' => 1,
+            ]);
+            BookCategory::create([
+                'client_id' => $client->id,
+                'name' => 'ALL',
             ]);
             return response()->json([
                 'me' => [

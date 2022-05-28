@@ -5,16 +5,17 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Book.
  *
  * @property number $client_id
  * @property number $book_category_id
+ * @property number $status
  * @property string $title
  * @property string $description
  * @property string $image_path
+ * @property BookCategory $category
  *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
@@ -24,13 +25,20 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Book extends Model
 {
-    use HasFactory;
+    public const STATUS_CAN_LEND = 1;
+    public const STATUS_CAN_NOT_LEND = 2;
+    public const STATUS_APPLYING = 3;
 
     protected $guarded = [];
 
     public function client(): BelongsTo
     {
         return $this->belongsTo(Client::class);
+    }
+
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(BookCategory::class);
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder
