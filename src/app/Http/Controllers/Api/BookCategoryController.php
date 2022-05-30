@@ -11,11 +11,15 @@ class BookCategoryController extends Controller
 {
     public function create(string $clientId, StoreRequest $request): JsonResponse
     {
-        $bookCategory = $request->makePost();
+        $validated = $request->makePost();
         BookCategory::create([
             'client_id' => $clientId,
-            'name' => $bookCategory->name,
+            'name' => $validated->name,
         ]);
-        return response()->json();
+        $bookCategories = BookCategory::organization($clientId)->get();
+        return response()->json([
+            'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
+                'name' => $bookCategory->name,
+        ]), 201, ]);
     }
 }

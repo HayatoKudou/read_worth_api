@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * App\Models\Book.
  *
+ * @property number $id
  * @property number $client_id
  * @property number $book_category_id
  * @property number $status
@@ -38,7 +39,7 @@ class Book extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(BookCategory::class);
+        return $this->belongsTo(BookCategory::class, 'book_category_id');
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder

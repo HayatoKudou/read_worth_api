@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Book;
+namespace App\Http\Requests\BookApplication;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -10,7 +10,8 @@ class StoreRequest extends FormRequest
     {
         return [
             'bookCategoryName' => 'required|string',
-            'title' => 'required|string|max:255',
+            'title' => 'required|string',
+            'reason' => 'required|string',
             'description' => '',
             'image' => '',
         ];
