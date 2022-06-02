@@ -31,6 +31,17 @@ services:
       - DB_USERNAME=${DB_USERNAME:-phper}
       - DB_PASSWORD=${DB_PASSWORD:-secret}
 
+  https-portal:
+    image: steveltn/https-portal:1
+    ports:
+      - '80:80'
+      - '443:443'
+    restart: always
+    environment:
+      DOMAINS: 'api-readworth.info-> http://web:80'
+      # STAGE: 'production'
+      # FORCE_RENEW: 'true'
+
   web:
     build:
       context: .
