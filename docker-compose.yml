@@ -38,7 +38,7 @@ services:
       - '443:443'
     restart: always
     environment:
-      DOMAINS: 'api-readworth.info-> http://web'
+      DOMAINS: 'api-readworth.info-> http://web:8000'
       # STAGE: 'production'
       # FORCE_RENEW: 'true'
 
