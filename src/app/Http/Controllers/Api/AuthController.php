@@ -46,16 +46,16 @@ class AuthController
 
     public function signUp(SignUpRequest $request): JsonResponse
     {
-        $validated = $request->store();
-        return DB::transaction(function () use ($validated): JsonResponse {
+        $request->validated();
+        return DB::transaction(function () use ($request): JsonResponse {
             $client = Client::create([
-                'name' => $validated['client_name'],
+                'name' => $request->client_name,
             ]);
             $user = User::create([
                 'client_id' => $client->id,
-                'name' => $validated['name'],
-                'email' => $validated['email'],
-                'password' => Hash::make($validated['password']),
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
                 'api_token' => Str::random(60),
             ]);
             Role::create([

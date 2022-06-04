@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * App\Models\Role.
  *
- * @property number $client_id
+ * @property number $user_id
  * @property bool $is_account_manager
  * @property bool $is_book_manager
  * @property bool $is_client_manager

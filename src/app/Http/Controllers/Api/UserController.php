@@ -7,7 +7,6 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\StoreRequest;
@@ -65,7 +64,7 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $user = $request->makePost();
+            $user = $request->createUser();
             DB::transaction(function () use ($user, $request, $clientId): void {
                 $user = User::create([
                     'client_id' => $clientId,
@@ -86,9 +85,27 @@ class UserController extends Controller
         }
     }
 
-    public function update(string $clientId): JsonResponse
+    public function update(string $clientId, StoreRequest $request): JsonResponse
     {
-        Log::debug('update');
-        return response()->json();
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            $request->validated();
+            DB::transaction(function () use ($request, $clientId): void {
+                $user = User::where('client_id', $clientId)->first();
+                $user->update([
+                    'name' => $request->name,
+                    'email' => $request->email,
+                ]);
+                Role::where('user_id', $user->id)->update([
+                    'is_account_manager' => in_array('アカウント管理', $request->roles, true),
+                    'is_book_manager' => in_array('書籍管理', $request->roles, true),
+                    'is_client_manager' => in_array('組織管理', $request->roles, true),
+                ]);
+            });
+            return response()->json();
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
     }
 }

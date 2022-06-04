@@ -25,8 +25,8 @@ class BookApplicationController extends Controller
             $this->authorize('affiliation', $client);
 
             return DB::transaction(function () use ($request, $clientId): JsonResponse {
-                $validated = $request->store();
-                $bookCategory = BookCategory::where('name', $validated['bookCategoryName'])->firstOrFail();
+                $request->validated();
+                $bookCategory = BookCategory::where('name', $request->bookCategoryName)->firstOrFail();
                 $user = User::find(Auth::id());
                 @[, $file_data] = explode(';', $request->get('image'));
                 @[, $file_data] = explode(',', $request->get('image'));
@@ -37,15 +37,15 @@ class BookApplicationController extends Controller
                     'client_id' => $clientId,
                     'book_category_id' => $bookCategory->id,
                     'status' => Book::STATUS_APPLYING,
-                    'title' => $validated['title'],
-                    'description' => $validated['description'],
+                    'title' => $request->title,
+                    'description' => $request->description,
                     'image_path' => $imagePath,
                 ]);
                 BookApplication::create([
                     'user_id' => $user->id,
                     'client_id' => $clientId,
                     'book_id' => $book->id,
-                    'reason' => $validated['reason'],
+                    'reason' => $request->reason,
                 ]);
                 return response()->json([], 201);
             });

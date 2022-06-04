@@ -14,7 +14,7 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function makePost(): BookCategory
+    public function createBookCategory(): BookCategory
     {
         return new BookCategory($this->validated());
     }

@@ -14,7 +14,7 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function makePost(): Client
+    public function createClient(): Client
     {
         return new Client($this->validated());
     }

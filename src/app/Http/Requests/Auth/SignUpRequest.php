@@ -15,9 +15,4 @@ class SignUpRequest extends FormRequest
             'client_name' => 'required|string|max:255', // TODO: ユニーク制約
         ];
     }
-
-    public function store()
-    {
-        return $this->validated();
-    }
 }

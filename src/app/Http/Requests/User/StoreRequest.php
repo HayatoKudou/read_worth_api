@@ -18,7 +18,7 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    public function makePost(): User
+    public function createUser(): User
     {
         return new User($this->validated());
     }

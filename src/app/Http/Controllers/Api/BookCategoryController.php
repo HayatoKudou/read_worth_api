@@ -11,7 +11,7 @@ class BookCategoryController extends Controller
 {
     public function create(string $clientId, StoreRequest $request): JsonResponse
     {
-        $validated = $request->makePost();
+        $validated = $request->createBookCategory();
         BookCategory::create([
             'client_id' => $clientId,
             'name' => $validated->name,

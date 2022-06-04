@@ -15,9 +15,4 @@ class StoreRequest extends FormRequest
             'image' => '',
         ];
     }
-
-    public function store()
-    {
-        return $this->validated();
-    }
 }
