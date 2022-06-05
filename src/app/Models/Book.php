@@ -52,7 +52,6 @@ class Book extends Model
 
     public function storeImage(string $imageBinary): string
     {
-        \Log::debug($imageBinary);
         $user = User::find(Auth::id());
         @[, $file_data] = explode(';', $imageBinary);
         @[, $file_data] = explode(',', $imageBinary);
