@@ -14,11 +14,11 @@ return [
     |
     */
 
-    'paths' => ['api/*', 'sanctum/csrf-cookie'],
+    'paths' => ['api/*'],
 
     'allowed_methods' => ['*'],
 
-    'allowed_origins' => ['*'],
+    'allowed_origins' => ['http://localhost:3000', 'https://readworth.net'],
 
     'allowed_origins_patterns' => [],
 
@@ -26,7 +26,7 @@ return [
 
     'exposed_headers' => [],
 
-    'max_age' => 0,
+    'max_age' => 5,
 
     'supports_credentials' => false,
 ];
