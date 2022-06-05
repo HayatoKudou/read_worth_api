@@ -9,7 +9,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'bookCategoryName' => 'required|string',
+//            'bookCategoryName' => 'required|string',
             'title' => 'required|string|max:255',
             'description' => '',
             'image' => '',

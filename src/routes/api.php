@@ -12,11 +12,12 @@ Route::post('/signUp', [AuthController::class, 'signUp']);
 
 Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/user', [UserController::class, 'me']);
+    Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
-    Route::get('/users', [UserController::class, 'list']);
-    Route::post('/book', [BookController::class, 'create']);
     Route::get('/books', [BookController::class, 'list']);
+    Route::put('/book', [BookController::class, 'update']);
+    Route::post('/book', [BookController::class, 'create']);
     Route::post('/bookCategory', [BookCategoryController::class, 'create']);
     Route::post('/bookApplication', [BookApplicationController::class, 'create']);
 });

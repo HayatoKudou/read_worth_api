@@ -2,7 +2,10 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -45,5 +48,16 @@ class Book extends Model
     public function scopeOrganization(Builder $query, string $clientId): Builder
     {
         return $query->where('client_id', $clientId);
+    }
+
+    public function storeImage(string $imageBinary): string
+    {
+        \Log::debug($imageBinary);
+        $user = User::find(Auth::id());
+        @[, $file_data] = explode(';', $imageBinary);
+        @[, $file_data] = explode(',', $imageBinary);
+        $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
+        Storage::put($imagePath, base64_decode($file_data, true));
+        return $imagePath;
     }
 }

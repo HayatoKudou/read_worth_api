@@ -5,14 +5,12 @@ namespace App\Http\Controllers\Api;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Client;
-use Illuminate\Support\Str;
 use App\Models\BookCategory;
 use App\Models\BookApplication;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookApplication\StoreRequest;
 
@@ -26,12 +24,10 @@ class BookApplicationController extends Controller
 
             return DB::transaction(function () use ($request, $clientId): JsonResponse {
                 $request->validated();
-                $bookCategory = BookCategory::where('name', $request->bookCategoryName)->firstOrFail();
                 $user = User::find(Auth::id());
-                @[, $file_data] = explode(';', $request->get('image'));
-                @[, $file_data] = explode(',', $request->get('image'));
-                $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
-                Storage::put($imagePath, base64_decode($file_data, true));
+                $book = new Book();
+                $imagePath = $book->storeImage($request->get('image'));
+                $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
 
                 $book = Book::create([
                     'client_id' => $clientId,
