@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -20,6 +21,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $description
  * @property string $image_path
  * @property BookCategory $category
+ * @property BookPurchaseApply $purchaseApply
  *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
@@ -43,6 +45,11 @@ class Book extends Model
     public function category(): BelongsTo
     {
         return $this->belongsTo(BookCategory::class, 'book_category_id');
+    }
+
+    public function purchaseApply(): HasOne
+    {
+        return $this->hasOne(BookPurchaseApply::class);
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder

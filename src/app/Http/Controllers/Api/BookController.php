@@ -18,7 +18,7 @@ class BookController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $books = Book::organization($clientId)->get();
+            $books = Book::organization($clientId)->with('purchaseApply')->get();
             $bookCategories = BookCategory::organization($clientId)->get();
             return response()->json([
                 'books' => $books->map(fn (Book $book) => [
@@ -28,6 +28,7 @@ class BookController extends Controller
                     'title' => $book->title,
                     'description' => $book->description,
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
+                    'purchaseApplicant' => $book->purchaseApply?->user,
                 ]),
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,
