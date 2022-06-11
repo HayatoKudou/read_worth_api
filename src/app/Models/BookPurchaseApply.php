@@ -28,7 +28,7 @@ class BookPurchaseApply extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $table = 'book_purchase_apply';
+    protected $table = 'book_purchase_applies';
 
     public function user(): BelongsTo
     {

@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $image_path
  * @property BookCategory $category
  * @property BookPurchaseApply $purchaseApply
+ * @property BookRentalApply $rentalApply
  *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
@@ -50,6 +51,11 @@ class Book extends Model
     public function purchaseApply(): HasOne
     {
         return $this->hasOne(BookPurchaseApply::class);
+    }
+
+    public function rentalApply(): HasOne
+    {
+        return $this->hasOne(BookRentalApply::class);
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder
