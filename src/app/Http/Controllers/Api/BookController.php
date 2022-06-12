@@ -8,7 +8,8 @@ use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Book\StoreRequest;
+use App\Http\Requests\Book\CreateRequest;
+use App\Http\Requests\Book\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class BookController extends Controller
@@ -40,15 +41,19 @@ class BookController extends Controller
         }
     }
 
-    public function update(string $clientId, StoreRequest $request): JsonResponse
+    public function update(string $clientId, UpdateRequest $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $request->validated();
             $book = Book::find($request->get('id'));
+            $bookCategory = BookCategory::where('name', $request->get('category'))->first();
+
+            if (!$bookCategory) {
+                return response()->json('一致するカテゴリが見つかりません', 500);
+            }
             $imagePath = $book->storeImage($request->get('image'));
-            $bookCategory = BookCategory::where('name', $request->get('category'))->firstOrFail();
             $book->update([
                 'client_id' => $clientId,
                 'book_category_id' => $bookCategory->id,
@@ -63,21 +68,20 @@ class BookController extends Controller
         }
     }
 
-    public function create(string $clientId, StoreRequest $request): JsonResponse
+    public function create(string $clientId, CreateRequest $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $request->validated();
             $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
-            $book = new Book();
+            $book = $request->createBook();
             $imagePath = $book->storeImage($request->get('image'));
             Book::create([
                 'client_id' => $clientId,
                 'book_category_id' => $bookCategory->id,
                 'status' => Book::STATUS_CAN_LEND,
-                'title' => $request->get('title'),
-                'description' => $request->get('description'),
+                'title' => $book->title,
+                'description' => $book->description,
                 'image_path' => $imagePath,
             ]);
             return response()->json([], 201);

@@ -4,14 +4,16 @@ namespace App\Http\Requests\Book;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => '',
+            'description' => 'max:255',
             'image' => '',
+            'category' => 'required|string',
+            'status' => 'required',
         ];
     }
 }

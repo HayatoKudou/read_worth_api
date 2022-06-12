@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Book;
 use Carbon\Carbon;
+use App\Models\Book;
 use App\Models\User;
 use App\Models\Client;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookRentalApply\StoreRequest;
-use Illuminate\Support\Facades\DB;
 
 class BookRentalApplyController extends Controller
 {

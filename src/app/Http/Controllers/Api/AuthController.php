@@ -32,6 +32,7 @@ class AuthController
 
         return response()->json([
             'user' => [
+                'id' => $user->id,
                 'clientId' => $user->client_id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -53,8 +54,8 @@ class AuthController
             ]);
             $user = User::create([
                 'client_id' => $client->id,
-                'name' => $request->name,
-                'email' => $request->email,
+                'name' => $request->get('name'),
+                'email' => $request->get('email'),
                 'password' => Hash::make($request->password),
                 'api_token' => Str::random(60),
             ]);
@@ -70,6 +71,7 @@ class AuthController
             ]);
             return response()->json([
                 'me' => [
+                    'id' => $user->id,
                     'clientId' => $user->client_id,
                     'name' => $user->name,
                     'email' => $user->email,

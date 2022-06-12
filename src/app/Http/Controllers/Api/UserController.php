@@ -9,7 +9,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\User\StoreRequest;
+use Illuminate\Support\Facades\Hash;
+use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class UserController extends Controller
@@ -21,6 +23,7 @@ class UserController extends Controller
             $this->authorize('affiliation', $client);
             $user = User::find(Auth::id());
             return response()->json(['user' => [
+                'id' => $user->id,
                 'clientId' => $user->client_id,
                 'name' => $user->name,
                 'email' => $user->email,
@@ -44,6 +47,7 @@ class UserController extends Controller
             $users = User::organization($clientId)->get();
             return response()->json([
                 'users' => $users->map(fn (User $user) => [
+                    'id' => $user->id,
                     'clientId' => $user->client_id,
                     'name' => $user->name,
                     'email' => $user->email,
@@ -59,7 +63,7 @@ class UserController extends Controller
         }
     }
 
-    public function create(string $clientId, StoreRequest $request): JsonResponse
+    public function create(string $clientId, CreateRequest $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
@@ -74,9 +78,9 @@ class UserController extends Controller
                 ]);
                 Role::create([
                     'user_id' => $user->id,
-                    'is_account_manager' => in_array('アカウント管理', $request->roles, true),
-                    'is_book_manager' => in_array('書籍管理', $request->roles, true),
-                    'is_client_manager' => in_array('組織管理', $request->roles, true),
+                    'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),
+                    'is_book_manager' => in_array('書籍管理', $request->get('roles'), true),
+                    'is_client_manager' => in_array('組織管理', $request->get('roles'), true),
                 ]);
             });
             return response()->json();
@@ -85,25 +89,33 @@ class UserController extends Controller
         }
     }
 
-    public function update(string $clientId, StoreRequest $request): JsonResponse
+    public function update(string $clientId, UpdateRequest $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $request->validated();
-            DB::transaction(function () use ($request, $clientId): void {
-                $user = User::where('client_id', $clientId)->first();
+            return DB::transaction(function () use ($request): JsonResponse {
+                $user = User::find($request->get('id'));
+
+                if (!$user) {
+                    return response()->json('一致するユーザーが見つかりません', 500);
+                }
                 $user->update([
-                    'name' => $request->name,
-                    'email' => $request->email,
+                    'name' => $request->get('name'),
+                    'email' => $request->get('email'),
                 ]);
+
+                if ($request->get('password')) {
+                    $user->update(['password' => Hash::make($request->get('password'))]);
+                }
                 Role::where('user_id', $user->id)->update([
-                    'is_account_manager' => in_array('アカウント管理', $request->roles, true),
-                    'is_book_manager' => in_array('書籍管理', $request->roles, true),
-                    'is_client_manager' => in_array('組織管理', $request->roles, true),
+                    'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),
+                    'is_book_manager' => in_array('書籍管理', $request->get('roles'), true),
+                    'is_client_manager' => in_array('組織管理', $request->get('roles'), true),
                 ]);
+                return response()->json();
             });
-            return response()->json();
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }
