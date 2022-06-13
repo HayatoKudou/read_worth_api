@@ -19,6 +19,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
  * @mixin Builder
+ *
+ * @property int $id
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\User $user
+ *
+ * @method static Builder|Role whereCreatedAt($value)
+ * @method static Builder|Role whereId($value)
+ * @method static Builder|Role whereIsAccountManager($value)
+ * @method static Builder|Role whereIsBookManager($value)
+ * @method static Builder|Role whereIsClientManager($value)
+ * @method static Builder|Role whereUpdatedAt($value)
+ * @method static Builder|Role whereUserId($value)
  */
 class Role extends Model
 {

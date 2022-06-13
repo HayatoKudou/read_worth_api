@@ -27,6 +27,21 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|BookCategory query()
  * @method static Builder|BookCategory organization()
  * @mixin Builder
+ *
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ *
+ * @method static Builder|BookRentalApply whereBookId($value)
+ * @method static Builder|BookRentalApply whereClientId($value)
+ * @method static Builder|BookRentalApply whereCreatedAt($value)
+ * @method static Builder|BookRentalApply whereExpectedReturnDate($value)
+ * @method static Builder|BookRentalApply whereId($value)
+ * @method static Builder|BookRentalApply whereReason($value)
+ * @method static Builder|BookRentalApply whereRentalDate($value)
+ * @method static Builder|BookRentalApply whereReturnDate($value)
+ * @method static Builder|BookRentalApply whereReview($value)
+ * @method static Builder|BookRentalApply whereUpdatedAt($value)
+ * @method static Builder|BookRentalApply whereUserId($value)
  */
 class BookRentalApply extends Model
 {

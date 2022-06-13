@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
@@ -49,14 +50,20 @@ class AuthController
     {
         $request->validated();
         return DB::transaction(function () use ($request): JsonResponse {
+            $plan = Plan::where('name', $request->get('plan'))->first();
+
+            if (!$plan) {
+                return response()->json(['一致するプランが存在しません'], 500);
+            }
             $client = Client::create([
-                'name' => $request->client_name,
+                'name' => $request->get('client_name'),
+                'plan_id' => $plan->id,
             ]);
             $user = User::create([
                 'client_id' => $client->id,
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
-                'password' => Hash::make($request->password),
+                'password' => Hash::make($request->get('password')),
                 'api_token' => Str::random(60),
             ]);
             Role::create([

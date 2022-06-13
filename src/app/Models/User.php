@@ -27,6 +27,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|\App\Models\User query()
  * @method static Builder|\App\Models\User organization()
  * @mixin Builder
+ *
+ * @property null|\Illuminate\Support\Carbon $email_verified_at
+ * @property null|string $remember_token
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \Illuminate\Notifications\DatabaseNotification[]|\Illuminate\Notifications\DatabaseNotificationCollection $notifications
+ * @property null|int $notifications_count
+ * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
+ * @property null|int $tokens_count
+ *
+ * @method static \Database\Factories\UserFactory factory(...$parameters)
+ * @method static Builder|User whereApiToken($value)
+ * @method static Builder|User whereClientId($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereEmailVerifiedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereName($value)
+ * @method static Builder|User wherePassword($value)
+ * @method static Builder|User whereRememberToken($value)
+ * @method static Builder|User whereUpdatedAt($value)
  */
 class User extends Authenticate
 {

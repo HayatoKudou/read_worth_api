@@ -12,7 +12,8 @@ class SignUpRequest extends FormRequest
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email|unique:users',
             'password' => 'required|string|max:255',
-            'client_name' => 'required|string|max:255', // TODO: ユニーク制約
+            'client_name' => 'required|string|max:255|unique:App\Models\Client,name',
+            'plan' => 'required|string',
         ];
     }
 }
