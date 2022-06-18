@@ -49,6 +49,7 @@ class BookController extends Controller
             $request->validated();
             $book = Book::find($request->get('id'));
             $bookCategory = BookCategory::where('name', $request->get('category'))->first();
+            \Storage::delete($book->image_path);
 
             if (!$bookCategory) {
                 return response()->json('一致するカテゴリが見つかりません', 500);
