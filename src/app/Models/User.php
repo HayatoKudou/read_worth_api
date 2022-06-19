@@ -5,6 +5,7 @@ namespace App\Models;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -49,7 +50,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
  */
-class User extends Authenticate
+class User extends Authenticate implements MustVerifyEmail
 {
     use HasApiTokens;
     use HasFactory;

@@ -41,6 +41,17 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+switch ($_SERVER['HTTP_HOST'] ?? 'localhost') {
+    // 開発環境
+    case 'localhost':
+        $app->loadEnvironmentFrom('.env.dev');
+        break;
+    // 本番環境
+    case 'api-readworth.info':
+        $app->loadEnvironmentFrom('.env.prod');
+        break;
+}
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application

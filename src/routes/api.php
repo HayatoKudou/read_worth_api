@@ -4,14 +4,18 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
 
 Route::post('/signIn', [AuthController::class, 'login']);
 Route::post('/signUp', [AuthController::class, 'signUp']);
+Route::post('/email/verify/resend', [VerifyEmailController::class, 'resendVerify']);
+Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword'])->name('password.email');
+Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])->name('password.update');
 
-Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
+Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']], function (): void {
     Route::get('/user', [UserController::class, 'me']);
     Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);

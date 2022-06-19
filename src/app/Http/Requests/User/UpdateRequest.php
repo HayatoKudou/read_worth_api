@@ -13,7 +13,7 @@ class UpdateRequest extends FormRequest
             'client_id' => '',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
-            'password' => 'required|confirmed',
+            'password' => '', // TODO: required|confirmed
             'roles' => '',
         ];
     }

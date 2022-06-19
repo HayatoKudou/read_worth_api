@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\Auth\SignUpRequest;
 
 class AuthController
@@ -38,6 +39,11 @@ class AuthController
                 'name' => $user->name,
                 'email' => $user->email,
                 'apiToken' => $user->api_token,
+                'role' => [
+                    'is_account_manager' => $user->role->is_account_manager,
+                    'is_book_manager' => $user->role->is_book_manager,
+                    'is_client_manager' => $user->role->is_client_manager,
+                ],
             ],
             'client' => [
                 'id' => $user->client->id,
@@ -76,6 +82,9 @@ class AuthController
                 'client_id' => $client->id,
                 'name' => 'ALL',
             ]);
+
+            event(new Registered($user));
+
             return response()->json([
                 'me' => [
                     'id' => $user->id,
@@ -83,6 +92,11 @@ class AuthController
                     'name' => $user->name,
                     'email' => $user->email,
                     'apiToken' => $user->api_token,
+                    'role' => [
+                        'is_account_manager' => $user->role->is_account_manager,
+                        'is_book_manager' => $user->role->is_book_manager,
+                        'is_client_manager' => $user->role->is_client_manager,
+                    ],
                 ],
                 'client' => [
                     'id' => $user->client->id,
