@@ -13,7 +13,7 @@ class CreateRequest extends FormRequest
             'client_id' => '',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
-            'password' => '',
+            'password' => 'required|string|max:255|confirmed',
             'roles' => '',
         ];
     }

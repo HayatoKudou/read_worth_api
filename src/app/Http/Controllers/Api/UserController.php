@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
+use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -13,6 +14,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -74,8 +76,10 @@ class UserController extends Controller
                     'client_id' => $clientId,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'password' => '',
+                    'password' => Hash::make($request->get('password')),
+                    'api_token' => Str::random(60),
                 ]);
+                event(new Registered($user));
                 Role::create([
                     'user_id' => $user->id,
                     'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),

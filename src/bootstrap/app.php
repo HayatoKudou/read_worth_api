@@ -41,26 +41,6 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-switch ($_SERVER['HTTP_HOST'] ?? 'localhost') {
-    // 開発環境
-    case 'localhost':
-        $app->loadEnvironmentFrom('.env.dev');
-        break;
-    // 本番環境
-    case 'api-readworth.info':
-        $app->loadEnvironmentFrom('.env.prod');
-        break;
-}
-
-/*
-|--------------------------------------------------------------------------
-| Return The Application
-|--------------------------------------------------------------------------
-|
-| This script returns the application instance. The instance is given to
-| the calling script so we can separate the building of the instances
-| from the actual running of the application and sending responses.
-|
-*/
+$app->loadEnvironmentFrom('.env.' . ((getenv("ENV") ? getenv("ENV") : "local")));
 
 return $app;

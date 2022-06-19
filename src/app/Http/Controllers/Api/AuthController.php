@@ -29,11 +29,15 @@ class AuthController
         }
 
         if (Hash::check($user->password, $password)) {
-            return response()->json([], 401);
+            return response()->json(['errors' => 'パスワードが一致しません'], 401);
+        }
+
+        if (!$user->hasVerifiedEmail()) {
+            return response()->json('メール認証を完了させてください', 403);
         }
 
         return response()->json([
-            'user' => [
+            'me' => [
                 'id' => $user->id,
                 'clientId' => $user->client_id,
                 'name' => $user->name,
