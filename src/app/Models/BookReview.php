@@ -6,20 +6,15 @@ use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\BookPurchaseApply.
+ * App\Models\BookReview.
  *
  * @property number $id
  * @property number $user_id
- * @property number $client_id
  * @property number $book_id
- * @property string $reason
+ * @property int rate
  * @property string $review
- * @property Carbon $rental_date
- * @property Carbon $expected_return_date
- * @property Carbon $return_date
  * @property User $user
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
@@ -39,21 +34,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|BookRentalApply whereReview($value)
  * @method static Builder|BookRentalApply whereUpdatedAt($value)
  * @method static Builder|BookRentalApply whereUserId($value)
+ * @method static Builder|BookReview whereRate($value)
  */
-class BookRentalApply extends Model
+class BookReview extends Model
 {
-    use HasFactory;
-
     protected $guarded = [];
-    protected $table = 'book_rental_applies';
+    protected $table = 'book_reviews';
 
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
-    }
-
-    public function scopeOrganization(Builder $query, string $clientId): Builder
-    {
-        return $query->where('client_id', $clientId);
     }
 }

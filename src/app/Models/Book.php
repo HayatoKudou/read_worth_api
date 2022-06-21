@@ -23,17 +23,14 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property BookCategory $category
  * @property BookPurchaseApply $purchaseApply
  * @property BookRentalApply $rentalApply
- *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
  * @method static Builder|\App\Models\User organization()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\Client $client
- *
  * @method static Builder|Book whereBookCategoryId($value)
  * @method static Builder|Book whereClientId($value)
  * @method static Builder|Book whereCreatedAt($value)

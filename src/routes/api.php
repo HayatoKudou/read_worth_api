@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\Api\BookReviewController;
 use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
@@ -26,4 +27,5 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::post('/bookCategory', [BookCategoryController::class, 'create']);
     Route::post('/bookPurchaseApply', [BookPurchaseApplyController::class, 'create']);
     Route::post('/{bookId}/rentalApply', [BookRentalApplyController::class, 'create']);
+    Route::post('/{bookId}/bookReview', [BookReviewController::class, 'create']);
 });

@@ -20,7 +20,6 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  * @property null|Carbon $updated_at
  * @property \App\Models\User[]|Collection $users
  * @property null|int $users_count
- *
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()

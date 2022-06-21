@@ -5,16 +5,16 @@ namespace App\Http\Controllers\Api;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
-use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Support\Str;
 
 class UserController extends Controller
 {
