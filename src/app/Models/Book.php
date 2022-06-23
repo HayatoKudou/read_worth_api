@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -23,6 +24,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property BookCategory $category
  * @property BookPurchaseApply $purchaseApply
  * @property BookRentalApply $rentalApply
+ * @property BookReview[] $reviews
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
@@ -67,6 +69,11 @@ class Book extends Model
     public function rentalApply(): HasOne
     {
         return $this->hasOne(BookRentalApply::class);
+    }
+
+    public function reviews(): HasMany
+    {
+        return $this->hasMany(BookReview::class);
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder

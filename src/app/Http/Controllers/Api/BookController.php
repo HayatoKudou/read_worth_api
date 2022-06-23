@@ -31,6 +31,7 @@ class BookController extends Controller
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
                     'purchaseApplicant' => $book->purchaseApply?->user,
                     'rentalApplicant' => $book->rentalApply?->user,
+                    'reviews' => $book->reviews,
                 ]),
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,
