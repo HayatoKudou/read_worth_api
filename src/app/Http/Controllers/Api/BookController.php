@@ -67,7 +67,7 @@ class BookController extends Controller
             if (!$bookCategory) {
                 return response()->json('一致するカテゴリが見つかりません', 500);
             }
-            $imagePath = $book->storeImage($request->get('image'));
+            $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
             $book->update([
                 'client_id' => $clientId,
                 'book_category_id' => $bookCategory->id,
@@ -89,7 +89,7 @@ class BookController extends Controller
             $this->authorize('affiliation', $client);
             $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
             $book = $request->createBook();
-            $imagePath = $book->storeImage($request->get('image'));
+            $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
             Book::create([
                 'client_id' => $clientId,
                 'book_category_id' => $bookCategory->id,
