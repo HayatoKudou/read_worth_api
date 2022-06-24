@@ -68,7 +68,7 @@ class Book extends Model
 
     public function rentalApply(): HasOne
     {
-        return $this->hasOne(BookRentalApply::class);
+        return $this->hasOne(BookRentalApply::class)->whereNull('return_date');
     }
 
     public function reviews(): HasMany

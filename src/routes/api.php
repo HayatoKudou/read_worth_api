@@ -27,5 +27,6 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::post('/bookCategory', [BookCategoryController::class, 'create']);
     Route::post('/bookPurchaseApply', [BookPurchaseApplyController::class, 'create']);
     Route::post('/{bookId}/rentalApply', [BookRentalApplyController::class, 'create']);
+    Route::post('/{bookId}/bookReturn', [BookController::class, 'return']);
     Route::post('/{bookId}/bookReview', [BookReviewController::class, 'create']);
 });

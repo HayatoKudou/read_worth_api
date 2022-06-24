@@ -3,10 +3,17 @@
 namespace App\Http\Controllers\Api;
 
 use App\Models\Book;
+use App\Models\BookRentalApply;
+use App\Models\BookReview;
 use App\Models\Client;
 use App\Models\BookCategory;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Book\CreateRequest;
 use App\Http\Requests\Book\UpdateRequest;
@@ -31,7 +38,12 @@ class BookController extends Controller
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
                     'purchaseApplicant' => $book->purchaseApply?->user,
                     'rentalApplicant' => $book->rentalApply?->user,
-                    'reviews' => $book->reviews,
+                    'reviews' => collect($book->reviews)?->map(fn (BookReview $bookReview) => [
+                        'rate' => $bookReview->rate,
+                        'review' => $bookReview->review,
+                        'reviewedAt' => Carbon::parse($bookReview->created_at)->format('Y年m月d日 H時i分'),
+                        'reviewer' => $bookReview->user->name,
+                    ])
                 ]),
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,
@@ -87,6 +99,23 @@ class BookController extends Controller
                 'image_path' => $imagePath,
             ]);
             return response()->json([], 201);
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
+    }
+
+    public function return(string $clientId, string $bookId, Request $request)
+    {
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+
+            return DB::transaction(function () use ($request, $bookId): JsonResponse {
+                $user = User::find(Auth::id());
+                BookRentalApply::where('user_id', $user->id)->where('book_id', $bookId)->update(['return_date' => Carbon::now()]);
+                Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
+                return response()->json([]);
+            });
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }
