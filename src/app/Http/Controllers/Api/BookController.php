@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Book\DeleteRequest;
 use App\Models\Book;
 use App\Models\BookRentalApply;
 use App\Models\BookReview;
@@ -104,7 +105,7 @@ class BookController extends Controller
         }
     }
 
-    public function return(string $clientId, string $bookId, Request $request)
+    public function return(string $clientId, string $bookId, Request $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
@@ -116,6 +117,19 @@ class BookController extends Controller
                 Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
                 return response()->json([]);
             });
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
+    }
+
+    public function delete(string $clientId, DeleteRequest $request): JsonResponse
+    {
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            $request->validated();
+            Book::find($request->get('book_id'))->delete();
+            return response()->json([]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }

@@ -5,11 +5,11 @@ namespace App\Http\Controllers\Api;
 use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\BookCategory\StoreRequest;
+use App\Http\Requests\BookCategory\CreateRequest;
 
 class BookCategoryController extends Controller
 {
-    public function create(string $clientId, StoreRequest $request): JsonResponse
+    public function create(string $clientId, CreateRequest $request): JsonResponse
     {
         $validated = $request->createBookCategory();
         BookCategory::create([
