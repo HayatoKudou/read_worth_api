@@ -2,13 +2,13 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
@@ -25,14 +25,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property BookPurchaseApply $purchaseApply
  * @property BookRentalApply $rentalApply
  * @property BookReview[] $reviews
+ *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
  * @method static Builder|\App\Models\User organization()
  * @mixin Builder
+ *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\Client $client
+ *
  * @method static Builder|Book whereBookCategoryId($value)
  * @method static Builder|Book whereClientId($value)
  * @method static Builder|Book whereCreatedAt($value)

@@ -17,7 +17,7 @@ class CreateRequest extends FormRequest
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('book_category', 'name')->where(function($query) use($clientId) {
+                Rule::unique('book_category', 'name')->where(function ($query) use ($clientId): void {
                     $query->where('client_id', $clientId);
                 }),
             ],

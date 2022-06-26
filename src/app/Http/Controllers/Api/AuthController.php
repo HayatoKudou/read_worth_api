@@ -49,10 +49,6 @@ class AuthController
                     'is_client_manager' => $user->role->is_client_manager,
                 ],
             ],
-            'client' => [
-                'id' => $user->client->id,
-                'name' => $user->client->name,
-            ],
         ]);
     }
 
@@ -101,10 +97,6 @@ class AuthController
                         'is_book_manager' => $user->role->is_book_manager,
                         'is_client_manager' => $user->role->is_client_manager,
                     ],
-                ],
-                'client' => [
-                    'id' => $user->client->id,
-                    'name' => $user->client->name,
                 ],
             ]);
         });

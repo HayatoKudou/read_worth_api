@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -16,13 +15,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int rate
  * @property string $review
  * @property User $user
+ *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory query()
  * @method static Builder|BookCategory organization()
  * @mixin Builder
+ *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ *
  * @method static Builder|BookRentalApply whereBookId($value)
  * @method static Builder|BookRentalApply whereClientId($value)
  * @method static Builder|BookRentalApply whereCreatedAt($value)

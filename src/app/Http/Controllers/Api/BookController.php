@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Book\DeleteRequest;
-use App\Models\Book;
-use App\Models\BookRentalApply;
-use App\Models\BookReview;
-use App\Models\Client;
-use App\Models\BookCategory;
-use App\Models\User;
 use Carbon\Carbon;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
+use App\Models\Book;
+use App\Models\User;
+use App\Models\Client;
+use App\Models\BookReview;
+use App\Models\BookCategory;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\BookRentalApply;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Book\CreateRequest;
+use App\Http\Requests\Book\DeleteRequest;
 use App\Http\Requests\Book\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -44,7 +44,7 @@ class BookController extends Controller
                         'review' => $bookReview->review,
                         'reviewedAt' => Carbon::parse($bookReview->created_at)->format('Y年m月d日 H時i分'),
                         'reviewer' => $bookReview->user->name,
-                    ])
+                    ]),
                 ]),
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,
@@ -111,7 +111,7 @@ class BookController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
 
-            return DB::transaction(function () use ($request, $bookId): JsonResponse {
+            return DB::transaction(function () use ($bookId): JsonResponse {
                 $user = User::find(Auth::id());
                 BookRentalApply::where('user_id', $user->id)->where('book_id', $bookId)->update(['return_date' => Carbon::now()]);
                 Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
