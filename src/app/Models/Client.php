@@ -16,24 +16,24 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Collection|User[] $users
  * @property Book[]|Collection $books
  * @property Plan $plan
- *
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property null|int $users_count
- *
  * @method static Builder|Client whereCreatedAt($value)
  * @method static Builder|Client whereId($value)
  * @method static Builder|Client whereName($value)
  * @method static Builder|Client whereUpdatedAt($value)
- *
  * @property int $plan_id
- *
  * @method static Builder|Client wherePlanId($value)
+ * @property int $purchase_limit
+ * @property string $purchase_limit_unit
+ * @property-read int|null $books_count
+ * @method static Builder|Client wherePurchaseLimit($value)
+ * @method static Builder|Client wherePurchaseLimitUnit($value)
  */
 class Client extends Authenticate
 {

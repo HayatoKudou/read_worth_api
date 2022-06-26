@@ -23,6 +23,7 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
     Route::get('/client', [ClientController::class, 'info']);
+    Route::put('/client', [ClientController::class, 'update']);
     Route::get('/books', [BookController::class, 'list']);
     Route::put('/book', [BookController::class, 'update']);
     Route::post('/book', [BookController::class, 'create']);
