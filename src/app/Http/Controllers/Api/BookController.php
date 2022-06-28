@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\BookPurchaseApply;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
@@ -127,8 +128,14 @@ class BookController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $request->validated();
-            Book::find($request->get('book_id'))->delete();
+            DB::transaction(function () use ($request){
+                $request->collect('book_ids')->each(function($bookId) {
+                    BookPurchaseApply::where('book_id', $bookId)->delete();
+                    BookRentalApply::where('book_id', $bookId)->delete();
+                    BookReview::where('book_id', $bookId)->delete();
+                    Book::find($bookId)?->delete();
+                });
+            });
             return response()->json([]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
