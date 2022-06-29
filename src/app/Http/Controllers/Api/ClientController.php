@@ -31,7 +31,7 @@ class ClientController
         $client->update([
             'name' => $request->get('name'),
             'purchase_limit' => $request->get('purchase_limit'),
-            'purchase_limit_unit' => $request->get('purchase_limit_unit')
+            'purchase_limit_unit' => $request->get('purchase_limit_unit'),
         ]);
         return response()->json(['client' => $client], 201);
     }

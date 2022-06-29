@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call(
             [
 //                PlanSeeder::class,
-                Book::factory()->count(1)->create()
+                Book::factory()->count(1)->create(),
             ]
         );
     }

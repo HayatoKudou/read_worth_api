@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\User\DeleteRequest;
-use App\Models\BookPurchaseApply;
-use App\Models\BookRentalApply;
-use App\Models\BookReview;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\BookReview;
 use Illuminate\Support\Str;
+use App\Models\BookRentalApply;
+use App\Models\BookPurchaseApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -17,6 +16,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\User\CreateRequest;
+use App\Http\Requests\User\DeleteRequest;
 use App\Http\Requests\User\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
@@ -134,8 +134,8 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            DB::transaction(function () use ($request){
-                $request->collect('user_ids')->each(function($userId) {
+            DB::transaction(function () use ($request): void {
+                $request->collect('user_ids')->each(function ($userId): void {
                     BookPurchaseApply::where('user_id', $userId)->delete();
                     BookRentalApply::where('user_id', $userId)->delete();
                     BookReview::where('user_id', $userId)->delete();

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\BookPurchaseApply;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
@@ -11,6 +10,7 @@ use App\Models\BookReview;
 use App\Models\BookCategory;
 use Illuminate\Http\Request;
 use App\Models\BookRentalApply;
+use App\Models\BookPurchaseApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -128,8 +128,8 @@ class BookController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            DB::transaction(function () use ($request){
-                $request->collect('book_ids')->each(function($bookId) {
+            DB::transaction(function () use ($request): void {
+                $request->collect('book_ids')->each(function ($bookId): void {
                     BookPurchaseApply::where('book_id', $bookId)->delete();
                     BookRentalApply::where('book_id', $bookId)->delete();
                     BookReview::where('book_id', $bookId)->delete();

@@ -20,6 +20,7 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  * @property null|Carbon $updated_at
  * @property \App\Models\User[]|Collection $users
  * @property null|int $users_count
+ *
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()
@@ -34,9 +35,8 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  */
 class Plan extends Authenticate
 {
+    public const PLANS = ['free', 'demo'];
     protected $guarded = [];
-
-    const PLANS = ['free', 'demo'];
 
     public function users(): HasMany
     {

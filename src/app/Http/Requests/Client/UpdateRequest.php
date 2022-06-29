@@ -2,12 +2,9 @@
 
 namespace App\Http\Requests\Client;
 
-use App\Models\Client;
 use App\Models\Plan;
-use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
+use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
 {
@@ -18,13 +15,13 @@ class UpdateRequest extends FormRequest
             'name' => [
                 Rule::unique('clients')->ignore($clientId),
                 'string',
-                'max:255'
+                'max:255',
             ],
             'purchase_limit' => 'int',
             'purchase_limit_unit' => 'string',
             'plan' => [
                 'string',
-                Rule::in(Plan::PLANS)
+                Rule::in(Plan::PLANS),
             ],
         ];
     }

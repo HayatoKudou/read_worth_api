@@ -3,9 +3,8 @@
 namespace Database\Seeders;
 
 use App\Models\Book;
-use App\Models\Plan;
-use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
+use Illuminate\Database\Seeder;
 
 class BookSeeder extends Seeder
 {
