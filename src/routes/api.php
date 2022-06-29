@@ -22,6 +22,7 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
+    Route::delete('/user', [UserController::class, 'delete']);
     Route::get('/client', [ClientController::class, 'info']);
     Route::put('/client', [ClientController::class, 'update']);
     Route::get('/books', [BookController::class, 'list']);

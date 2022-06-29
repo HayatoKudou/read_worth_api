@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\User\DeleteRequest;
+use App\Models\BookPurchaseApply;
+use App\Models\BookRentalApply;
+use App\Models\BookReview;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
@@ -120,6 +124,26 @@ class UserController extends Controller
                 ]);
                 return response()->json();
             });
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
+    }
+
+    public function delete(string $clientId, DeleteRequest $request): JsonResponse
+    {
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            DB::transaction(function () use ($request){
+                $request->collect('user_ids')->each(function($userId) {
+                    BookPurchaseApply::where('user_id', $userId)->delete();
+                    BookRentalApply::where('user_id', $userId)->delete();
+                    BookReview::where('user_id', $userId)->delete();
+                    Role::where('user_id', $userId)->delete();
+                    User::find($userId)?->delete();
+                });
+            });
+            return response()->json([]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }

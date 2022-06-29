@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
@@ -46,6 +47,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Book extends Model
 {
+    use HasFactory;
+
     public const STATUS_CAN_LEND = 1;
     public const STATUS_CAN_NOT_LEND = 2;
     public const STATUS_APPLYING = 3;
