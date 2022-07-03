@@ -28,6 +28,7 @@ class AuthController
         }
 
         \Log::debug($user->password);
+
         if (!Hash::check($password, $user->password)) {
             return response()->json(['errors' => 'パスワードが一致しません'], 401);
         }

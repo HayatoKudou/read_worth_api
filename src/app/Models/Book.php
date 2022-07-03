@@ -91,7 +91,7 @@ class Book extends Model
         return $query->where('client_id', $clientId);
     }
 
-    public function storeImage(string $imageBinary): string
+    public static function storeImage(string $imageBinary): string
     {
         $user = User::find(Auth::id());
         @[, $file_data] = explode(';', $imageBinary);
@@ -101,7 +101,7 @@ class Book extends Model
         return $imagePath;
     }
 
-    public function fetchAmazonImage(string $url): string
+    public static function fetchAmazonImage(string $url): string
     {
         $dpStart = mb_strpos($url, 'dp/') + 3;
         $dp = mb_substr($url, $dpStart, 10);
@@ -110,6 +110,6 @@ class Book extends Model
         $response = Http::get($endpoint);
         $body = $response->getBody()->getContents();
         $img = ('data:image/jpeg;base64,' . base64_encode($body));
-        return $this->storeImage($img);
+        return self::storeImage($img);
     }
 }

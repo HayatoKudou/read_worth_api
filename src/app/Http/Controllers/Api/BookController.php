@@ -146,39 +146,46 @@ class BookController extends Controller
         }
     }
 
-    public function csvBulkCreate(string $clientId, Request $request)
+    public function csvBulkCreate(string $clientId, Request $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            DB::transaction(function () use ($request, $clientId): void {
-                $request->collect('books')->each(function ($csvData, $clientId) {
-                    $book = Book::where('title', $csvData['タイトル'])->first();
-
-                    if ($book) {
-                        return true;
-                    }
+            return DB::transaction(function () use ($request, $clientId): JsonResponse {
+                foreach ($request->get('books') as $csvData) {
                     $bookCategory = BookCategory::where('name', $csvData['カテゴリ'])->first();
 
-                    if (!$bookCategory) {
+                    if (null === $bookCategory) {
                         return response()->json(['errors' => '登録されていないカテゴリが含まれています'], 500);
                     }
+                    $book = Book::where('title', $csvData['タイトル'])->first();
+                    $bookExists = Book::where('title', $csvData['タイトル'])->exists();
+                    $imagePath = $csvData['URL'] ? Book::fetchAmazonImage(urldecode($csvData['URL'])) : null;
 
-                    if ($csvData['URL']) {
-                        $imagePath = $book->fetchAmazonImage(urldecode($csvData['URL']));
+                    if ($bookExists) {
+                        $book->update([
+                            'client_id' => $clientId,
+                            'book_category_id' => $bookCategory->id,
+                            'status' => Book::STATUS_CAN_LEND,
+                            'title' => $csvData['タイトル'],
+                            'description' => $csvData['本の説明'],
+                            'image_path' => $imagePath,
+                            'url' => $csvData['URL'],
+                        ]);
+                    } else {
                         Book::create([
                             'client_id' => $clientId,
                             'book_category_id' => $bookCategory->id,
                             'status' => Book::STATUS_CAN_LEND,
-                            'title' => $book['タイトル'],
-                            'description' => $book['本の説明'],
+                            'title' => $csvData['タイトル'],
+                            'description' => $csvData['本の説明'],
                             'image_path' => $imagePath,
-                            'url' => $book['URL'],
+                            'url' => $csvData['URL'],
                         ]);
                     }
-                });
+                }
+                return response()->json([], 201);
             });
-            return response()->json([], 201);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }
