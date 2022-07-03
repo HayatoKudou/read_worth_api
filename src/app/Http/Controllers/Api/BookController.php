@@ -38,7 +38,8 @@ class BookController extends Controller
                     'title' => $book->title,
                     'description' => $book->description,
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
-                    'createdAt' => Carbon::parse($book->created_at,)->format('Y年m月d日'),
+                    'url' => $book->url,
+                    'createdAt' => Carbon::parse($book->created_at)->format('Y年m月d日'),
                     'purchaseApplicant' => $book->purchaseApply?->user,
                     'rentalApplicant' => $book->rentalApply?->user,
                     'reviews' => collect($book->reviews)?->map(fn (BookReview $bookReview) => [
@@ -128,7 +129,7 @@ class BookController extends Controller
         }
     }
 
-    public function return(string $clientId, string $bookId, Request $request): JsonResponse
+    public function return(string $clientId, string $bookId): JsonResponse
     {
         try {
             $client = Client::find($clientId);
@@ -140,6 +141,44 @@ class BookController extends Controller
                 Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
                 return response()->json([]);
             });
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
+    }
+
+    public function csvBulkCreate(string $clientId, Request $request)
+    {
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            DB::transaction(function () use ($request, $clientId): void {
+                $request->collect('books')->each(function ($csvData, $clientId) {
+                    $book = Book::where('title', $csvData['タイトル'])->first();
+
+                    if ($book) {
+                        return true;
+                    }
+                    $bookCategory = BookCategory::where('name', $csvData['カテゴリ'])->first();
+
+                    if (!$bookCategory) {
+                        return response()->json(['errors' => '登録されていないカテゴリが含まれています'], 500);
+                    }
+
+                    if ($csvData['URL']) {
+                        $imagePath = $book->fetchAmazonImage(urldecode($csvData['URL']));
+                        Book::create([
+                            'client_id' => $clientId,
+                            'book_category_id' => $bookCategory->id,
+                            'status' => Book::STATUS_CAN_LEND,
+                            'title' => $book['タイトル'],
+                            'description' => $book['本の説明'],
+                            'image_path' => $imagePath,
+                            'url' => $book['URL'],
+                        ]);
+                    }
+                });
+            });
+            return response()->json([], 201);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }

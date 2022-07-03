@@ -29,6 +29,7 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::put('/book', [BookController::class, 'update']);
     Route::post('/book', [BookController::class, 'create']);
     Route::delete('/book', [BookController::class, 'delete']);
+    Route::post('/book/csvBulk', [BookController::class, 'csvBulkCreate']);
     Route::post('/bookCategory', [BookCategoryController::class, 'create']);
     Route::post('/bookPurchaseApply', [BookPurchaseApplyController::class, 'create']);
     Route::post('/{bookId}/rentalApply', [BookRentalApplyController::class, 'create']);
