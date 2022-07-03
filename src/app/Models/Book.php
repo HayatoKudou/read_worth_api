@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $title
  * @property string $description
  * @property string $image_path
+ * @property string $url
  * @property BookCategory $category
  * @property BookPurchaseApply $purchaseApply
  * @property BookRentalApply $rentalApply

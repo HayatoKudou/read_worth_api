@@ -14,6 +14,7 @@ class UpdateRequest extends FormRequest
             'image' => '',
             'category' => 'required|string',
             'status' => 'required',
+            'url' => '',
         ];
     }
 }

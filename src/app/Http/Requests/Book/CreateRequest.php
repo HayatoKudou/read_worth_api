@@ -13,6 +13,7 @@ class CreateRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => '',
             'image' => '',
+            'url' => '',
         ];
     }
 
