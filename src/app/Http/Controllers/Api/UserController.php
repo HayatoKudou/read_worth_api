@@ -75,12 +75,13 @@ class UserController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $user = $request->createUser();
-            DB::transaction(function () use ($user, $request, $clientId): void {
+            DB::transaction(function () use ($user, $request, $client): void {
                 $user = User::create([
-                    'client_id' => $clientId,
+                    'client_id' => $client->id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'password' => Hash::make($request->get('password')),
+                    'purchase_balance' => $client->purchase_limit,
                     'api_token' => Str::random(60),
                 ]);
                 event(new Registered($user));

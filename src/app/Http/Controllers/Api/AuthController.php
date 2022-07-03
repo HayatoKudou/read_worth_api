@@ -19,21 +19,21 @@ class AuthController
 {
     public function login(Request $request): JsonResponse
     {
-        $requestPayload = $request->json();
-        $email = $requestPayload->get('email');
-        $password = $requestPayload->get('password');
+        $email = $request->get('email');
+        $password = $request->get('password');
         $user = User::where(['email' => $email])->first();
 
         if (null === $user) {
-            return response()->json([], 401);
+            return response()->json(['errors' => 'ユーザーが見つかりません'], 401);
         }
 
-        if (Hash::check($user->password, $password)) {
+        \Log::debug($user->password);
+        if (!Hash::check($password, $user->password)) {
             return response()->json(['errors' => 'パスワードが一致しません'], 401);
         }
 
         if (!$user->hasVerifiedEmail()) {
-            return response()->json('メール認証を完了させてください', 403);
+            return response()->json(['errors' => 'メール認証を完了させてください'], 403);
         }
 
         return response()->json([
@@ -54,7 +54,6 @@ class AuthController
 
     public function signUp(SignUpRequest $request): JsonResponse
     {
-        $request->validated();
         return DB::transaction(function () use ($request): JsonResponse {
             $plan = Plan::where('name', $request->get('plan'))->first();
 
