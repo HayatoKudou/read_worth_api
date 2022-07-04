@@ -28,17 +28,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property BookPurchaseApply $purchaseApply
  * @property BookRentalApply $rentalApply
  * @property BookReview[] $reviews
- *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
  * @method static Builder|\App\Models\User organization()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\Client $client
- *
  * @method static Builder|Book whereBookCategoryId($value)
  * @method static Builder|Book whereClientId($value)
  * @method static Builder|Book whereCreatedAt($value)
@@ -48,8 +45,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Book whereStatus($value)
  * @method static Builder|Book whereTitle($value)
  * @method static Builder|Book whereUpdatedAt($value)
- *
  * @property null|int $reviews_count
+ * @method static \Database\Factories\BookFactory factory(...$parameters)
+ * @method static Builder|Book whereUrl($value)
  */
 class Book extends Model
 {

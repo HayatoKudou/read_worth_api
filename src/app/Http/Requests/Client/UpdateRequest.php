@@ -19,6 +19,7 @@ class UpdateRequest extends FormRequest
             ],
             'purchase_limit' => 'int',
             'purchase_limit_unit' => 'string',
+            'private_ownership_allow' => 'boolean',
             'plan' => [
                 'string',
                 Rule::in(Plan::PLANS),

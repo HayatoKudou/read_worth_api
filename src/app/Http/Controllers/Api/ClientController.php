@@ -20,6 +20,7 @@ class ClientController
             'plan' => $client->plan->name,
             'purchaseLimit' => $client->purchase_limit,
             'purchaseLimitUnit' => $client->purchase_limit_unit,
+            'privateOwnershipAllow' => (boolean) $client->private_ownership_allow,
             'users' => count($client->users),
             'books' => count($client->books),
         ]]);
@@ -27,11 +28,13 @@ class ClientController
 
     public function update(UpdateRequest $request): JsonResponse
     {
+        \Log::debug($request->get('private_ownership_allow'));
         $client = User::find(Auth::id())->client;
         $client->update([
             'name' => $request->get('name'),
             'purchase_limit' => $request->get('purchase_limit'),
             'purchase_limit_unit' => $request->get('purchase_limit_unit'),
+            'private_ownership_allow' => $request->get('private_ownership_allow'),
         ]);
         return response()->json(['client' => $client], 201);
     }
