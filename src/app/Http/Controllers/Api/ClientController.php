@@ -28,7 +28,6 @@ class ClientController
 
     public function update(UpdateRequest $request): JsonResponse
     {
-        \Log::debug($request->get('private_ownership_allow'));
         $client = User::find(Auth::id())->client;
         $client->update([
             'name' => $request->get('name'),

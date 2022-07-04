@@ -52,6 +52,10 @@ class BookController extends Controller
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,
                 ]),
+                'client' => [
+                    'purchaseLimit' => $client->purchase_limit,
+                    'privateOwnershipAllow' => (boolean) $client->private_ownership_allow
+                ]
             ]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
