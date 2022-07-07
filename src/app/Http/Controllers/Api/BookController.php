@@ -117,7 +117,7 @@ class BookController extends Controller
                     } elseif (Book::STATUS_CAN_NOT_LEND === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
                         $action = 'return book';
                     // 貸出可能 ⇨ 貸出中
-                    } elseif (Book::STATUS_CAN_NOT_LEND === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
+                    } elseif (Book::STATUS_CAN_LEND === $book->status && Book::STATUS_CAN_NOT_LEND === $request->get('status')) {
                         $action = 'lend book';
                     }
                     BookHistory::create([

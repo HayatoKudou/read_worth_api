@@ -29,14 +29,14 @@ class BookRentalApplyController extends Controller
                     'user_id' => Auth::id(),
                     'client_id' => $clientId,
                     'book_id' => $bookId,
-                    'reason' => $request->reason,
+                    'reason' => $request->get('reason'),
                     'rental_date' => Carbon::now(),
-                    'expected_return_date' => Carbon::parse($request->expected_return_date),
+                    'expected_return_date' => Carbon::parse($request->get('expected_return_date')),
                 ]);
                 BookHistory::create([
                     'book_id' => $book->id,
                     'user_id' => Auth::id(),
-                    'action' => 'return book',
+                    'action' => 'lend book',
                 ]);
                 return response()->json([], 201);
             });
