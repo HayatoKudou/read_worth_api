@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Models\Book;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\BookHistory;
 use App\Models\BookCategory;
 use App\Models\BookPurchaseApply;
 use Illuminate\Http\JsonResponse;
@@ -22,8 +23,7 @@ class BookPurchaseApplyController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
 
-            return DB::transaction(function () use ($request, $clientId): JsonResponse {
-                $request->validated();
+            DB::transaction(function () use ($request, $clientId): void {
                 $user = User::find(Auth::id());
                 $book = new Book();
                 $imagePath = $book->storeImage($request->get('image'));
@@ -43,8 +43,13 @@ class BookPurchaseApplyController extends Controller
                     'book_id' => $book->id,
                     'reason' => $request->reason,
                 ]);
-                return response()->json([], 201);
+                BookHistory::create([
+                     'book_id' => $book->id,
+                     'user_id' => Auth::id(),
+                     'action' => 'purchase book',
+                 ]);
             });
+            return response()->json([], 201);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }

@@ -20,7 +20,7 @@ class ClientController
             'plan' => $client->plan->name,
             'purchaseLimit' => $client->purchase_limit,
             'purchaseLimitUnit' => $client->purchase_limit_unit,
-            'privateOwnershipAllow' => (boolean) $client->private_ownership_allow,
+            'privateOwnershipAllow' => (bool) $client->private_ownership_allow,
             'users' => count($client->users),
             'books' => count($client->books),
         ]]);

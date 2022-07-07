@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\Book;
-use App\Models\User;
 use App\Models\Client;
 use App\Models\BookReview;
+use App\Models\BookHistory;
 use App\Models\BookCategory;
 use Illuminate\Http\Request;
 use App\Models\BookRentalApply;
@@ -54,38 +54,9 @@ class BookController extends Controller
                 ]),
                 'client' => [
                     'purchaseLimit' => $client->purchase_limit,
-                    'privateOwnershipAllow' => (boolean) $client->private_ownership_allow
-                ]
+                    'privateOwnershipAllow' => (bool) $client->private_ownership_allow,
+                ],
             ]);
-        } catch (AuthorizationException $e) {
-            return response()->json([], 402);
-        }
-    }
-
-    public function update(string $clientId, UpdateRequest $request): JsonResponse
-    {
-        try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
-            $request->validated();
-            $book = Book::find($request->get('id'));
-            $bookCategory = BookCategory::where('name', $request->get('category'))->first();
-            \Storage::delete($book->image_path);
-
-            if (!$bookCategory) {
-                return response()->json('一致するカテゴリが見つかりません', 500);
-            }
-            $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
-            $book->update([
-                'client_id' => $clientId,
-                'book_category_id' => $bookCategory->id,
-                'status' => $request->get('status'),
-                'title' => $request->get('title'),
-                'description' => $request->get('description'),
-                'image_path' => $imagePath,
-                'url' => $request->get('url'),
-            ]);
-            return response()->json();
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }
@@ -96,19 +67,77 @@ class BookController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
-            $book = $request->createBook();
-            $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
-            Book::create([
-                'client_id' => $clientId,
-                'book_category_id' => $bookCategory->id,
-                'status' => Book::STATUS_CAN_LEND,
-                'title' => $book->title,
-                'description' => $book->description,
-                'image_path' => $imagePath,
-                'url' => $book->url,
-            ]);
+            DB::transaction(function () use ($clientId, $request): void {
+                $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
+                $book = $request->createBook();
+                $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
+
+                Book::create([
+                    'client_id' => $clientId,
+                    'book_category_id' => $bookCategory->id,
+                    'status' => Book::STATUS_CAN_LEND,
+                    'title' => $book->title,
+                    'description' => $book->description,
+                    'image_path' => $imagePath,
+                    'url' => $book->url,
+                ]);
+                BookHistory::create([
+                    'book_id' => $book->id,
+                    'user_id' => Auth::id(),
+                    'action' => 'create book',
+                ]);
+            });
             return response()->json([], 201);
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
+    }
+
+    public function update(string $clientId, UpdateRequest $request): JsonResponse
+    {
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            $book = Book::find($request->get('id'));
+            $bookCategory = BookCategory::where('name', $request->get('category'))->first();
+            \Storage::delete($book->image_path);
+
+            if (!$bookCategory) {
+                return response()->json('一致するカテゴリが見つかりません', 500);
+            }
+            $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
+
+            DB::transaction(function () use ($clientId, $bookCategory, $book, $request, $imagePath): void {
+                if ($book->status != $request->get('status')) {
+                    $action = 'other';
+                    // 申請中 ⇨ 登録
+                    if (Book::STATUS_APPLYING === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
+                        $action = 'create book';
+                    // 貸出中 ⇨ 貸出可能
+                    } elseif (Book::STATUS_CAN_NOT_LEND === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
+                        $action = 'return book';
+                    // 貸出可能 ⇨ 貸出中
+                    } elseif (Book::STATUS_CAN_NOT_LEND === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
+                        $action = 'lend book';
+                    }
+                    BookHistory::create([
+                        'book_id' => $book->id,
+                        'user_id' => Auth::id(),
+                        'action' => $action,
+                    ]);
+                }
+                $book->update([
+                    'client_id' => $clientId,
+                    'book_category_id' => $bookCategory->id,
+                    'status' => $request->get('status'),
+                    'title' => $request->get('title'),
+                    'description' => $request->get('description'),
+                    'image_path' => $imagePath,
+                    'url' => $request->get('url'),
+                ]);
+            });
+
+            return response()->json();
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }
@@ -139,12 +168,16 @@ class BookController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
 
-            return DB::transaction(function () use ($bookId): JsonResponse {
-                $user = User::find(Auth::id());
-                BookRentalApply::where('user_id', $user->id)->where('book_id', $bookId)->update(['return_date' => Carbon::now()]);
+            DB::transaction(function () use ($bookId): void {
+                BookRentalApply::where('user_id', Auth::id())->where('book_id', $bookId)->update(['return_date' => Carbon::now()]);
                 Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
-                return response()->json([]);
+                BookHistory::create([
+                    'book_id' => $bookId,
+                    'user_id' => Auth::id(),
+                    'action' => 'return book',
+                ]);
             });
+            return response()->json([]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }
@@ -177,7 +210,7 @@ class BookController extends Controller
                             'url' => $csvData['URL'],
                         ]);
                     } else {
-                        Book::create([
+                        $book = Book::create([
                             'client_id' => $clientId,
                             'book_category_id' => $bookCategory->id,
                             'status' => Book::STATUS_CAN_LEND,
@@ -185,6 +218,11 @@ class BookController extends Controller
                             'description' => $csvData['本の説明'],
                             'image_path' => $imagePath,
                             'url' => $csvData['URL'],
+                        ]);
+                        BookHistory::create([
+                            'book_id' => $book->id,
+                            'user_id' => Auth::id(),
+                            'action' => 'create book',
                         ]);
                     }
                 }

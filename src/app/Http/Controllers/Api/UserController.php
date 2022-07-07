@@ -103,7 +103,6 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $request->validated();
             return DB::transaction(function () use ($request): JsonResponse {
                 $user = User::find($request->get('id'));
 

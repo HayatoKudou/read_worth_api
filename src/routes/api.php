@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\Api\BookReviewController;
+use App\Http\Controllers\Api\BookHistoryController;
 use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
@@ -35,4 +36,5 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::post('/{bookId}/rentalApply', [BookRentalApplyController::class, 'create']);
     Route::post('/{bookId}/bookReturn', [BookController::class, 'return']);
     Route::post('/{bookId}/bookReview', [BookReviewController::class, 'create']);
+    Route::get('/{bookId}/histories', [BookHistoryController::class, 'list']);
 });
