@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property number $book_id
  * @property string $reason
  * @property User $user
+ * @property Book $book
  *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
@@ -44,6 +45,11 @@ class BookPurchaseApply extends Model
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function book(): BelongsTo
+    {
+        return $this->belongsTo(Book::class);
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder
