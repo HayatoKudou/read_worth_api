@@ -85,6 +85,11 @@ class Book extends Model
         return $this->hasOne(BookRentalApply::class)->whereNull('return_date');
     }
 
+    public function rentalHistories(): HasMany
+    {
+        return $this->hasMany(BookRentalApply::class);
+    }
+
     public function histories(): HasMany
     {
         return $this->hasMany(BookHistory::class);

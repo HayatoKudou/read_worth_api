@@ -39,7 +39,7 @@ class BookController extends Controller
                     'description' => $book->description,
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
                     'url' => $book->url,
-                    'createdAt' => Carbon::parse($book->created_at)->format('Y年m月d日'),
+                    'createdAt' => Carbon::parse($book->created_at)->format('Y/m/d'),
                     'purchaseApplicant' => $book->purchaseApply?->user,
                     'rentalApplicant' => $book->rentalApply?->user,
                     'reviews' => collect($book->reviews)?->map(fn (BookReview $bookReview) => [
@@ -48,6 +48,7 @@ class BookController extends Controller
                         'reviewedAt' => Carbon::parse($bookReview->created_at)->format('Y年m月d日 H時i分'),
                         'reviewer' => $bookReview->user->name,
                     ]),
+                    'rentalCount' => $book->rentalHistories->count()
                 ]),
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,
@@ -72,7 +73,7 @@ class BookController extends Controller
                 $book = $request->createBook();
                 $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
 
-                Book::create([
+                $book = Book::create([
                     'client_id' => $clientId,
                     'book_category_id' => $bookCategory->id,
                     'status' => Book::STATUS_CAN_LEND,
