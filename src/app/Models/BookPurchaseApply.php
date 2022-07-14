@@ -17,16 +17,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $reason
  * @property User $user
  * @property Book $book
- *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory query()
  * @method static Builder|BookCategory organization()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- *
  * @method static Builder|BookPurchaseApply whereBookId($value)
  * @method static Builder|BookPurchaseApply whereClientId($value)
  * @method static Builder|BookPurchaseApply whereCreatedAt($value)

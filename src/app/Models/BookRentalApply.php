@@ -21,16 +21,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property Carbon $expected_return_date
  * @property Carbon $return_date
  * @property User $user
- *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory query()
  * @method static Builder|BookCategory organization()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- *
  * @method static Builder|BookRentalApply whereBookId($value)
  * @method static Builder|BookRentalApply whereClientId($value)
  * @method static Builder|BookRentalApply whereCreatedAt($value)
