@@ -7,6 +7,7 @@ use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\BookCategory;
@@ -73,6 +74,7 @@ class AuthController
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password')),
+                'password_setting_at' => Carbon::now(),
                 'purchase_balance' => $client->purchase_limit,
                 'api_token' => Str::random(60),
             ]);
@@ -109,7 +111,10 @@ class AuthController
     public function passwordSetting(PasswordSettingRequest $request): JsonResponse
     {
         $user = User::find(Auth::id());
-        $user->update(['password' => $request->get('password')]);
+        $user->update([
+            'password' => $request->get('password'),
+            'password_setting_at' => Carbon::now(),
+        ]);
         return response()->json();
     }
 }

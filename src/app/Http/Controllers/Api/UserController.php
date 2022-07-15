@@ -6,6 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\BookReview;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use App\Models\BookRentalApply;
 use App\Models\BookPurchaseApply;
@@ -115,7 +116,10 @@ class UserController extends Controller
                 ]);
 
                 if ($request->get('password')) {
-                    $user->update(['password' => Hash::make($request->get('password'))]);
+                    $user->update([
+                        'password' => Hash::make($request->get('password')),
+                        'password_setting_at' => Carbon::now(),
+                    ]);
                 }
                 Role::where('user_id', $user->id)->update([
                     'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),

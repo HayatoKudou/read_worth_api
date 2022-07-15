@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -18,13 +19,14 @@ class VerifyEmailController extends Controller
     public function verify(Request $request): RedirectResponse
     {
         $user = User::find($request->route('id'));
-
         if ($user->hasVerifiedEmail()) {
             return redirect()->away(config('front.url'));
         }
-
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
+        }
+        if($user->password_setting_at){
+            return redirect()->away(config('front.url'));
         }
         return redirect()->away(config('front.url').'/password-setting');
     }
@@ -61,6 +63,7 @@ class VerifyEmailController extends Controller
             function ($user, $password): void {
                 $user->forceFill([
                     'password' => Hash::make($password),
+                    'password_setting_at' => Carbon::now(),
                 ])->setRememberToken(Str::random(60));
                 $user->save();
                 event(new PasswordReset($user));

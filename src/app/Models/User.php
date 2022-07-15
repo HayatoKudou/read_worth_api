@@ -48,6 +48,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|User whereUpdatedAt($value)
  * @property int $purchase_balance
  * @method static Builder|User wherePurchaseBalance($value)
+ * @property string|null $password_setting_at
+ * @method static Builder|User wherePasswordSettingAt($value)
  */
 class User extends Authenticate implements MustVerifyEmail
 {
