@@ -17,6 +17,7 @@ Route::post('/signUp', [AuthController::class, 'signUp']);
 Route::post('/email/verify/resend', [VerifyEmailController::class, 'resendVerify']);
 Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword'])->name('password.email');
 Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])->name('password.update');
+Route::post('/password-setting', [AuthController::class, 'passwordSetting']);
 
 Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']], function (): void {
     Route::get('/user', [UserController::class, 'me']);

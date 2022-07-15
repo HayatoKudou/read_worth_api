@@ -80,7 +80,7 @@ class UserController extends Controller
                     'client_id' => $client->id,
                     'name' => $user->name,
                     'email' => $user->email,
-                    'password' => Hash::make($request->get('password')),
+                    'password' => Str::random(60),
                     'purchase_balance' => $client->purchase_limit,
                     'api_token' => Str::random(60),
                 ]);

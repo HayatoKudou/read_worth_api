@@ -26,7 +26,7 @@ class VerifyEmailController extends Controller
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
-        return redirect()->away(config('front.url'));
+        return redirect()->away(config('front.url').'/password-setting');
     }
 
     public function resendVerify(Request $request): JsonResponse

@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Auth\PasswordSettingRequest;
 use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\BookCategory;
 use Illuminate\Http\Request;
@@ -26,8 +28,6 @@ class AuthController
         if (null === $user) {
             return response()->json(['errors' => 'ユーザーが見つかりません'], 401);
         }
-
-        \Log::debug($user->password);
 
         if (!Hash::check($password, $user->password)) {
             return response()->json(['errors' => 'パスワードが一致しません'], 401);
@@ -63,6 +63,9 @@ class AuthController
             }
             $client = Client::create([
                 'name' => $request->get('client_name'),
+                'purchase_limit' => 0,
+                'purchase_limit_unit' => 'monthly',
+                'private_ownership_allow' => false,
                 'plan_id' => $plan->id,
             ]);
             $user = User::create([
@@ -70,6 +73,7 @@ class AuthController
                 'name' => $request->get('name'),
                 'email' => $request->get('email'),
                 'password' => Hash::make($request->get('password')),
+                'purchase_balance' => $client->purchase_limit,
                 'api_token' => Str::random(60),
             ]);
             Role::create([
@@ -100,5 +104,12 @@ class AuthController
                 ],
             ]);
         });
+    }
+
+    public function passwordSetting(PasswordSettingRequest $request): JsonResponse
+    {
+        $user = User::find(Auth::id());
+        $user->update(['password' => $request->get('password')]);
+        return response()->json();
     }
 }
