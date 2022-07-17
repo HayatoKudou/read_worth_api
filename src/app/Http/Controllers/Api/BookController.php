@@ -48,7 +48,7 @@ class BookController extends Controller
                         'reviewedAt' => Carbon::parse($bookReview->created_at)->format('Y年m月d日 H時i分'),
                         'reviewer' => $bookReview->user->name,
                     ]),
-                    'rentalCount' => $book->rentalHistories->count()
+                    'rentalCount' => $book->rentalHistories->count(),
                 ]),
                 'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                     'name' => $bookCategory->name,

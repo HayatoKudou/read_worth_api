@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use Carbon\Carbon;
+use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
@@ -19,16 +19,19 @@ class VerifyEmailController extends Controller
     public function verify(Request $request): RedirectResponse
     {
         $user = User::find($request->route('id'));
+
         if ($user->hasVerifiedEmail()) {
             return redirect()->away(config('front.url'));
         }
+
         if ($user->markEmailAsVerified()) {
             event(new Verified($user));
         }
-        if($user->password_setting_at){
+
+        if ($user->password_setting_at) {
             return redirect()->away(config('front.url'));
         }
-        return redirect()->away(config('front.url').'/password-setting');
+        return redirect()->away(config('front.url') . '/password-setting');
     }
 
     public function resendVerify(Request $request): JsonResponse

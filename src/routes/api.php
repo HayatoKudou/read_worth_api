@@ -36,6 +36,7 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']
     Route::get('/bookPurchaseApplies', [BookPurchaseApplyController::class, 'list']);
     Route::post('/bookPurchaseApply', [BookPurchaseApplyController::class, 'create']);
     Route::post('/{bookId}/purchase/allow', [BookPurchaseApplyController::class, 'allow']);
+    Route::post('/{bookId}/purchase/done', [BookPurchaseApplyController::class, 'done']);
     Route::post('/{bookId}/rentalApply', [BookRentalApplyController::class, 'create']);
     Route::post('/{bookId}/bookReturn', [BookController::class, 'return']);
     Route::post('/{bookId}/bookReview', [BookReviewController::class, 'create']);

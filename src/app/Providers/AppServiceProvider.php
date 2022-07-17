@@ -2,9 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\ServiceProvider;
 use Illuminate\Auth\Notifications\VerifyEmail;
 use Illuminate\Notifications\Messages\MailMessage;
-use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
-            return (new MailMessage)
+            return (new MailMessage())
                 ->subject('メール認証')
                 ->line('下のボタンをクリックして、メールアドレスを確認してください。')
                 ->action('メール認証', $url)

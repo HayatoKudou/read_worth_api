@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Requests\Auth\PasswordSettingRequest;
+use Carbon\Carbon;
 use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use App\Models\BookCategory;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\Auth\SignUpRequest;
+use App\Http\Requests\Auth\PasswordSettingRequest;
 
 class AuthController
 {

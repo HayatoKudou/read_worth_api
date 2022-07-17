@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\BookPurchaseApply.
@@ -17,13 +16,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $reason
  * @property User $user
  * @property Book $book
+ *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory query()
  * @method static Builder|BookCategory organization()
  * @mixin Builder
+ *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ *
  * @method static Builder|BookPurchaseApply whereBookId($value)
  * @method static Builder|BookPurchaseApply whereClientId($value)
  * @method static Builder|BookPurchaseApply whereCreatedAt($value)
@@ -31,19 +33,27 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|BookPurchaseApply whereReason($value)
  * @method static Builder|BookPurchaseApply whereUpdatedAt($value)
  * @method static Builder|BookPurchaseApply whereUserId($value)
+ *
  * @property int $price
+ *
  * @method static Builder|BookPurchaseApply wherePrice($value)
+ *
  * @property int $step
+ *
  * @method static Builder|BookPurchaseApply whereStep($value)
+ *
+ * @property null|string $location
+ *
+ * @method static Builder|BookPurchaseApply whereLocation($value)
  */
 class BookPurchaseApply extends Model
 {
+    public const REJECTED = 0;
+    public const NEED_ALLOW = 1;
+    public const NEED_BUY = 2;
+    public const NEED_NOTIFICATION = 3;
     protected $guarded = [];
     protected $table = 'book_purchase_applies';
-
-    const NEED_ALLOW = 0;
-    const NEED_BUY = 1;
-    const NEED_NOTIFICATION = 2;
 
     public function user(): BelongsTo
     {
