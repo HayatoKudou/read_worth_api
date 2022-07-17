@@ -28,6 +28,8 @@ class BookPurchaseApplyController extends Controller
             return response()->json([
                 'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
                     'reason' => $bookPurchaseApply->reason,
+                    'price' => $bookPurchaseApply->price,
+                    'step' => $bookPurchaseApply->step,
                     'user' => $bookPurchaseApply->user,
                     'book' => [
                         'id' => $bookPurchaseApply->book->id,
@@ -72,6 +74,8 @@ class BookPurchaseApplyController extends Controller
                     'client_id' => $clientId,
                     'book_id' => $book->id,
                     'reason' => $request->get('reason'),
+                    'price' => $request->get('price'),
+                    'step' => BookPurchaseApply::NEED_ALLOW,
                 ]);
                 BookHistory::create([
                      'book_id' => $book->id,
@@ -80,6 +84,20 @@ class BookPurchaseApplyController extends Controller
                  ]);
             });
             return response()->json([], 201);
+        } catch (AuthorizationException $e) {
+            return response()->json([], 402);
+        }
+    }
+
+    public function allow(string $clientId, string $bookId): JsonResponse
+    {
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            Book::find($bookId)->purchaseApply->update([
+                'step' => BookPurchaseApply::NEED_BUY,
+            ]);
+            return response()->json([]);
         } catch (AuthorizationException $e) {
             return response()->json([], 402);
         }

@@ -31,13 +31,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|BookPurchaseApply whereReason($value)
  * @method static Builder|BookPurchaseApply whereUpdatedAt($value)
  * @method static Builder|BookPurchaseApply whereUserId($value)
+ * @property int $price
+ * @method static Builder|BookPurchaseApply wherePrice($value)
+ * @property int $step
+ * @method static Builder|BookPurchaseApply whereStep($value)
  */
 class BookPurchaseApply extends Model
 {
-    use HasFactory;
-
     protected $guarded = [];
     protected $table = 'book_purchase_applies';
+
+    const NEED_ALLOW = 0;
+    const NEED_BUY = 1;
+    const NEED_NOTIFICATION = 2;
 
     public function user(): BelongsTo
     {
