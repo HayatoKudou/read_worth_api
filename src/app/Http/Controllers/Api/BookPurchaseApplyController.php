@@ -29,6 +29,7 @@ class BookPurchaseApplyController extends Controller
                 'reason' => $bookPurchaseApply->reason,
                 'price' => $bookPurchaseApply->price,
                 'step' => $bookPurchaseApply->step,
+                'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y年m月d日'),
                 'user' => $bookPurchaseApply->user,
                 'book' => [
                     'id' => $bookPurchaseApply->book->id,
@@ -108,6 +109,16 @@ class BookPurchaseApplyController extends Controller
         $this->authorize('affiliation', $client);
         Book::find($bookId)->purchaseApply->update([
             'step' => BookPurchaseApply::REJECTED,
+        ]);
+        return response()->json([]);
+    }
+
+    public function init(string $clientId, string $bookId): JsonResponse
+    {
+        $client = Client::find($clientId);
+        $this->authorize('affiliation', $client);
+        Book::find($bookId)->purchaseApply->update([
+            'step' => BookPurchaseApply::NEED_ALLOW,
         ]);
         return response()->json([]);
     }
