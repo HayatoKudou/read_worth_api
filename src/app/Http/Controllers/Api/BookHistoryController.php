@@ -22,7 +22,7 @@ class BookHistoryController extends Controller
                 'histories' => $bookHistories->map(fn (BookHistory $bookHistory) => [
                   'userName' => $bookHistory->user->name,
                   'action' => $bookHistory->action,
-                  'date' => Carbon::parse($bookHistory->created_at)->format('Y年m月d日'),
+                  'createdAt' => Carbon::parse($bookHistory->created_at)->format('Y/m/d H:i'),
                 ]),
             ]);
         } catch (AuthorizationException $e) {
