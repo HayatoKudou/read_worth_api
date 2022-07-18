@@ -48,8 +48,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class BookPurchaseApply extends Model
 {
-    public const REJECTED = 0;
-    public const NEED_ALLOW = 1;
+    public const REFUSED = 0;
+    public const NEED_ACCEPT = 1;
     public const NEED_BUY = 2;
     public const NEED_NOTIFICATION = 3;
     protected $guarded = [];

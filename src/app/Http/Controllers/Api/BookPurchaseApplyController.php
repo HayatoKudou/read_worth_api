@@ -71,7 +71,7 @@ class BookPurchaseApplyController extends Controller
                 'book_id' => $book->id,
                 'reason' => $request->get('reason'),
                 'price' => $request->get('price'),
-                'step' => BookPurchaseApply::NEED_ALLOW,
+                'step' => BookPurchaseApply::NEED_ACCEPT,
             ]);
             BookHistory::create([
                 'book_id' => $book->id,
@@ -82,13 +82,20 @@ class BookPurchaseApplyController extends Controller
         return response()->json([], 201);
     }
 
-    public function allow(string $clientId, string $bookId): JsonResponse
+    public function accept(string $clientId, string $bookId): JsonResponse
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
-        Book::find($bookId)->purchaseApply->update([
-            'step' => BookPurchaseApply::NEED_BUY,
-        ]);
+        DB::transaction(function () use ($bookId): void {
+            Book::find($bookId)->purchaseApply->update([
+                'step' => BookPurchaseApply::NEED_BUY,
+            ]);
+            BookHistory::create([
+                'book_id' => $bookId,
+                'user_id' => Auth::id(),
+                'action' => 'purchase accepted',
+            ]);
+        });
         return response()->json([]);
     }
 
@@ -96,20 +103,35 @@ class BookPurchaseApplyController extends Controller
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
-        Book::find($bookId)->purchaseApply->update([
-            'step' => BookPurchaseApply::NEED_NOTIFICATION,
-            'location' => $request->get('location'),
-        ]);
+        DB::transaction(function () use ($request, $bookId): void {
+            Book::find($bookId)->purchaseApply->update([
+                'step' => BookPurchaseApply::NEED_NOTIFICATION,
+                'location' => $request->get('location'),
+            ]);
+            BookHistory::create([
+                'book_id' => $bookId,
+                'user_id' => Auth::id(),
+                'action' => 'purchase done',
+            ]);
+        });
         return response()->json([]);
     }
 
-    public function reject(string $clientId, string $bookId): JsonResponse
+    public function refuse(string $clientId, string $bookId): JsonResponse
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
-        Book::find($bookId)->purchaseApply->update([
-            'step' => BookPurchaseApply::REJECTED,
-        ]);
+        DB::transaction(function () use ($bookId): void {
+            Book::find($bookId)->purchaseApply->update([
+                'step' => BookPurchaseApply::REFUSED,
+            ]);
+            BookHistory::create([
+                'book_id' => $bookId,
+                'user_id' => Auth::id(),
+                'action' => 'purchase refused',
+            ]);
+        });
+
         return response()->json([]);
     }
 
@@ -117,9 +139,16 @@ class BookPurchaseApplyController extends Controller
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
-        Book::find($bookId)->purchaseApply->update([
-            'step' => BookPurchaseApply::NEED_ALLOW,
-        ]);
+        DB::transaction(function () use ($bookId): void {
+            Book::find($bookId)->purchaseApply->update([
+                'step' => BookPurchaseApply::NEED_ACCEPT,
+            ]);
+            BookHistory::create([
+                'book_id' => $bookId,
+                'user_id' => Auth::id(),
+                'action' => 'purchase init',
+            ]);
+        });
         return response()->json([]);
     }
 }
