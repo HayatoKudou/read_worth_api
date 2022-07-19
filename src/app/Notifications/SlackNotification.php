@@ -18,21 +18,8 @@ class SlackNotification
     private function notify(
         string $message,
         string $channel,
-        string $attachmentColor,
-        ?array $remarks,
         ?string $title,
-        ?string $titleLink
     ): void {
-        $fields = [];
-
-        foreach ($remarks as $t => $v) {
-            $fields[] = [
-                'title' => $t,
-                'value' => $v,
-                'short' => false,
-            ];
-        }
-
         $response = $this->httpClient->post(
             'https://slack.com/api/chat.postMessage',
             [
@@ -40,11 +27,8 @@ class SlackNotification
                     'channel' => '#' . $channel,
                     'attachments' => [
                         [
-                            'color' => $attachmentColor,
                             'title' => $title,
-                            'title_link' => $titleLink,
                             'text' => $message,
-                            'fields' => $fields,
                         ],
                     ],
                 ],

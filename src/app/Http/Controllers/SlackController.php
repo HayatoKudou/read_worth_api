@@ -2,51 +2,57 @@
 
 namespace App\Http\Controllers;
 
-use Carbon\Carbon;
-use App\Models\Book;
-use App\Models\BookHistory;
-use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Http\Request;
+use App\Models\User;
 use GuzzleHttp\Client;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Request;
+use App\Slack\SlackApiClient;
+use App\Models\SlackCredentials;
 
 class SlackController extends Controller
 {
-//    private Client $httpClient;
-//
-//    public function __construct()
-//    {
-//        $this->httpClient = new Client([
-//            'base_uri' => 'https://api.twitter.com/1.1/',
-//            'handler' => $stack,
-//            'auth' => 'oauth',
-//        ]);
-//    }
-
-//    public function callback(Request $request)
-    public function callback()
+    public function callback(Request $request): void
     {
-        $client = new Client;
-        $code = '3812085668740.3798256075319.728cc2a07655d2f580f086ee8b10c67b16b1d91561603811c56765492f31527d';
-        $option = [
-            'headers' =>
-                [
-                    'Content-Type' => 'application/x-www-form-urlencoded'
+        if ($request->has('error')) {
+            return;
+        }
+        $client = new Client();
+        $response = $client->post('https://slack.com/api/oauth.v2.access', [
+            'headers' => [
+                    'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
-            'form_params' =>
-                [
-                    'client_id' => '3812085668740.3835544940032',
-                    'client_secret' => '4937c87b0e5b312d1cf566b0eda78669',
-                    'code' => $code,
+            'form_params' => [
+                    'client_id' => \Config::get('slack.clientId'),
+                    'client_secret' => \Config::get('slack.clientSecret'),
+                    'code' => $request->get('code'),
                     'grant_type' => 'authorization_code',
-                    'redirect_uri' => 'https://api-readworth.info/api/slack/callback'
+                    'redirect_uri' => \Config::get('slack.redirectUri'),
                 ],
-        ];
-        $response = $client->post('https://slack.com/api/oauth.v2.access', $option);
+        ]);
         $json = $response->getBody()->getContents();
         $body = json_decode($json, true);
-        \Log::debug($body);
+
+        if (false === $body['ok']) {
+            return;
+        }
+        $accessToken = $body['access_token'];
+        $userId = $body['authed_user']['id'];
+
+        $slackClient = new SlackApiClient(new Client(), $accessToken);
+        $userInfo = $slackClient->userInfo($userId);
+
+        $user = User::where('email', $userInfo['user']['profile']['email'])->first();
+
+        if (!$user) {
+            \Log::debug('Slackに登録しているメールアドレスと一致するユーザーが見つかりません。');
+        }
+
+        SlackCredentials::updateOrCreate([
+            'client_id' => $user->client->id,
+        ], [
+            'access_token' => $accessToken,
+            'channel_name' => $body['incoming_webhook']['channel'],
+            'channel_id' => $body['incoming_webhook']['channel_id'],
+        ]);
+//        return redirect()->away(config('front.url'));
     }
 }
