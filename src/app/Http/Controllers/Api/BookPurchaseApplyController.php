@@ -29,7 +29,8 @@ class BookPurchaseApplyController extends Controller
                 'reason' => $bookPurchaseApply->reason,
                 'price' => $bookPurchaseApply->price,
                 'step' => $bookPurchaseApply->step,
-                'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y年m月d日'),
+                'location' => $bookPurchaseApply->location,
+                'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y/m/d'),
                 'user' => $bookPurchaseApply->user,
                 'book' => [
                     'id' => $bookPurchaseApply->book->id,
@@ -148,6 +149,18 @@ class BookPurchaseApplyController extends Controller
                 'user_id' => Auth::id(),
                 'action' => 'purchase init',
             ]);
+        });
+        return response()->json([]);
+    }
+
+    public function notification(string $clientId, string $bookId): JsonResponse
+    {
+        $client = Client::find($clientId);
+        $this->authorize('affiliation', $client);
+        DB::transaction(function () use ($bookId): void {
+            $book = Book::find($bookId);
+            $book->update(['status' => Book::STATUS_CAN_LEND]);
+            $book->purchaseApply->delete();
         });
         return response()->json([]);
     }
