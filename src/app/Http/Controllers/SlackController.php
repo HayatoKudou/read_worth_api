@@ -6,7 +6,7 @@ use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Slack\SlackApiClient;
-use App\Models\SlackCredentials;
+use App\Models\SlackCredential;
 
 class SlackController extends Controller
 {
@@ -46,7 +46,7 @@ class SlackController extends Controller
             \Log::debug('Slackに登録しているメールアドレスと一致するユーザーが見つかりません。');
         }
 
-        SlackCredentials::updateOrCreate([
+        SlackCredential::updateOrCreate([
             'client_id' => $user->client->id,
         ], [
             'access_token' => $accessToken,

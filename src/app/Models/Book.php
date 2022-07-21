@@ -114,6 +114,7 @@ class Book extends Model
         $user = User::find(Auth::id());
         @[, $file_data] = explode(';', $imageBinary);
         @[, $file_data] = explode(',', $imageBinary);
+//        $imagePath = '/public/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
         $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
         Storage::put($imagePath, base64_decode($file_data, true));
         return $imagePath;

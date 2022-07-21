@@ -154,6 +154,7 @@ class BookController extends Controller
                     BookPurchaseApply::where('book_id', $bookId)->delete();
                     BookRentalApply::where('book_id', $bookId)->delete();
                     BookReview::where('book_id', $bookId)->delete();
+                    BookHistory::where('book_id', $bookId)->delete();
                     Book::find($bookId)?->delete();
                 });
             });

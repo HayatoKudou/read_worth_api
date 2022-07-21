@@ -8,6 +8,8 @@ use App\Models\User;
 use App\Models\Client;
 use App\Models\BookHistory;
 use App\Models\BookCategory;
+use App\Slack\SlackApiClient;
+use App\Models\SlackCredential;
 use App\Models\BookPurchaseApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -16,6 +18,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use App\Http\Requests\BookPurchaseApply\CreateRequest;
+use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 
 class BookPurchaseApplyController extends Controller
 {
@@ -153,14 +156,20 @@ class BookPurchaseApplyController extends Controller
         return response()->json([]);
     }
 
-    public function notification(string $clientId, string $bookId): JsonResponse
+    public function notification(string $clientId, string $bookId, NotificationRequest $request): JsonResponse
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
-        DB::transaction(function () use ($bookId): void {
+        DB::transaction(function () use ($clientId, $bookId, $request): void {
             $book = Book::find($bookId);
             $book->update(['status' => Book::STATUS_CAN_LEND]);
-            $book->purchaseApply->delete();
+//            $book->purchaseApply->delete();
+
+            // 通知が失敗したらロールバック
+            $slackCredential = SlackCredential::where('client_id', $clientId)->first();
+            $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
+            // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
+            $slackClient->postMessage($slackCredential->channel_id, $request->get('title'), $request->get('message'));
         });
         return response()->json([]);
     }
