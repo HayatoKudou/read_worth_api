@@ -163,7 +163,7 @@ class BookPurchaseApplyController extends Controller
         DB::transaction(function () use ($clientId, $bookId, $request): void {
             $book = Book::find($bookId);
             $book->update(['status' => Book::STATUS_CAN_LEND]);
-//            $book->purchaseApply->delete();
+            $book->purchaseApply->delete();
 
             // 通知が失敗したらロールバック
             $slackCredential = SlackCredential::where('client_id', $clientId)->first();
