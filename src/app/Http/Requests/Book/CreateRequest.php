@@ -17,6 +17,13 @@ class CreateRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'title' => 'タイトル',
+        ];
+    }
+
     public function createBook(): Book
     {
         return new Book($this->validated());

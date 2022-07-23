@@ -11,11 +11,11 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Auth\Access\AuthorizationException;
-use App\Http\Requests\BookRentalApply\StoreRequest;
+use App\Http\Requests\BookRentalApply\CreateRequest;
 
 class BookRentalApplyController extends Controller
 {
-    public function create(string $clientId, string $bookId, StoreRequest $request): JsonResponse
+    public function create(string $clientId, string $bookId, CreateRequest $request): JsonResponse
     {
         try {
             $client = Client::find($clientId);
