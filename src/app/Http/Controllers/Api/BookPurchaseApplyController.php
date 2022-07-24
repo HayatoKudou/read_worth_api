@@ -89,8 +89,10 @@ class BookPurchaseApplyController extends Controller
             $title = '書籍購入申請のお知らせ';
             $message = '【タイトル】' . $request->get('title') . "\n【申請者】" . $user->name;
             $slackCredential = SlackCredential::where('client_id', $clientId)->first();
-            $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
-            $slackClient->postMessage($slackCredential->channel_id, $title, $message);
+            if($slackCredential){
+                $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
+                $slackClient->postMessage($slackCredential->channel_id, $title, $message);
+            }
             return response()->json([], 201);
         } catch (\RuntimeException $e) {
             // 購入申請のSlack通知エラーは無視する
@@ -176,12 +178,17 @@ class BookPurchaseApplyController extends Controller
         $this->authorize('affiliation', $client);
 
         try {
-            DB::transaction(function () use ($clientId, $bookId, $request): void {
+            DB::transaction(function () use ($clientId, $bookId, $request) {
                 $book = Book::find($bookId);
                 $book->purchaseApply->delete();
 
                 // 通知が失敗したらロールバック
                 $slackCredential = SlackCredential::where('client_id', $clientId)->first();
+                if(!$slackCredential){
+                    return response()->json(['errors' => [
+                        'slack' => 'Slack連携がされていません。',
+                    ]], 500);
+                }
                 $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
                 // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
                 $slackClient->postMessage($slackCredential->channel_id, $request->get('title'), $request->get('message'));
