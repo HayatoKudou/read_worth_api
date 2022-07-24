@@ -17,8 +17,13 @@ class CreateRequest extends FormRequest
         ];
     }
 
-    public function createUser(): User
+    public function attributes(): array
     {
-        return new User($this->validated());
+        return [
+            'name' => '名前',
+            'email' => 'メールアドレス',
+            'password' => 'パスワード',
+
+        ];
     }
 }

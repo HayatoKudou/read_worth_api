@@ -75,12 +75,11 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $user = $request->createUser();
-            DB::transaction(function () use ($user, $request, $client): void {
+            DB::transaction(function () use ($request, $client): void {
                 $user = User::create([
                     'client_id' => $client->id,
-                    'name' => $user->name,
-                    'email' => $user->email,
+                    'name' => $request->get('name'),
+                    'email' => $request->get('email'),
                     'password' => Str::random(60),
                     'purchase_balance' => $client->purchase_limit,
                     'api_token' => Str::random(60),
@@ -107,9 +106,7 @@ class UserController extends Controller
             return DB::transaction(function () use ($request): JsonResponse {
                 $user = User::find($request->get('id'));
 
-                if (!$user) {
-                    return response()->json('一致するユーザーが見つかりません', 500);
-                }
+                if (!$user) return response()->json(['errors' => '一致するユーザーが見つかりません'], 500);
                 $user->update([
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),

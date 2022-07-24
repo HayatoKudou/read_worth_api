@@ -54,9 +54,9 @@ class BookPurchaseApplyController extends Controller
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
+        $user = User::find(Auth::id());
 
-        DB::transaction(function () use ($request, $clientId): void {
-            $user = User::find(Auth::id());
+        DB::transaction(function () use ($user, $request, $clientId): void {
             $book = new Book();
             $imagePath = $book->storeImage($request->get('image'));
             $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
@@ -84,7 +84,18 @@ class BookPurchaseApplyController extends Controller
                 'action' => 'purchase book',
             ]);
         });
-        return response()->json([], 201);
+
+        try {
+            $title = '書籍購入申請のお知らせ';
+            $message = "【タイトル】".$request->get('title')."\n【申請者】".$user->name;
+            $slackCredential = SlackCredential::where('client_id', $clientId)->first();
+            $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
+            $slackClient->postMessage($slackCredential->channel_id, $title, $message);
+            return response()->json([], 201);
+        } catch (\RuntimeException $e) {
+            // 購入申請のSlack通知エラーは無視する
+            return response()->json([], 201);
+        }
     }
 
     public function accept(string $clientId, string $bookId): JsonResponse

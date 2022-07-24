@@ -10,11 +10,19 @@ class UpdateRequest extends FormRequest
     {
         return [
             'id' => 'required',
-            'client_id' => '',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
-            'password' => '', // TODO: required|confirmed
-            'roles' => '',
+            'password' => 'confirmed',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => '名前',
+            'email' => 'メールアドレス',
+            'password' => 'パスワード',
+
         ];
     }
 }
