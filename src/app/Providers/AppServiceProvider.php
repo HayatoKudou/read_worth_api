@@ -25,7 +25,11 @@ class AppServiceProvider extends ServiceProvider
                 ->salutation('Read Worth');
         });
 
-        ResetPassword::toMailUsing(function ($notifiable, $url) {
+        ResetPassword::toMailUsing(function ($notifiable, $token) {
+            $url = url(config('app.url') . route('password.reset', [
+                    'token' => $token,
+                    'email' => $notifiable->getEmailForPasswordReset(),
+                ], false));
             return (new MailMessage())
                 ->greeting('こんにちは。')
                 ->subject('パスワード再設定のお知らせ')
