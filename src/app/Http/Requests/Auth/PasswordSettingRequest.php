@@ -12,4 +12,12 @@ class PasswordSettingRequest extends FormRequest
             'password' => 'required|string|max:255|confirmed',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'password' => 'パスワード',
+
+        ];
+    }
 }

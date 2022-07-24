@@ -11,9 +11,6 @@ class CreateRequest extends FormRequest
     {
         return [
             'title' => 'required|string|max:255',
-            'description' => '',
-            'image' => '',
-            'url' => '',
         ];
     }
 
@@ -22,10 +19,5 @@ class CreateRequest extends FormRequest
         return [
             'title' => 'タイトル',
         ];
-    }
-
-    public function createBook(): Book
-    {
-        return new Book($this->validated());
     }
 }

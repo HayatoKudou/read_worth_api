@@ -70,18 +70,15 @@ class BookController extends Controller
             $this->authorize('affiliation', $client);
             DB::transaction(function () use ($clientId, $request): void {
                 $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
-                $book = $request->createBook();
-                $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
-
                 $book = Book::create([
                     'client_id' => $clientId,
                     'book_category_id' => $bookCategory->id,
                     'status' => Book::STATUS_CAN_LEND,
-                    'title' => $book->title,
-                    'description' => $book->description,
-                    'image_path' => $imagePath,
-                    'url' => $book->url,
+                    'title' => $request->get('title'),
+                    'description' => $request->get('description'),
+                    'url' => $request->get('url'),
                 ]);
+                $book->update(['image_path' => $request->get('image') ? $book->storeImage($request->get('image')) : null]);
                 BookHistory::create([
                     'book_id' => $book->id,
                     'user_id' => Auth::id(),

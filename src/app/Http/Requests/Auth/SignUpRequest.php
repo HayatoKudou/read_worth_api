@@ -16,4 +16,16 @@ class SignUpRequest extends FormRequest
             'plan' => 'required|string',
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => 'ユーザー名',
+            'email' => 'メールアドレス',
+            'password' => 'パスワード',
+            'client_name' => '組織名',
+            'plan' => 'プラン',
+
+        ];
+    }
 }

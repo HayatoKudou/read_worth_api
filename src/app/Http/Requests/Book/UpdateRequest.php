@@ -11,10 +11,20 @@ class UpdateRequest extends FormRequest
         return [
             'title' => 'required|string|max:255',
             'description' => 'max:255',
-            'image' => '',
             'category' => 'required|string',
             'status' => 'required',
             'url' => '',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'title' => 'タイトル',
+            'description' => '本の説明',
+            'category' => 'カテゴリ',
+            'status' => 'ステータス',
+            'url' => 'URL',
         ];
     }
 }
