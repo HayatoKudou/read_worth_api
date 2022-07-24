@@ -22,7 +22,6 @@ class UpdateRequest extends FormRequest
             'name' => '名前',
             'email' => 'メールアドレス',
             'password' => 'パスワード',
-
         ];
     }
 }

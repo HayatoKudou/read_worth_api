@@ -17,7 +17,6 @@ class PasswordSettingRequest extends FormRequest
     {
         return [
             'password' => 'パスワード',
-
         ];
     }
 }

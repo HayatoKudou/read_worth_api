@@ -25,7 +25,6 @@ class SignUpRequest extends FormRequest
             'password' => 'パスワード',
             'client_name' => '組織名',
             'plan' => 'プラン',
-
         ];
     }
 }

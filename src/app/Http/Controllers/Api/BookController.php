@@ -98,7 +98,10 @@ class BookController extends Controller
             $this->authorize('affiliation', $client);
             $book = Book::find($request->get('id'));
             $bookCategory = BookCategory::where('name', $request->get('category'))->first();
-            \Storage::delete($book->image_path);
+
+            if ($book->image_path) {
+                \Storage::delete($book->image_path);
+            }
 
             if (!$bookCategory) {
                 return response()->json('一致するカテゴリが見つかりません', 500);

@@ -87,7 +87,7 @@ class BookPurchaseApplyController extends Controller
 
         try {
             $title = '書籍購入申請のお知らせ';
-            $message = "【タイトル】".$request->get('title')."\n【申請者】".$user->name;
+            $message = '【タイトル】' . $request->get('title') . "\n【申請者】" . $user->name;
             $slackCredential = SlackCredential::where('client_id', $clientId)->first();
             $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
             $slackClient->postMessage($slackCredential->channel_id, $title, $message);

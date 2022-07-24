@@ -106,7 +106,9 @@ class UserController extends Controller
             return DB::transaction(function () use ($request): JsonResponse {
                 $user = User::find($request->get('id'));
 
-                if (!$user) return response()->json(['errors' => '一致するユーザーが見つかりません'], 500);
+                if (!$user) {
+                    return response()->json(['errors' => '一致するユーザーが見つかりません'], 500);
+                }
                 $user->update([
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
