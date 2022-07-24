@@ -65,7 +65,7 @@ class SlackApiClient
                 'responseBody' => $json,
             ]);
 
-            throw new \RuntimeException(sprintf('Failed to slack notify. error=%s', $body['error'] ?? ''));
+            throw new \RuntimeException($body['error']);
         }
     }
 }

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -45,6 +46,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property int $private_ownership_allow
  *
  * @method static Builder|Client wherePrivateOwnershipAllow($value)
+ *
+ * @property null|\App\Models\SlackCredential $credential
  */
 class Client extends Authenticate
 {
@@ -63,5 +66,10 @@ class Client extends Authenticate
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
+    }
+
+    public function slackCredential(): HasOne
+    {
+        return $this->hasOne(SlackCredential::class);
     }
 }

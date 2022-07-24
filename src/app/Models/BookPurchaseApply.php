@@ -45,6 +45,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property null|string $location
  *
  * @method static Builder|BookPurchaseApply whereLocation($value)
+ *
+ * @property \App\Models\Client $client
  */
 class BookPurchaseApply extends Model
 {
@@ -63,6 +65,11 @@ class BookPurchaseApply extends Model
     public function book(): BelongsTo
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function client(): BelongsTo
+    {
+        return $this->belongsTo(Client::class);
     }
 
     public function scopeOrganization(Builder $query, string $clientId): Builder

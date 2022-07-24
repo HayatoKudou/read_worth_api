@@ -3,14 +3,14 @@
 // @formatter:off
 // phpcs:ignoreFile
 
-/**
- * A helper file for Laravel, to provide autocomplete information to your IDE
- * Generated for Laravel 9.11.0.
- *
- * This file should not be included in your code, only analyzed by your IDE!
- *
- * @see https://github.com/barryvdh/laravel-ide-helper
- */
+    /**
+     * A helper file for Laravel, to provide autocomplete information to your IDE
+     * Generated for Laravel 9.11.0.
+     *
+     * This file should not be included in your code, only analyzed by your IDE!
+     *
+     * @see https://github.com/barryvdh/laravel-ide-helper
+     */
 
 namespace Illuminate\Support\Facades {
         /**
@@ -35,6 +35,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string[] $bootstrappers
              *
+             * @return void
              * @static
              */
             public static function bootstrapWith($bootstrappers): void
@@ -48,6 +49,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function afterLoadingEnvironment($callback): void
@@ -62,6 +64,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $bootstrapper
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function beforeBootstrapping($bootstrapper, $callback): void
@@ -76,6 +79,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $bootstrapper
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function afterBootstrapping($bootstrapper, $callback): void
@@ -461,6 +465,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Register all of the configured providers.
              *
+             * @return void
              * @static
              */
             public static function registerConfiguredProviders(): void
@@ -529,6 +534,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Load and boot all of the remaining deferred providers.
              *
+             * @return void
              * @static
              */
             public static function loadDeferredProviders(): void
@@ -542,6 +548,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $service
              *
+             * @return void
              * @static
              */
             public static function loadDeferredProvider($service): void
@@ -556,6 +563,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $provider
              * @param null|string $service
              *
+             * @return void
              * @static
              */
             public static function registerDeferredProvider($provider, $service = null): void
@@ -608,6 +616,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Boot the application's service providers.
              *
+             * @return void
              * @static
              */
             public static function boot(): void
@@ -621,6 +630,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callback
              *
+             * @return void
              * @static
              */
             public static function booting($callback): void
@@ -634,6 +644,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callback
              *
+             * @return void
              * @static
              */
             public static function booted($callback): void
@@ -645,10 +656,6 @@ namespace Illuminate\Support\Facades {
             /**
              * @return \Symfony\Component\HttpFoundation\Response
              * @static
-             *
-             * @param mixed $request
-             * @param mixed $type
-             * @param mixed $catch
              */
             public static function handle($request, $type = 1, $catch = true)
             {
@@ -838,6 +845,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Terminate the application.
              *
+             * @return void
              * @static
              */
             public static function terminate(): void
@@ -889,6 +897,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $services
              *
+             * @return void
              * @static
              */
             public static function setDeferredServices($services): void
@@ -902,6 +911,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $services
              *
+             * @return void
              * @static
              */
             public static function addDeferredServices($services): void
@@ -929,6 +939,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $namespace
              *
+             * @return void
              * @static
              */
             public static function provideFacades($namespace): void
@@ -978,6 +989,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $locale
              *
+             * @return void
              * @static
              */
             public static function setLocale($locale): void
@@ -991,6 +1003,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $fallbackLocale
              *
+             * @return void
              * @static
              */
             public static function setFallbackLocale($fallbackLocale): void
@@ -1016,6 +1029,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Register the core class aliases in the container.
              *
+             * @return void
              * @static
              */
             public static function registerCoreContainerAliases(): void
@@ -1027,6 +1041,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the container of all bindings and resolved instances.
              *
+             * @return void
              * @static
              */
             public static function flush(): void
@@ -1133,6 +1148,8 @@ namespace Illuminate\Support\Facades {
              * @param null|\Closure|string $concrete
              * @param bool                 $shared
              *
+             * @return void
+             *
              * @throws \TypeError
              * @static
              */
@@ -1162,6 +1179,7 @@ namespace Illuminate\Support\Facades {
              * @param array|string $method
              * @param \Closure     $callback
              *
+             * @return void
              * @static
              */
             public static function bindMethod($method, $callback): void
@@ -1192,6 +1210,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $abstract
              * @param \Closure|string $implementation
              *
+             * @return void
              * @static
              */
             public static function addContextualBinding($concrete, $abstract, $implementation): void
@@ -1207,6 +1226,7 @@ namespace Illuminate\Support\Facades {
              * @param null|\Closure|string $concrete
              * @param bool                 $shared
              *
+             * @return void
              * @static
              */
             public static function bindIf($abstract, $concrete = null, $shared = false): void
@@ -1221,6 +1241,7 @@ namespace Illuminate\Support\Facades {
              * @param string               $abstract
              * @param null|\Closure|string $concrete
              *
+             * @return void
              * @static
              */
             public static function singleton($abstract, $concrete = null): void
@@ -1235,6 +1256,7 @@ namespace Illuminate\Support\Facades {
              * @param string               $abstract
              * @param null|\Closure|string $concrete
              *
+             * @return void
              * @static
              */
             public static function singletonIf($abstract, $concrete = null): void
@@ -1249,6 +1271,7 @@ namespace Illuminate\Support\Facades {
              * @param string               $abstract
              * @param null|\Closure|string $concrete
              *
+             * @return void
              * @static
              */
             public static function scoped($abstract, $concrete = null): void
@@ -1263,6 +1286,7 @@ namespace Illuminate\Support\Facades {
              * @param string               $abstract
              * @param null|\Closure|string $concrete
              *
+             * @return void
              * @static
              */
             public static function scopedIf($abstract, $concrete = null): void
@@ -1276,6 +1300,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param string   $abstract
              * @param \Closure $closure
+             *
+             * @return void
              *
              * @throws \InvalidArgumentException
              * @static
@@ -1307,6 +1333,7 @@ namespace Illuminate\Support\Facades {
              * @param array|string $abstracts
              * @param array|mixed  $tags
              *
+             * @return void
              * @static
              */
             public static function tag($abstracts, $tags): void
@@ -1334,6 +1361,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $abstract
              * @param string $alias
+             *
+             * @return void
              *
              * @throws \LogicException
              * @static
@@ -1481,6 +1510,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $abstract
              * @param null|\Closure   $callback
              *
+             * @return void
              * @static
              */
             public static function beforeResolving($abstract, $callback = null): void
@@ -1495,6 +1525,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $abstract
              * @param null|\Closure   $callback
              *
+             * @return void
              * @static
              */
             public static function resolving($abstract, $callback = null): void
@@ -1509,6 +1540,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $abstract
              * @param null|\Closure   $callback
              *
+             * @return void
              * @static
              */
             public static function afterResolving($abstract, $callback = null): void
@@ -1548,6 +1580,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $abstract
              *
+             * @return void
              * @static
              */
             public static function forgetExtenders($abstract): void
@@ -1561,6 +1594,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $abstract
              *
+             * @return void
              * @static
              */
             public static function forgetInstance($abstract): void
@@ -1572,6 +1606,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Clear all of the instances from the container.
              *
+             * @return void
              * @static
              */
             public static function forgetInstances(): void
@@ -1583,6 +1618,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Clear all of the scoped instances from the container.
              *
+             * @return void
              * @static
              */
             public static function forgetScopedInstances(): void
@@ -1649,6 +1685,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function offsetSet($key, $value): void
@@ -1662,6 +1699,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $key
              *
+             * @return void
              * @static
              */
             public static function offsetUnset($key): void
@@ -1696,6 +1734,7 @@ namespace Illuminate\Support\Facades {
              * @param \Symfony\Component\Console\Input\InputInterface $input
              * @param int                                             $status
              *
+             * @return void
              * @static
              */
             public static function terminate($input, $status): void
@@ -1724,6 +1763,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Symfony\Component\Console\Command\Command $command
              *
+             * @return void
              * @static
              */
             public static function registerCommand($command): void
@@ -1792,6 +1832,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Bootstrap the application for artisan commands.
              *
+             * @return void
              * @static
              */
             public static function bootstrap(): void
@@ -1805,6 +1846,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Console\Application $artisan
              *
+             * @return void
              * @static
              */
             public static function setArtisan($artisan): void
@@ -1893,6 +1935,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function shouldUse($name): void
@@ -1906,6 +1949,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -2196,6 +2240,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\Auth\UserProvider $provider
              *
+             * @return void
              * @static
              */
             public static function setProvider($provider): void
@@ -2214,6 +2259,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $path
              *
+             * @return void
              * @static
              */
             public static function compile($path = null): void
@@ -2239,6 +2285,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $path
              *
+             * @return void
              * @static
              */
             public static function setPath($path): void
@@ -2308,6 +2355,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $compiler
              *
+             * @return void
              * @static
              */
             public static function extend($compiler): void
@@ -2334,6 +2382,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $name
              * @param callable $callback
              *
+             * @return void
              * @static
              */
             public static function if($name, $callback): void
@@ -2364,6 +2413,7 @@ namespace Illuminate\Support\Facades {
              * @param null|string $alias
              * @param string      $prefix
              *
+             * @return void
              * @static
              */
             public static function component($class, $alias = null, $prefix = ''): void
@@ -2378,6 +2428,7 @@ namespace Illuminate\Support\Facades {
              * @param array  $components
              * @param string $prefix
              *
+             * @return void
              * @static
              */
             public static function components($components, $prefix = ''): void
@@ -2404,6 +2455,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $directory
              * @param null|string $prefix
              *
+             * @return void
              * @static
              */
             public static function anonymousComponentNamespace($directory, $prefix = null): void
@@ -2418,6 +2470,7 @@ namespace Illuminate\Support\Facades {
              * @param string $namespace
              * @param string $prefix
              *
+             * @return void
              * @static
              */
             public static function componentNamespace($namespace, $prefix): void
@@ -2456,6 +2509,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $path
              * @param null|string $alias
              *
+             * @return void
              * @static
              */
             public static function aliasComponent($path, $alias = null): void
@@ -2470,6 +2524,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $path
              * @param null|string $alias
              *
+             * @return void
              * @static
              */
             public static function include($path, $alias = null): void
@@ -2484,6 +2539,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $path
              * @param null|string $alias
              *
+             * @return void
              * @static
              */
             public static function aliasInclude($path, $alias = null): void
@@ -2497,6 +2553,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param string   $name
              * @param callable $handler
+             *
+             * @return void
              *
              * @throws \InvalidArgumentException
              * @static
@@ -2524,6 +2582,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $precompiler
              *
+             * @return void
              * @static
              */
             public static function precompiler($precompiler): void
@@ -2537,6 +2596,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $format
              *
+             * @return void
              * @static
              */
             public static function setEchoFormat($format): void
@@ -2548,6 +2608,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Set the "echo" format to double encode entities.
              *
+             * @return void
              * @static
              */
             public static function withDoubleEncoding(): void
@@ -2559,6 +2620,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Set the "echo" format to not double encode entities.
              *
+             * @return void
              * @static
              */
             public static function withoutDoubleEncoding(): void
@@ -2570,6 +2632,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Indicate that component tags should not be compiled.
              *
+             * @return void
              * @static
              */
             public static function withoutComponentTags(): void
@@ -2678,6 +2741,7 @@ namespace Illuminate\Support\Facades {
              * @param callable|string $class
              * @param null|callable   $handler
              *
+             * @return void
              * @static
              */
             public static function stringable($class, $handler = null): void
@@ -2727,6 +2791,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|array $attributes
              *
+             * @return void
              * @static
              */
             public static function routes($attributes = null): void
@@ -2768,6 +2833,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $event
              *
+             * @return void
              * @static
              */
             public static function queue($event): void
@@ -2849,6 +2915,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -2862,6 +2929,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $name
              *
+             * @return void
              * @static
              */
             public static function purge($name = null): void
@@ -3066,6 +3134,7 @@ namespace Illuminate\Support\Facades {
              * @param mixed $command
              * @param mixed $handler
              *
+             * @return void
              * @static
              */
             public static function dispatchAfterResponse($command, $handler = null): void
@@ -3108,6 +3177,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $command
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertDispatched($command, $callback = null): void
@@ -3122,6 +3192,7 @@ namespace Illuminate\Support\Facades {
              * @param string $command
              * @param int    $times
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedTimes($command, $times = 1): void
@@ -3136,6 +3207,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $command
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotDispatched($command, $callback = null): void
@@ -3147,6 +3219,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no jobs were dispatched.
              *
+             * @return void
              * @static
              */
             public static function assertNothingDispatched(): void
@@ -3161,6 +3234,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $command
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedSync($command, $callback = null): void
@@ -3175,6 +3249,7 @@ namespace Illuminate\Support\Facades {
              * @param string $command
              * @param int    $times
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedSyncTimes($command, $times = 1): void
@@ -3189,6 +3264,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $command
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotDispatchedSync($command, $callback = null): void
@@ -3203,6 +3279,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $command
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedAfterResponse($command, $callback = null): void
@@ -3217,6 +3294,7 @@ namespace Illuminate\Support\Facades {
              * @param string $command
              * @param int    $times
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedAfterResponseTimes($command, $times = 1): void
@@ -3231,6 +3309,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $command
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotDispatchedAfterResponse($command, $callback = null): void
@@ -3244,6 +3323,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $expectedChain
              *
+             * @return void
              * @static
              */
             public static function assertChained($expectedChain): void
@@ -3258,6 +3338,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $command
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedWithoutChain($command, $callback = null): void
@@ -3271,6 +3352,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callback
              *
+             * @return void
              * @static
              */
             public static function assertBatched($callback): void
@@ -3284,6 +3366,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param int $count
              *
+             * @return void
              * @static
              */
             public static function assertBatchCount($count): void
@@ -3458,6 +3541,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Re-set the event dispatcher on all resolved cache repositories.
              *
+             * @return void
              * @static
              */
             public static function refreshEventDispatcher(): void
@@ -3483,6 +3567,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -3510,6 +3595,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $name
              *
+             * @return void
              * @static
              */
             public static function purge($name = null): void
@@ -3961,6 +4047,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\Events\Dispatcher $events
              *
+             * @return void
              * @static
              */
             public static function setEventDispatcher($events): void
@@ -4003,6 +4090,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function offsetSet($key, $value): void
@@ -4016,6 +4104,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $key
              *
+             * @return void
              * @static
              */
             public static function offsetUnset($key): void
@@ -4030,6 +4119,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -4042,6 +4132,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -4067,6 +4159,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -4224,6 +4317,7 @@ namespace Illuminate\Support\Facades {
              * @param array|string $key
              * @param mixed        $value
              *
+             * @return void
              * @static
              */
             public static function set($key, $value = null): void
@@ -4238,6 +4332,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function prepend($key, $value): void
@@ -4252,6 +4347,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function push($key, $value): void
@@ -4306,6 +4402,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function offsetSet($key, $value): void
@@ -4319,6 +4416,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $key
              *
+             * @return void
              * @static
              */
             public static function offsetUnset($key): void
@@ -4427,6 +4525,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $parameters
              *
+             * @return void
              * @static
              */
             public static function queue(...$parameters): void
@@ -4442,6 +4541,7 @@ namespace Illuminate\Support\Facades {
              * @param null|string $path
              * @param null|string $domain
              *
+             * @return void
              * @static
              */
             public static function expire($name, $path = null, $domain = null): void
@@ -4456,6 +4556,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $name
              * @param null|string $path
              *
+             * @return void
              * @static
              */
             public static function unqueue($name, $path = null): void
@@ -4511,6 +4612,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -4523,6 +4625,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -4548,6 +4652,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -4761,6 +4866,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Use the default date class when generating dates.
              *
+             * @return void
              * @static
              */
             public static function useDefault(): void
@@ -4773,6 +4879,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callable
              *
+             * @return void
              * @static
              */
             public static function useCallable($callable): void
@@ -4785,6 +4892,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $dateClass
              *
+             * @return void
              * @static
              */
             public static function useClass($dateClass): void
@@ -4797,6 +4905,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $factory
              *
+             * @return void
              * @static
              */
             public static function useFactory($factory): void
@@ -4831,6 +4940,8 @@ namespace Illuminate\Support\Facades {
              * @param string $name
              * @param string $type
              *
+             * @return void
+             *
              * @throws \Doctrine\DBAL\DBALException
              * @throws \RuntimeException
              * @static
@@ -4846,6 +4957,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $name
              *
+             * @return void
              * @static
              */
             public static function purge($name = null): void
@@ -4859,6 +4971,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $name
              *
+             * @return void
              * @static
              */
             public static function disconnect($name = null): void
@@ -4913,6 +5026,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultConnection($name): void
@@ -4951,6 +5065,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $name
              * @param callable $resolver
              *
+             * @return void
              * @static
              */
             public static function extend($name, $resolver): void
@@ -4964,6 +5079,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function forgetExtension($name): void
@@ -4989,6 +5105,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $reconnector
              *
+             * @return void
              * @static
              */
             public static function setReconnector($reconnector): void
@@ -5017,6 +5134,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -5029,6 +5147,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -5054,6 +5174,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -5120,6 +5241,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Set the query grammar to the default implementation.
              *
+             * @return void
              * @static
              */
             public static function useDefaultQueryGrammar(): void
@@ -5131,6 +5253,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Set the schema grammar to the default implementation.
              *
+             * @return void
              * @static
              */
             public static function useDefaultSchemaGrammar(): void
@@ -5142,6 +5265,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Set the query post processor to the default implementation.
              *
+             * @return void
              * @static
              */
             public static function useDefaultPostProcessor(): void
@@ -5367,6 +5491,7 @@ namespace Illuminate\Support\Facades {
              * @param \PDOStatement $statement
              * @param array         $bindings
              *
+             * @return void
              * @static
              */
             public static function bindValues($statement, $bindings): void
@@ -5396,6 +5521,7 @@ namespace Illuminate\Support\Facades {
              * @param array      $bindings
              * @param null|float $time
              *
+             * @return void
              * @static
              */
             public static function logQuery($query, $bindings, $time = null): void
@@ -5423,6 +5549,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function listen($callback): void
@@ -5462,6 +5589,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param bool $value
              *
+             * @return void
              * @static
              */
             public static function recordsHaveBeenModified($value = true): void
@@ -5487,6 +5615,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Reset the record modification state.
              *
+             * @return void
              * @static
              */
             public static function forgetRecordModificationState(): void
@@ -5793,6 +5922,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Unset the event dispatcher for this connection.
              *
+             * @return void
              * @static
              */
             public static function unsetEventDispatcher(): void
@@ -5818,6 +5948,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Unset the transaction manager for this connection.
              *
+             * @return void
              * @static
              */
             public static function unsetTransactionManager(): void
@@ -5853,6 +5984,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Clear the query log.
              *
+             * @return void
              * @static
              */
             public static function flushQueryLog(): void
@@ -5864,6 +5996,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Enable the query log on the connection.
              *
+             * @return void
              * @static
              */
             public static function enableQueryLog(): void
@@ -5875,6 +6008,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Disable the query log on the connection.
              *
+             * @return void
              * @static
              */
             public static function disableQueryLog(): void
@@ -5981,6 +6115,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $driver
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function resolverFor($driver, $callback): void
@@ -6021,6 +6156,8 @@ namespace Illuminate\Support\Facades {
             /**
              * Start a new database transaction.
              *
+             * @return void
+             *
              * @throws \Throwable
              * @static
              */
@@ -6032,6 +6169,8 @@ namespace Illuminate\Support\Facades {
 
             /**
              * Commit the active database transaction.
+             *
+             * @return void
              *
              * @throws \Throwable
              * @static
@@ -6046,6 +6185,8 @@ namespace Illuminate\Support\Facades {
              * Rollback the active database transaction.
              *
              * @param null|int $toLevel
+             *
+             * @return void
              *
              * @throws \Throwable
              * @static
@@ -6073,6 +6214,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callback
              *
+             * @return void
+             *
              * @throws \RuntimeException
              * @static
              */
@@ -6093,6 +6236,7 @@ namespace Illuminate\Support\Facades {
              * @param array|\Closure|string      $events
              * @param null|array|\Closure|string $listener
              *
+             * @return void
              * @static
              */
             public static function listen($events, $listener = null): void
@@ -6135,6 +6279,7 @@ namespace Illuminate\Support\Facades {
              * @param string       $event
              * @param array|object $payload
              *
+             * @return void
              * @static
              */
             public static function push($event, $payload = []): void
@@ -6148,6 +6293,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $event
              *
+             * @return void
              * @static
              */
             public static function flush($event): void
@@ -6161,6 +6307,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param object|string $subscriber
              *
+             * @return void
              * @static
              */
             public static function subscribe($subscriber): void
@@ -6249,6 +6396,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $event
              *
+             * @return void
              * @static
              */
             public static function forget($event): void
@@ -6260,6 +6408,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Forget all of the pushed listeners.
              *
+             * @return void
              * @static
              */
             public static function forgetPushed(): void
@@ -6300,6 +6449,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -6312,6 +6462,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -6337,6 +6489,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -6350,6 +6503,7 @@ namespace Illuminate\Support\Facades {
              * @param string $expectedEvent
              * @param string $expectedListener
              *
+             * @return void
              * @static
              */
             public static function assertListening($expectedEvent, $expectedListener): void
@@ -6364,6 +6518,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $event
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertDispatched($event, $callback = null): void
@@ -6378,6 +6533,7 @@ namespace Illuminate\Support\Facades {
              * @param string $event
              * @param int    $times
              *
+             * @return void
              * @static
              */
             public static function assertDispatchedTimes($event, $times = 1): void
@@ -6392,6 +6548,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $event
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotDispatched($event, $callback = null): void
@@ -6403,6 +6560,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no events were dispatched.
              *
+             * @return void
              * @static
              */
             public static function assertNothingDispatched(): void
@@ -6590,6 +6748,7 @@ namespace Illuminate\Support\Facades {
              * @param string $path
              * @param string $content
              *
+             * @return void
              * @static
              */
             public static function replace($path, $content): void
@@ -6605,6 +6764,7 @@ namespace Illuminate\Support\Facades {
              * @param array|string $replace
              * @param string       $path
              *
+             * @return void
              * @static
              */
             public static function replaceInFile($search, $replace, $path): void
@@ -6708,6 +6868,7 @@ namespace Illuminate\Support\Facades {
              * @param string $target
              * @param string $link
              *
+             * @return void
              * @static
              */
             public static function link($target, $link): void
@@ -6721,6 +6882,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $target
              * @param string $link
+             *
+             * @return void
              *
              * @throws \RuntimeException
              * @static
@@ -6996,6 +7159,7 @@ namespace Illuminate\Support\Facades {
              * @param int    $mode
              * @param bool   $recursive
              *
+             * @return void
              * @static
              */
             public static function ensureDirectoryExists($path, $mode = 493, $recursive = true): void
@@ -7104,6 +7268,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -7116,6 +7281,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -7141,6 +7308,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -7815,6 +7983,7 @@ namespace Illuminate\Support\Facades {
              * @param \Illuminate\Http\Client\Request  $request
              * @param \Illuminate\Http\Client\Response $response
              *
+             * @return void
              * @static
              */
             public static function recordRequestResponsePair($request, $response): void
@@ -7828,6 +7997,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callback
              *
+             * @return void
              * @static
              */
             public static function assertSent($callback): void
@@ -7841,6 +8011,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $callbacks
              *
+             * @return void
              * @static
              */
             public static function assertSentInOrder($callbacks): void
@@ -7854,6 +8025,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotSent($callback): void
@@ -7865,6 +8037,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no request / response pair was recorded.
              *
+             * @return void
              * @static
              */
             public static function assertNothingSent(): void
@@ -7878,6 +8051,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param int $count
              *
+             * @return void
              * @static
              */
             public static function assertSentCount($count): void
@@ -7889,6 +8063,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that every created response sequence is empty.
              *
+             * @return void
              * @static
              */
             public static function assertSequencesAreEmpty(): void
@@ -7929,6 +8104,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -7941,6 +8117,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -7966,6 +8144,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -8067,6 +8246,7 @@ namespace Illuminate\Support\Facades {
              * @param string $locale
              * @param string $namespace
              *
+             * @return void
              * @static
              */
             public static function addLines($lines, $locale, $namespace = '*'): void
@@ -8082,6 +8262,7 @@ namespace Illuminate\Support\Facades {
              * @param string $group
              * @param string $locale
              *
+             * @return void
              * @static
              */
             public static function load($namespace, $group, $locale): void
@@ -8096,6 +8277,7 @@ namespace Illuminate\Support\Facades {
              * @param string $namespace
              * @param string $hint
              *
+             * @return void
              * @static
              */
             public static function addNamespace($namespace, $hint): void
@@ -8109,6 +8291,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $path
              *
+             * @return void
              * @static
              */
             public static function addJsonPath($path): void
@@ -8148,6 +8331,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Translation\MessageSelector $selector
              *
+             * @return void
              * @static
              */
             public static function setSelector($selector): void
@@ -8197,6 +8381,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $locale
              *
+             * @return void
+             *
              * @throws \InvalidArgumentException
              * @static
              */
@@ -8223,6 +8409,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $fallback
              *
+             * @return void
              * @static
              */
             public static function setFallback($fallback): void
@@ -8236,6 +8423,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $loaded
              *
+             * @return void
              * @static
              */
             public static function setLoaded($loaded): void
@@ -8250,6 +8438,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param array  $parsed
              *
+             * @return void
              * @static
              */
             public static function setParsedKey($key, $parsed): void
@@ -8261,6 +8450,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the cache of parsed keys.
              *
+             * @return void
              * @static
              */
             public static function flushParsedKeys(): void
@@ -8275,6 +8465,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -8287,6 +8478,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -8312,6 +8505,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -8403,6 +8597,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -8458,6 +8653,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function emergency($message, $context = []): void
@@ -8475,6 +8671,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function alert($message, $context = []): void
@@ -8491,6 +8688,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function critical($message, $context = []): void
@@ -8506,6 +8704,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function error($message, $context = []): void
@@ -8523,6 +8722,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function warning($message, $context = []): void
@@ -8537,6 +8737,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function notice($message, $context = []): void
@@ -8553,6 +8754,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function info($message, $context = []): void
@@ -8567,6 +8769,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function debug($message, $context = []): void
@@ -8582,6 +8785,7 @@ namespace Illuminate\Support\Facades {
              * @param string $message
              * @param array  $context
              *
+             * @return void
              * @static
              */
             public static function log($level, $message, $context = []): void
@@ -8666,6 +8870,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -8679,6 +8884,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $name
              *
+             * @return void
              * @static
              */
             public static function purge($name = null): void
@@ -8746,6 +8952,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $mailable
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertSent($mailable, $callback = null): void
@@ -8760,6 +8967,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $mailable
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotOutgoing($mailable, $callback = null): void
@@ -8774,6 +8982,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $mailable
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotSent($mailable, $callback = null): void
@@ -8785,6 +8994,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no mailables were sent or queued to be sent.
              *
+             * @return void
              * @static
              */
             public static function assertNothingOutgoing(): void
@@ -8796,6 +9006,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no mailables were sent.
              *
+             * @return void
              * @static
              */
             public static function assertNothingSent(): void
@@ -8810,6 +9021,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $mailable
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertQueued($mailable, $callback = null): void
@@ -8824,6 +9036,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $mailable
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotQueued($mailable, $callback = null): void
@@ -8835,6 +9048,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no mailables were queued.
              *
+             * @return void
              * @static
              */
             public static function assertNothingQueued(): void
@@ -8935,6 +9149,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $text
              * @param \Closure|string $callback
              *
+             * @return void
              * @static
              */
             public static function raw($text, $callback): void
@@ -8950,6 +9165,7 @@ namespace Illuminate\Support\Facades {
              * @param array                                            $data
              * @param null|\Closure|string                             $callback
              *
+             * @return void
              * @static
              */
             public static function send($view, $data = [], $callback = null): void
@@ -9012,6 +9228,7 @@ namespace Illuminate\Support\Facades {
              * @param array|\Illuminate\Support\Collection|mixed $notifiables
              * @param mixed                                      $notification
              *
+             * @return void
              * @static
              */
             public static function send($notifiables, $notification): void
@@ -9027,6 +9244,7 @@ namespace Illuminate\Support\Facades {
              * @param mixed                                      $notification
              * @param null|array                                 $channels
              *
+             * @return void
              * @static
              */
             public static function sendNow($notifiables, $notification, $channels = null): void
@@ -9078,6 +9296,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $channel
              *
+             * @return void
              * @static
              */
             public static function deliverVia($channel): void
@@ -9187,6 +9406,8 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $notification
              * @param null|callable   $callback
              *
+             * @return void
+             *
              * @throws \Exception
              * @static
              */
@@ -9203,6 +9424,8 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $notification
              * @param null|callable   $callback
              *
+             * @return void
+             *
              * @throws \Exception
              * @static
              */
@@ -9218,6 +9441,7 @@ namespace Illuminate\Support\Facades {
              * @param string $notification
              * @param int    $times
              *
+             * @return void
              * @static
              */
             public static function assertSentOnDemandTimes($notification, $times = 1): void
@@ -9233,6 +9457,7 @@ namespace Illuminate\Support\Facades {
              * @param string $notification
              * @param int    $times
              *
+             * @return void
              * @static
              */
             public static function assertSentToTimes($notifiable, $notification, $times = 1): void
@@ -9248,6 +9473,8 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $notification
              * @param null|callable   $callback
              *
+             * @return void
+             *
              * @throws \Exception
              * @static
              */
@@ -9260,6 +9487,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no notifications were sent.
              *
+             * @return void
              * @static
              */
             public static function assertNothingSent(): void
@@ -9272,6 +9500,8 @@ namespace Illuminate\Support\Facades {
              * Assert that no notifications were sent to the given notifiable.
              *
              * @param mixed $notifiable
+             *
+             * @return void
              *
              * @throws \Exception
              * @static
@@ -9288,6 +9518,7 @@ namespace Illuminate\Support\Facades {
              * @param string $notification
              * @param int    $expectedCount
              *
+             * @return void
              * @static
              */
             public static function assertSentTimes($notification, $expectedCount): void
@@ -9301,6 +9532,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param int    $expectedCount
              * @param string $notification
+             *
+             * @return void
              *
              * @deprecated Use the assertSentTimes method instead
              * @static
@@ -9348,6 +9581,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -9360,6 +9594,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -9385,6 +9621,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -9436,6 +9673,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -9455,6 +9693,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $callback
              *
+             * @return void
              * @static
              */
             public static function before($callback): void
@@ -9468,6 +9707,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $callback
              *
+             * @return void
              * @static
              */
             public static function after($callback): void
@@ -9481,6 +9721,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $callback
              *
+             * @return void
              * @static
              */
             public static function exceptionOccurred($callback): void
@@ -9494,6 +9735,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $callback
              *
+             * @return void
              * @static
              */
             public static function looping($callback): void
@@ -9507,6 +9749,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $callback
              *
+             * @return void
              * @static
              */
             public static function failing($callback): void
@@ -9520,6 +9763,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $callback
              *
+             * @return void
              * @static
              */
             public static function stopping($callback): void
@@ -9562,6 +9806,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $driver
              * @param \Closure $resolver
              *
+             * @return void
              * @static
              */
             public static function extend($driver, $resolver): void
@@ -9576,6 +9821,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $driver
              * @param \Closure $resolver
              *
+             * @return void
              * @static
              */
             public static function addConnector($driver, $resolver): void
@@ -9601,6 +9847,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -9655,6 +9902,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string   $job
              * @param null|callable|int $callback
              *
+             * @return void
              * @static
              */
             public static function assertPushed($job, $callback = null): void
@@ -9670,6 +9918,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $job
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertPushedOn($queue, $job, $callback = null): void
@@ -9685,6 +9934,7 @@ namespace Illuminate\Support\Facades {
              * @param array         $expectedChain
              * @param null|callable $callback
              *
+             * @return void
              * @static
              */
             public static function assertPushedWithChain($job, $expectedChain = [], $callback = null): void
@@ -9699,6 +9949,7 @@ namespace Illuminate\Support\Facades {
              * @param string        $job
              * @param null|callable $callback
              *
+             * @return void
              * @static
              */
             public static function assertPushedWithoutChain($job, $callback = null): void
@@ -9713,6 +9964,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $job
              * @param null|callable   $callback
              *
+             * @return void
              * @static
              */
             public static function assertNotPushed($job, $callback = null): void
@@ -9724,6 +9976,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Assert that no jobs were pushed.
              *
+             * @return void
              * @static
              */
             public static function assertNothingPushed(): void
@@ -9972,6 +10225,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|callable $callback
              *
+             * @return void
              * @static
              */
             public static function createPayloadUsing($callback): void
@@ -9996,6 +10250,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Container\Container $container
              *
+             * @return void
              * @static
              */
             public static function setContainer($container): void
@@ -10148,6 +10403,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $key
              *
+             * @return void
              * @static
              */
             public static function clear($key): void
@@ -10418,6 +10674,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Session\Store $session
              *
+             * @return void
              * @static
              */
             public static function setSession($session): void
@@ -10432,6 +10689,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -10444,6 +10702,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -10469,6 +10729,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -10925,6 +11186,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\Session\Session $session
              *
+             * @return void
              * @static
              */
             public static function setLaravelSession($session): void
@@ -11088,6 +11350,7 @@ namespace Illuminate\Support\Facades {
              * @param string $offset
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function offsetSet($offset, $value): void
@@ -11101,6 +11364,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $offset
              *
+             * @return void
              * @static
              */
             public static function offsetUnset($offset): void
@@ -12178,6 +12442,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flash the input for the current request to the session.
              *
+             * @return void
              * @static
              */
             public static function flash(): void
@@ -12191,6 +12456,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array|mixed $keys
              *
+             * @return void
              * @static
              */
             public static function flashOnly($keys): void
@@ -12204,6 +12470,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array|mixed $keys
              *
+             * @return void
              * @static
              */
             public static function flashExcept($keys): void
@@ -12215,6 +12482,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush all of the old input from the session.
              *
+             * @return void
              * @static
              */
             public static function flush(): void
@@ -12660,6 +12928,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param mixed $keys
              *
+             * @return void
              * @static
              */
             public static function dd(...$keys): void
@@ -12688,6 +12957,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -12700,6 +12970,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -12725,6 +12997,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -13033,6 +13306,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -13045,6 +13319,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -13070,6 +13346,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -13283,6 +13560,7 @@ namespace Illuminate\Support\Facades {
              * @param array $resources
              * @param array $options
              *
+             * @return void
              * @static
              */
             public static function resources($resources, $options = []): void
@@ -13313,6 +13591,7 @@ namespace Illuminate\Support\Facades {
              * @param array $resources
              * @param array $options
              *
+             * @return void
              * @static
              */
             public static function apiResources($resources, $options = []): void
@@ -13343,6 +13622,7 @@ namespace Illuminate\Support\Facades {
              * @param array                 $attributes
              * @param array|\Closure|string $routes
              *
+             * @return void
              * @static
              */
             public static function group($attributes, $routes): void
@@ -13532,6 +13812,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Routing\Route $route
              *
+             * @return void
+             *
              * @throws \Illuminate\Database\Eloquent\ModelNotFoundException<\Illuminate\Database\Eloquent\Model>
              * @throws \Illuminate\Routing\Exceptions\BackedEnumCaseNotFoundException
              * @static
@@ -13547,6 +13829,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param callable|string $callback
              *
+             * @return void
              * @static
              */
             public static function matched($callback): void
@@ -13675,6 +13958,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $key
              * @param callable|string $binder
              *
+             * @return void
              * @static
              */
             public static function bind($key, $binder): void
@@ -13690,6 +13974,7 @@ namespace Illuminate\Support\Facades {
              * @param string        $class
              * @param null|\Closure $callback
              *
+             * @return void
              * @static
              */
             public static function model($key, $class, $callback = null): void
@@ -13730,6 +14015,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param string $pattern
              *
+             * @return void
              * @static
              */
             public static function pattern($key, $pattern): void
@@ -13743,6 +14029,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $patterns
              *
+             * @return void
              * @static
              */
             public static function patterns($patterns): void
@@ -13925,6 +14212,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param bool $singular
              *
+             * @return void
              * @static
              */
             public static function singularResourceParameters($singular = true): void
@@ -13938,6 +14226,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $parameters
              *
+             * @return void
              * @static
              */
             public static function resourceParameters($parameters = []): void
@@ -13977,6 +14266,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Routing\RouteCollection $routes
              *
+             * @return void
              * @static
              */
             public static function setRoutes($routes): void
@@ -13990,6 +14280,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $routes
              *
+             * @return void
              * @static
              */
             public static function setCompiledRoutes($routes): void
@@ -14031,6 +14322,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -14043,6 +14335,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -14068,6 +14362,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -14156,6 +14451,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Drop all tables from the database.
              *
+             * @return void
              * @static
              */
             public static function dropAllTables(): void
@@ -14167,6 +14463,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Drop all views from the database.
              *
+             * @return void
              * @static
              */
             public static function dropAllViews(): void
@@ -14204,6 +14501,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param int $length
              *
+             * @return void
              * @static
              */
             public static function defaultStringLength($length): void
@@ -14216,6 +14514,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $type
              *
+             * @return void
+             *
              * @throws \InvalidArgumentException
              * @static
              */
@@ -14227,6 +14527,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Set the default morph key type for migrations to UUIDs.
              *
+             * @return void
              * @static
              */
             public static function morphUsingUuids(): void
@@ -14271,6 +14572,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $column
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function whenTableHasColumn($table, $column, $callback): void
@@ -14286,6 +14588,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $column
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function whenTableDoesntHaveColumn($table, $column, $callback): void
@@ -14315,6 +14618,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $table
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function table($table, $callback): void
@@ -14329,6 +14633,7 @@ namespace Illuminate\Support\Facades {
              * @param string   $table
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function create($table, $callback): void
@@ -14342,6 +14647,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $table
              *
+             * @return void
              * @static
              */
             public static function drop($table): void
@@ -14355,6 +14661,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $table
              *
+             * @return void
              * @static
              */
             public static function dropIfExists($table): void
@@ -14369,6 +14676,7 @@ namespace Illuminate\Support\Facades {
              * @param string       $table
              * @param array|string $columns
              *
+             * @return void
              * @static
              */
             public static function dropColumns($table, $columns): void
@@ -14379,6 +14687,8 @@ namespace Illuminate\Support\Facades {
 
             /**
              * Drop all types from the database.
+             *
+             * @return void
              *
              * @throws \LogicException
              * @static
@@ -14395,6 +14705,7 @@ namespace Illuminate\Support\Facades {
              * @param string $from
              * @param string $to
              *
+             * @return void
              * @static
              */
             public static function rename($from, $to): void
@@ -14458,6 +14769,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Closure $resolver
              *
+             * @return void
              * @static
              */
             public static function blueprintResolver($resolver): void
@@ -14525,6 +14837,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setDefaultDriver($name): void
@@ -14629,6 +14942,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Save the session data to storage.
              *
+             * @return void
              * @static
              */
             public static function save(): void
@@ -14640,6 +14954,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Age the flash data for the session.
              *
+             * @return void
              * @static
              */
             public static function ageFlashData(): void
@@ -14780,6 +15095,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $attributes
              *
+             * @return void
              * @static
              */
             public static function replace($attributes): void
@@ -14794,6 +15110,7 @@ namespace Illuminate\Support\Facades {
              * @param array|string $key
              * @param mixed        $value
              *
+             * @return void
              * @static
              */
             public static function put($key, $value = null): void
@@ -14823,6 +15140,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function push($key, $value): void
@@ -14867,6 +15185,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function flash($key, $value = true): void
@@ -14881,6 +15200,7 @@ namespace Illuminate\Support\Facades {
              * @param string $key
              * @param mixed  $value
              *
+             * @return void
              * @static
              */
             public static function now($key, $value): void
@@ -14892,6 +15212,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Reflash all of the session flash data.
              *
+             * @return void
              * @static
              */
             public static function reflash(): void
@@ -14905,6 +15226,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array|mixed $keys
              *
+             * @return void
              * @static
              */
             public static function keep($keys = null): void
@@ -14918,6 +15240,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $value
              *
+             * @return void
              * @static
              */
             public static function flashInput($value): void
@@ -14945,6 +15268,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array|string $keys
              *
+             * @return void
              * @static
              */
             public static function forget($keys): void
@@ -14956,6 +15280,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Remove all of the items from the session.
              *
+             * @return void
              * @static
              */
             public static function flush(): void
@@ -15033,6 +15358,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $name
              *
+             * @return void
              * @static
              */
             public static function setName($name): void
@@ -15058,6 +15384,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $id
              *
+             * @return void
              * @static
              */
             public static function setId($id): void
@@ -15085,6 +15412,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param bool $value
              *
+             * @return void
              * @static
              */
             public static function setExists($value): void
@@ -15108,6 +15436,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Regenerate the CSRF token value.
              *
+             * @return void
              * @static
              */
             public static function regenerateToken(): void
@@ -15133,6 +15462,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $url
              *
+             * @return void
              * @static
              */
             public static function setPreviousUrl($url): void
@@ -15144,6 +15474,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Specify that the user has confirmed their password.
              *
+             * @return void
              * @static
              */
             public static function passwordConfirmed(): void
@@ -15181,6 +15512,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Http\Request $request
              *
+             * @return void
              * @static
              */
             public static function setRequestOnHandler($request): void
@@ -15362,6 +15694,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $name
              *
+             * @return void
              * @static
              */
             public static function purge($name = null): void
@@ -15976,6 +16309,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Closure $callback
              *
+             * @return void
              * @static
              */
             public static function buildTemporaryUrlsUsing($callback): void
@@ -15990,6 +16324,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -16002,6 +16337,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -16027,6 +16364,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -16413,6 +16751,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $defaults
              *
+             * @return void
              * @static
              */
             public static function defaults($defaults): void
@@ -16438,6 +16777,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $scheme
              *
+             * @return void
              * @static
              */
             public static function forceScheme($scheme): void
@@ -16451,6 +16791,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param null|string $root
              *
+             * @return void
              * @static
              */
             public static function forceRootUrl($root): void
@@ -16516,6 +16857,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Http\Request $request
              *
+             * @return void
              * @static
              */
             public static function setRequest($request): void
@@ -16598,6 +16940,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -16610,6 +16953,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -16635,6 +16980,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -16690,6 +17036,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $extension
              * @param null|string     $message
              *
+             * @return void
              * @static
              */
             public static function extend($rule, $extension, $message = null): void
@@ -16705,6 +17052,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $extension
              * @param null|string     $message
              *
+             * @return void
              * @static
              */
             public static function extendImplicit($rule, $extension, $message = null): void
@@ -16720,6 +17068,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|string $extension
              * @param null|string     $message
              *
+             * @return void
              * @static
              */
             public static function extendDependent($rule, $extension, $message = null): void
@@ -16734,6 +17083,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $rule
              * @param \Closure|string $replacer
              *
+             * @return void
              * @static
              */
             public static function replacer($rule, $replacer): void
@@ -16745,6 +17095,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Indicate that unvalidated array keys should be included in validated data when the parent array is validated.
              *
+             * @return void
              * @static
              */
             public static function includeUnvalidatedArrayKeys(): void
@@ -16756,6 +17107,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Indicate that unvalidated array keys should be excluded from the validated data, even if the parent array was validated.
              *
+             * @return void
              * @static
              */
             public static function excludeUnvalidatedArrayKeys(): void
@@ -16769,6 +17121,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Closure $resolver
              *
+             * @return void
              * @static
              */
             public static function resolver($resolver): void
@@ -16806,6 +17159,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Validation\PresenceVerifierInterface $presenceVerifier
              *
+             * @return void
              * @static
              */
             public static function setPresenceVerifier($presenceVerifier): void
@@ -16994,6 +17348,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Increment the rendering counter.
              *
+             * @return void
              * @static
              */
             public static function incrementRender(): void
@@ -17005,6 +17360,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Decrement the rendering counter.
              *
+             * @return void
              * @static
              */
             public static function decrementRender(): void
@@ -17044,6 +17400,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $id
              *
+             * @return void
              * @static
              */
             public static function markAsRenderedOnce($id): void
@@ -17057,6 +17414,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param string $location
              *
+             * @return void
              * @static
              */
             public static function addLocation($location): void
@@ -17117,6 +17475,7 @@ namespace Illuminate\Support\Facades {
              * @param string        $engine
              * @param null|\Closure $resolver
              *
+             * @return void
              * @static
              */
             public static function addExtension($extension, $engine, $resolver = null): void
@@ -17128,6 +17487,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush all of the factory state like sections and stacks.
              *
+             * @return void
              * @static
              */
             public static function flushState(): void
@@ -17139,6 +17499,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush all of the section contents if done rendering.
              *
+             * @return void
              * @static
              */
             public static function flushStateIfDoneRendering(): void
@@ -17188,6 +17549,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\View\ViewFinderInterface $finder
              *
+             * @return void
              * @static
              */
             public static function setFinder($finder): void
@@ -17199,6 +17561,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the cache of views located by the finder.
              *
+             * @return void
              * @static
              */
             public static function flushFinderCache(): void
@@ -17224,6 +17587,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\Events\Dispatcher $events
              *
+             * @return void
              * @static
              */
             public static function setDispatcher($events): void
@@ -17249,6 +17613,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\Container\Container $container
              *
+             * @return void
              * @static
              */
             public static function setContainer($container): void
@@ -17290,6 +17655,7 @@ namespace Illuminate\Support\Facades {
              * @param string          $name
              * @param callable|object $macro
              *
+             * @return void
              * @static
              */
             public static function macro($name, $macro): void
@@ -17302,6 +17668,8 @@ namespace Illuminate\Support\Facades {
              *
              * @param object $mixin
              * @param bool   $replace
+             *
+             * @return void
              *
              * @throws \ReflectionException
              * @static
@@ -17327,6 +17695,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush the existing macros.
              *
+             * @return void
              * @static
              */
             public static function flushMacros(): void
@@ -17340,6 +17709,7 @@ namespace Illuminate\Support\Facades {
              * @param \Closure|\Illuminate\Contracts\Support\Htmlable|\Illuminate\Contracts\View\View|string $view
              * @param array                                                                                  $data
              *
+             * @return void
              * @static
              */
             public static function startComponent($view, $data = []): void
@@ -17354,6 +17724,7 @@ namespace Illuminate\Support\Facades {
              * @param array $names
              * @param array $data
              *
+             * @return void
              * @static
              */
             public static function startComponentFirst($names, $data = []): void
@@ -17396,6 +17767,7 @@ namespace Illuminate\Support\Facades {
              * @param null|string $content
              * @param array       $attributes
              *
+             * @return void
              * @static
              */
             public static function slot($name, $content = null, $attributes = []): void
@@ -17407,6 +17779,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Save the slot content for rendering.
              *
+             * @return void
              * @static
              */
             public static function endSlot(): void
@@ -17464,6 +17837,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\View\View $view
              *
+             * @return void
              * @static
              */
             public static function callComposer($view): void
@@ -17477,6 +17851,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param \Illuminate\Contracts\View\View $view
              *
+             * @return void
              * @static
              */
             public static function callCreator($view): void
@@ -17491,6 +17866,7 @@ namespace Illuminate\Support\Facades {
              * @param string      $section
              * @param null|string $content
              *
+             * @return void
              * @static
              */
             public static function startSection($section, $content = null): void
@@ -17505,6 +17881,7 @@ namespace Illuminate\Support\Facades {
              * @param string $section
              * @param string $content
              *
+             * @return void
              * @static
              */
             public static function inject($section, $content): void
@@ -17641,6 +18018,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush all of the sections.
              *
+             * @return void
              * @static
              */
             public static function flushSections(): void
@@ -17654,6 +18032,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array|\Countable $data
              *
+             * @return void
              * @static
              */
             public static function addLoop($data): void
@@ -17665,6 +18044,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Increment the top loop's indices.
              *
+             * @return void
              * @static
              */
             public static function incrementLoopIndices(): void
@@ -17676,6 +18056,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Pop a loop from the top of the loop stack.
              *
+             * @return void
              * @static
              */
             public static function popLoop(): void
@@ -17714,6 +18095,7 @@ namespace Illuminate\Support\Facades {
              * @param string $section
              * @param string $content
              *
+             * @return void
              * @static
              */
             public static function startPush($section, $content = ''): void
@@ -17742,6 +18124,7 @@ namespace Illuminate\Support\Facades {
              * @param string $section
              * @param string $content
              *
+             * @return void
              * @static
              */
             public static function startPrepend($section, $content = ''): void
@@ -17782,6 +18165,7 @@ namespace Illuminate\Support\Facades {
             /**
              * Flush all of the stacks.
              *
+             * @return void
              * @static
              */
             public static function flushStacks(): void
@@ -17795,6 +18179,7 @@ namespace Illuminate\Support\Facades {
              *
              * @param array $replacements
              *
+             * @return void
              * @static
              */
             public static function startTranslation($replacements = []): void
@@ -19199,6 +19584,7 @@ namespace {
                  *
                  * @param \Closure $callback
                  *
+                 * @return void
                  * @static
                  */
                 public static function onDelete($callback): void
@@ -20519,6 +20905,7 @@ namespace {
                  * @param array $wheres
                  * @param array $bindings
                  *
+                 * @return void
                  * @static
                  */
                 public static function mergeWheres($wheres, $bindings): void
@@ -21902,6 +22289,7 @@ namespace {
                 /**
                  * Invoke the "before query" modification callbacks.
                  *
+                 * @return void
                  * @static
                  */
                 public static function applyBeforeQueryCallbacks(): void
@@ -22207,6 +22595,7 @@ namespace {
                 /**
                  * Run a truncate statement on the table.
                  *
+                 * @return void
                  * @static
                  */
                 public static function truncate(): void
@@ -22435,6 +22824,7 @@ namespace {
                  * @param string          $name
                  * @param callable|object $macro
                  *
+                 * @return void
                  * @static
                  */
                 public static function macro($name, $macro): void
@@ -22448,6 +22838,8 @@ namespace {
                  * @param object $mixin
                  * @param bool   $replace
                  *
+                 * @return void
+                 *
                  * @throws \ReflectionException
                  * @static
                  */
@@ -22459,6 +22851,7 @@ namespace {
                 /**
                  * Flush the existing macros.
                  *
+                 * @return void
                  * @static
                  */
                 public static function flushMacros(): void

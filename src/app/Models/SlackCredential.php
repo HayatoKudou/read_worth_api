@@ -27,6 +27,10 @@ use Illuminate\Database\Eloquent\Builder;
  * @property int $client_id
  *
  * @method static Builder|SlackCredential whereClientId($value)
+ *
+ * @property string $channel_id
+ *
+ * @method static Builder|SlackCredential whereChannelId($value)
  */
 class SlackCredential extends Model
 {

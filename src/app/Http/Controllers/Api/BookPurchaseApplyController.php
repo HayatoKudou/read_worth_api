@@ -28,6 +28,7 @@ class BookPurchaseApplyController extends Controller
         $this->authorize('affiliation', $client);
         $bookPurchaseApplies = BookPurchaseApply::where('client_id', $clientId)->get();
         return response()->json([
+            'slackCredentialExists' => (bool) $client->slackCredential,
             'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
                 'reason' => $bookPurchaseApply->reason,
                 'price' => $bookPurchaseApply->price,
@@ -108,7 +109,9 @@ class BookPurchaseApplyController extends Controller
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
         DB::transaction(function () use ($request, $bookId): void {
-            Book::find($bookId)->purchaseApply->update([
+            $book = Book::find($bookId);
+            $book->update(['status' => Book::STATUS_CAN_LEND]);
+            $book->purchaseApply->update([
                 'step' => BookPurchaseApply::NEED_NOTIFICATION,
                 'location' => $request->get('location'),
             ]);
@@ -160,17 +163,26 @@ class BookPurchaseApplyController extends Controller
     {
         $client = Client::find($clientId);
         $this->authorize('affiliation', $client);
-        DB::transaction(function () use ($clientId, $bookId, $request): void {
-            $book = Book::find($bookId);
-            $book->update(['status' => Book::STATUS_CAN_LEND]);
-            $book->purchaseApply->delete();
 
-            // 通知が失敗したらロールバック
-            $slackCredential = SlackCredential::where('client_id', $clientId)->first();
-            $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
-            // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
-            $slackClient->postMessage($slackCredential->channel_id, $request->get('title'), $request->get('message'));
-        });
-        return response()->json([]);
+        try {
+            DB::transaction(function () use ($clientId, $bookId, $request): void {
+                $book = Book::find($bookId);
+                $book->purchaseApply->delete();
+
+                // 通知が失敗したらロールバック
+                $slackCredential = SlackCredential::where('client_id', $clientId)->first();
+                $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
+                // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
+                $slackClient->postMessage($slackCredential->channel_id, $request->get('title'), $request->get('message'));
+            });
+            return response()->json([]);
+        } catch (\RuntimeException $e) {
+            if ('not_in_channel' === $e->getMessage()) {
+                return response()->json(['errors' => [
+                    'slack' => 'Slackチャンネルにアプリが追加されていないため通知に失敗しました。',
+                ]], 500);
+            }
+            return response()->json([], 500);
+        }
     }
 }
