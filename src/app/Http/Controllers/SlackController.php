@@ -7,13 +7,14 @@ use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Slack\SlackApiClient;
 use App\Models\SlackCredential;
+use Illuminate\Contracts\View\View;
 
 class SlackController extends Controller
 {
-    public function callback(Request $request): void
+    public function callback(Request $request): View
     {
         if ($request->has('error')) {
-            return;
+            return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
         $client = new Client();
         $response = $client->post('https://slack.com/api/oauth.v2.access', [
@@ -32,7 +33,7 @@ class SlackController extends Controller
         $body = json_decode($json, true);
 
         if (false === $body['ok']) {
-            return;
+            return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
         $accessToken = $body['access_token'];
         $userId = $body['authed_user']['id'];
@@ -43,7 +44,7 @@ class SlackController extends Controller
         $user = User::where('email', $userInfo['user']['profile']['email'])->first();
 
         if (!$user) {
-            \Log::debug('Slackに登録しているメールアドレスと一致するユーザーが見つかりません。');
+            return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
         SlackCredential::updateOrCreate([
@@ -53,6 +54,6 @@ class SlackController extends Controller
             'channel_name' => $body['incoming_webhook']['channel'],
             'channel_id' => $body['incoming_webhook']['channel_id'],
         ]);
-//        return redirect()->away(config('front.url'));
+        return view('slack_authed')->with('message', 'Slack連携が完了しました。');
     }
 }
