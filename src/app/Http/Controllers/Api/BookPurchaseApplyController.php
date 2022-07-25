@@ -89,7 +89,8 @@ class BookPurchaseApplyController extends Controller
             $title = '書籍購入申請のお知らせ';
             $message = '【タイトル】' . $request->get('title') . "\n【申請者】" . $user->name;
             $slackCredential = SlackCredential::where('client_id', $clientId)->first();
-            if($slackCredential){
+
+            if ($slackCredential) {
                 $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
                 $slackClient->postMessage($slackCredential->channel_id, $title, $message);
             }
@@ -184,7 +185,8 @@ class BookPurchaseApplyController extends Controller
 
                 // 通知が失敗したらロールバック
                 $slackCredential = SlackCredential::where('client_id', $clientId)->first();
-                if(!$slackCredential){
+
+                if (!$slackCredential) {
                     return response()->json(['errors' => [
                         'slack' => 'Slack連携がされていません。',
                     ]], 500);

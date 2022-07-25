@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Throwable;
+use App\Slack\SlackApiClient;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -39,10 +40,17 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e): void {
-            if (app()->bound('sentry')) {
-                app('sentry')->captureException($e);
-            }
-        });
+//        $this->reportable(function (Throwable $e): void {
+//            if (app()->bound('sentry')) {
+//                app('sentry')->captureException($e);
+//            }
+//        });
+    }
+
+    public function report(Throwable $e): void
+    {
+        $postMessage = sprintf("File: %s\nLine: %d\nMessage: %s", $e->getFile(), $e->getLine(), $e->getMessage());
+        $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), config('slack.accessToken'));
+        $slackClient->postMessage(config('slack.channelId'), '', $postMessage);
     }
 }
