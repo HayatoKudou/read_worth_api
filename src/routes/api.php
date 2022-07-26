@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ClientController;
 use App\Http\Controllers\VerifyEmailController;
+use App\Http\Controllers\Api\FeedBackController;
 use App\Http\Controllers\Api\BookReviewController;
 use App\Http\Controllers\Api\BookHistoryController;
 use App\Http\Controllers\Api\BookCategoryController;
@@ -18,6 +19,7 @@ Route::post('/email/verify/resend', [VerifyEmailController::class, 'resendVerify
 Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword'])->name('password.email');
 Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])->name('password.update');
 Route::post('/password-setting', [AuthController::class, 'passwordSetting']);
+Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
 Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']], function (): void {
     Route::get('/user', [UserController::class, 'me']);

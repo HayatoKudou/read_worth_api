@@ -14,6 +14,13 @@ class CreateRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'name' => '組織名',
+        ];
+    }
+
     public function createClient(): Client
     {
         return new Client($this->validated());

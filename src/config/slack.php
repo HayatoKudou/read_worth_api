@@ -4,6 +4,8 @@ return [
     'clientId' => env('CLIENT_ID'),
     'clientSecret' => env('CLIENT_SECRET'),
     'redirectUri' => env('REDIRECT_URI'),
-    'accessToken' => env('SLACK_ACCESS_TOKEN'),
-    'channelId' => env('SLACK_CHANNEL_ID'),
+    'errorChannelAccessToken' => env('SLACK_ERROR_CHANNEL_ACCESS_TOKEN'),
+    'errorChannelId' => env('SLACK_ERROR_CHANNEL_ID'),
+    'feedBackChannelAccessToken' => env('SLACK_FEEDBACK_CHANNEL_ACCESS_TOKEN'),
+    'feedBackChannelId' => env('SLACK_FEEDBACK_CHANNEL_ID'),
 ];

@@ -15,6 +15,14 @@ class CreateRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'rate' => 'レート',
+            'review' => 'レビュー',
+        ];
+    }
+
     public function createBookReview(): BookReview
     {
         return new BookReview($this->validated());

@@ -49,8 +49,10 @@ class Handler extends ExceptionHandler
 
     public function report(Throwable $e): void
     {
-        $postMessage = sprintf("File: %s\nLine: %d\nMessage: %s", $e->getFile(), $e->getLine(), $e->getMessage());
-        $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), config('slack.accessToken'));
-        $slackClient->postMessage(config('slack.channelId'), '', $postMessage);
+        if ($this->shouldReport($e)) {
+            $postMessage = sprintf("File: %s\nLine: %d\nMessage: %s", $e->getFile(), $e->getLine(), $e->getMessage());
+            $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), config('slack.errorChannelAccessToken'));
+            $slackClient->postMessage(config('slack.errorChannelId'), '', $postMessage);
+        }
     }
 }

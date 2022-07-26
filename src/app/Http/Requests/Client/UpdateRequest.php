@@ -26,4 +26,15 @@ class UpdateRequest extends FormRequest
             ],
         ];
     }
+
+    public function attributes(): array
+    {
+        return [
+            'name' => '組織名',
+            'purchase_limit' => '名前',
+            'purchase_limit_unit' => '名前',
+            'private_ownership_allow' => '名前',
+            'plan' => '名前',
+        ];
+    }
 }

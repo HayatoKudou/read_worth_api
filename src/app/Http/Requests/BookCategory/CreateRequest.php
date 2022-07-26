@@ -24,6 +24,13 @@ class CreateRequest extends FormRequest
         ];
     }
 
+    public function attributes(): array
+    {
+        return [
+            'name' => 'カテゴリ名',
+        ];
+    }
+
     public function createBookCategory(): BookCategory
     {
         return new BookCategory($this->validated());
