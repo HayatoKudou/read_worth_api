@@ -17,37 +17,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property Collection|User[] $users
  * @property Book[]|Collection $books
  * @property Plan $plan
- *
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
  * @method static Builder|User query()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property null|int $users_count
- *
  * @method static Builder|Client whereCreatedAt($value)
  * @method static Builder|Client whereId($value)
  * @method static Builder|Client whereName($value)
  * @method static Builder|Client whereUpdatedAt($value)
- *
  * @property int $plan_id
- *
  * @method static Builder|Client wherePlanId($value)
- *
  * @property int $purchase_limit
  * @property string $purchase_limit_unit
  * @property null|int $books_count
- *
  * @method static Builder|Client wherePurchaseLimit($value)
  * @method static Builder|Client wherePurchaseLimitUnit($value)
- *
  * @property int $private_ownership_allow
- *
  * @method static Builder|Client wherePrivateOwnershipAllow($value)
- *
  * @property null|\App\Models\SlackCredential $credential
+ * @property int $enable_purchase_limit
+ * @property-read \App\Models\SlackCredential|null $slackCredential
+ * @method static Builder|Client whereEnablePurchaseLimit($value)
  */
 class Client extends Authenticate
 {

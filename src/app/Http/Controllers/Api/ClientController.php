@@ -18,6 +18,7 @@ class ClientController
             'id' => $client->id,
             'name' => $client->name,
             'plan' => $client->plan->name,
+            'enable_purchase_limit' => (bool) $client->enable_purchase_limit,
             'purchaseLimit' => $client->purchase_limit,
             'purchaseLimitUnit' => $client->purchase_limit_unit,
             'privateOwnershipAllow' => (bool) $client->private_ownership_allow,
@@ -31,6 +32,7 @@ class ClientController
         $client = User::find(Auth::id())->client;
         $client->update([
             'name' => $request->get('name'),
+            'enable_purchase_limit' => $request->get('enable_purchase_limit'),
             'purchase_limit' => $request->get('purchase_limit'),
             'purchase_limit_unit' => $request->get('purchase_limit_unit'),
             'private_ownership_allow' => $request->get('private_ownership_allow'),

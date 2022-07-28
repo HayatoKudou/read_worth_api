@@ -35,6 +35,7 @@ class UserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'apiToken' => $user->api_token,
+                'purchase_balance' => $user->purchase_balance,
                 'role' => [
                     'is_account_manager' => $user->role->is_account_manager,
                     'is_book_manager' => $user->role->is_book_manager,

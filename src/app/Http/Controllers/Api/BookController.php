@@ -54,6 +54,7 @@ class BookController extends Controller
                     'name' => $bookCategory->name,
                 ]),
                 'client' => [
+                    'enablePurchaseLimit' => $client->enable_purchase_limit,
                     'purchaseLimit' => $client->purchase_limit,
                     'privateOwnershipAllow' => (bool) $client->private_ownership_allow,
                 ],

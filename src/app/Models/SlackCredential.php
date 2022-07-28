@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $channel_name
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- *
  * @method static Builder|SlackCredential newModelQuery()
  * @method static Builder|SlackCredential newQuery()
  * @method static Builder|SlackCredential query()
@@ -23,13 +22,9 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|SlackCredential whereId($value)
  * @method static Builder|SlackCredential whereUpdatedAt($value)
  * @mixin \Eloquent
- *
  * @property int $client_id
- *
  * @method static Builder|SlackCredential whereClientId($value)
- *
  * @property string $channel_id
- *
  * @method static Builder|SlackCredential whereChannelId($value)
  */
 class SlackCredential extends Model

@@ -17,6 +17,7 @@ class UpdateRequest extends FormRequest
                 'string',
                 'max:255',
             ],
+            'enable_purchase_limit' => 'boolean',
             'purchase_limit' => 'int',
             'purchase_limit_unit' => 'string',
             'private_ownership_allow' => 'boolean',
@@ -31,10 +32,11 @@ class UpdateRequest extends FormRequest
     {
         return [
             'name' => '組織名',
-            'purchase_limit' => '名前',
-            'purchase_limit_unit' => '名前',
-            'private_ownership_allow' => '名前',
-            'plan' => '名前',
+            'enable_purchase_limit' => '購入補助金上限有効化',
+            'purchase_limit' => '購入補助金上限',
+            'purchase_limit_unit' => '購入補助金上限単位',
+            'private_ownership_allow' => '個人所有の許可',
+            'plan' => 'プラン',
         ];
     }
 }

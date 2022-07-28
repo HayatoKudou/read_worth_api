@@ -56,6 +56,10 @@ class BookPurchaseApplyController extends Controller
         $this->authorize('affiliation', $client);
         $user = User::find(Auth::id());
 
+        if ($client->enable_purchase_limit && $user->purchase_balance < $request->get('price')) {
+            return response()->json(['errors' => ['price' => '購入補助残高を超えています']], 500);
+        }
+
         DB::transaction(function () use ($user, $request, $clientId): void {
             $book = new Book();
             $imagePath = $book->storeImage($request->get('image'));
