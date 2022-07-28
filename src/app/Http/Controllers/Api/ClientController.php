@@ -18,7 +18,7 @@ class ClientController
             'id' => $client->id,
             'name' => $client->name,
             'plan' => $client->plan->name,
-            'enable_purchase_limit' => (bool) $client->enable_purchase_limit,
+            'enablePurchaseLimit' => (bool) $client->enable_purchase_limit,
             'purchaseLimit' => $client->purchase_limit,
             'purchaseLimitUnit' => $client->purchase_limit_unit,
             'privateOwnershipAllow' => (bool) $client->private_ownership_allow,
