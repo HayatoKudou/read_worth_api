@@ -56,14 +56,16 @@ class AuthController
 
     public function signUp(SignUpRequest $request): JsonResponse
     {
-        return DB::transaction(function () use ($request): JsonResponse {
-            $plan = Plan::where('name', $request->get('plan'))->first();
+        $validated = $request->validated();
+        return DB::transaction(function () use ($validated): JsonResponse {
+            $plan = Plan::where('name', $validated['plan'])->first();
 
             if (!$plan) {
                 return response()->json(['一致するプランが存在しません'], 500);
             }
             $client = Client::create([
-                'name' => $request->get('client_name'),
+                'name' => $validated['client_name'],
+                'enable_purchase_limit' => false,
                 'purchase_limit' => 0,
                 'purchase_limit_unit' => 'monthly',
                 'private_ownership_allow' => false,
@@ -71,9 +73,9 @@ class AuthController
             ]);
             $user = User::create([
                 'client_id' => $client->id,
-                'name' => $request->get('name'),
-                'email' => $request->get('email'),
-                'password' => Hash::make($request->get('password')),
+                'name' => $validated['name'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']),
                 'password_setting_at' => Carbon::now(),
                 'purchase_balance' => $client->purchase_limit,
                 'api_token' => Str::random(60),
