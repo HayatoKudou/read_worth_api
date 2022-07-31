@@ -16,6 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\Book $book
  * @property \App\Models\User $user
+ *
  * @method static Builder|BookHistory newModelQuery()
  * @method static Builder|BookHistory newQuery()
  * @method static Builder|BookHistory query()
@@ -25,7 +26,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|BookHistory whereId($value)
  * @method static Builder|BookHistory whereUpdatedAt($value)
  * @mixin \Eloquent
+ *
  * @property int $user_id
+ *
  * @method static Builder|BookHistory whereUserId($value)
  */
 class BookHistory extends Model

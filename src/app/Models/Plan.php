@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\Plan.
@@ -21,6 +21,7 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  * @property null|Carbon $updated_at
  * @property \App\Models\User[]|Collection $users
  * @property null|int $users_count
+ *
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()

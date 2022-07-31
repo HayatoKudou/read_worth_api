@@ -9,33 +9,28 @@ use App\Models\User;
 use App\Models\Client;
 use Illuminate\Support\Str;
 use App\Models\BookCategory;
-use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use App\Http\Requests\Auth\SignInRequest;
 use App\Http\Requests\Auth\SignUpRequest;
 use App\Http\Requests\Auth\PasswordSettingRequest;
 
 class AuthController
 {
-    public function login(Request $request): JsonResponse
+    public function signIn(SignInRequest $request): JsonResponse
     {
-        $email = $request->get('email');
-        $password = $request->get('password');
-        $user = User::where(['email' => $email])->first();
+        $validated = $request->validated();
+        $user = User::where(['email' => $validated['email']])->first();
 
-        if (null === $user) {
-            return response()->json(['errors' => 'ユーザーが見つかりません'], 401);
-        }
-
-        if (!Hash::check($password, $user->password)) {
-            return response()->json(['errors' => 'パスワードが一致しません'], 401);
+        if (null === $user || !Hash::check($validated['password'], $user->password)) {
+            return response()->json(['errors' => ['custom' => 'メールアドレスもしくはパスワードが一致しません']], 401);
         }
 
         if (!$user->hasVerifiedEmail()) {
-            return response()->json(['errors' => 'メール認証を完了させてください'], 403);
+            return response()->json(['errors' => ['custom' => 'メール認証を完了させてください']], 403);
         }
 
         return response()->json([

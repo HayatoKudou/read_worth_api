@@ -22,11 +22,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property string $api_token
  * @property Client $client
  * @property Role $role
+ *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
  * @method static Builder|\App\Models\User organization()
  * @mixin Builder
+ *
  * @property null|\Illuminate\Support\Carbon $email_verified_at
  * @property null|string $remember_token
  * @property null|\Illuminate\Support\Carbon $created_at
@@ -35,6 +37,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|int $notifications_count
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property null|int $tokens_count
+ *
  * @method static \Database\Factories\UserFactory factory(...$parameters)
  * @method static Builder|User whereApiToken($value)
  * @method static Builder|User whereClientId($value)
@@ -46,9 +49,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|User wherePassword($value)
  * @method static Builder|User whereRememberToken($value)
  * @method static Builder|User whereUpdatedAt($value)
+ *
  * @property int $purchase_balance
+ *
  * @method static Builder|User wherePurchaseBalance($value)
+ *
  * @property null|string $password_setting_at
+ *
  * @method static Builder|User wherePasswordSettingAt($value)
  */
 class User extends Authenticate implements MustVerifyEmail

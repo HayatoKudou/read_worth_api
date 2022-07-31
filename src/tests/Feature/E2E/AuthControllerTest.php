@@ -2,8 +2,12 @@
 
 namespace Tests\Feature\E2E;
 
-use App\Models\Plan;
 use Tests\TestCase;
+use App\Models\Plan;
+use App\Models\Role;
+use App\Models\User;
+use App\Models\Client;
+use Illuminate\Support\Facades\Hash;
 
 class AuthControllerTest extends TestCase
 {
@@ -11,18 +15,45 @@ class AuthControllerTest extends TestCase
     {
         parent::setUp();
 
-        Plan::factory()->create(['name' => "premier"]);
+        $plan = Plan::factory()->create(['name' => 'premier']);
+        assert($plan instanceof Plan);
+        $client = Client::factory()->create([
+            'name' => '株式会社かぶかぶ',
+            'plan_id' => $plan->id,
+        ]);
+        $user = User::factory()->create([
+            'client_id' => $client->id,
+            'name' => '佐藤 太郎y',
+            'email' => 'teare@gfea.com',
+            'password' => Hash::make('pass'),
+        ]);
+        Role::factory()->create([
+            'user_id' => $user->id,
+            'is_account_manager' => 1,
+            'is_book_manager' => 1,
+            'is_client_manager' => 1,
+        ]);
     }
 
     /** @test */
-    public function サインアップができること()
+    public function サインアップができること(): void
     {
         $response = $this->json('POST', '/api/signUp', [
             'name' => '検証 太郎',
-            'email' => 'test@test.test',
+            'email' => 'aaa@test.com',
             'password' => 'password',
-            'client_name' => '検証会社',
+            'client_name' => '株式会社検証',
             'plan' => 'premier',
+        ]);
+        $response->assertOk();
+    }
+
+    /** @test */
+    public function サインインができること(): void
+    {
+        $response = $this->json('POST', '/api/signIn', [
+            'email' => 'teare@gfea.com',
+            'password' => 'pass',
         ]);
         \Log::debug($response->json());
         $response->assertOk();

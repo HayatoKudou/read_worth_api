@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
 
-Route::post('/signIn', [AuthController::class, 'login']);
+Route::post('/signIn', [AuthController::class, 'signIn']);
 Route::post('/signUp', [AuthController::class, 'signUp']);
 Route::post('/email/verify/resend', [VerifyEmailController::class, 'resendVerify']);
 Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword'])->name('password.email');
