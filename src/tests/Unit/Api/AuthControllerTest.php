@@ -2,6 +2,7 @@
 
 namespace Tests\Unit\Api;
 
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\Plan;
 use App\Models\Role;
@@ -15,7 +16,72 @@ class AuthControllerTest extends TestCase
     {
         parent::setUp();
 
-        Plan::factory()->create(['name' => 'premier']);
+        $plan = Plan::factory()->create(['name' => 'premier']);
+        $client = Client::factory()->create([
+            'name' => '株式会社かぶかぶ',
+            'plan_id' => $plan->id,
+        ]);
+        $user = User::factory()->create([
+            'client_id' => $client->id,
+            'name' => '佐藤 太郎',
+            'email' => 'aaabbbccc@test.com',
+            'password' => Hash::make('pass'),
+        ]);
+        Role::factory()->create([
+            'user_id' => $user->id,
+            'is_account_manager' => 1,
+            'is_book_manager' => 1,
+            'is_client_manager' => 1,
+        ]);
+    }
+
+    /** @test */
+    public function サインインができること(): void
+    {
+        $response = $this->json('POST', '/api/signIn', [
+            'email' => 'aaabbbccc@test.com',
+            'password' => 'pass',
+        ]);
+        $response->assertStatus(200);
+        $response->assertJson([
+            'me' => [
+                'name' => '佐藤 太郎',
+                'email' => 'aaabbbccc@test.com',
+                'role' => [
+                    'is_account_manager' => true,
+                    'is_book_manager' => true,
+                    'is_client_manager' => true,
+                ],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function サインインバリデーションが機能していること()
+    {
+        $response = $this->json('POST', '/api/signIn');
+        $response->assertStatus(422);
+        $response->assertJson([
+            'errors' => [
+                'email' => ['メールアドレスは必ず指定してください。'],
+                'password' => ['パスワードは必ず指定してください。'],
+            ],
+        ]);
+    }
+
+    /** @test */
+    public function サインインカスタムエラーが機能していること()
+    {
+        $response = $this->json('POST', '/api/signIn', [
+            'email' => 'hogehoge',
+            'password' => 'hogehoge',
+        ]);
+        $response->assertStatus(401);
+        $response->assertJson([
+            'errors' => [
+                'custom' => 'メールアドレスもしくはパスワードが一致しません',
+            ],
+        ]);
     }
 
     /** @test */

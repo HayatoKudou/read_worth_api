@@ -16,15 +16,13 @@ class AuthControllerTest extends TestCase
         parent::setUp();
 
         $plan = Plan::factory()->create(['name' => 'premier']);
-        assert($plan instanceof Plan);
         $client = Client::factory()->create([
             'name' => '株式会社かぶかぶ',
             'plan_id' => $plan->id,
         ]);
         $user = User::factory()->create([
             'client_id' => $client->id,
-            'name' => '佐藤 太郎y',
-            'email' => 'teare@gfea.com',
+            'email' => 'aaabbbccc@test.com',
             'password' => Hash::make('pass'),
         ]);
         Role::factory()->create([
@@ -52,10 +50,9 @@ class AuthControllerTest extends TestCase
     public function サインインができること(): void
     {
         $response = $this->json('POST', '/api/signIn', [
-            'email' => 'teare@gfea.com',
+            'email' => 'aaabbbccc@test.com',
             'password' => 'pass',
         ]);
-        \Log::debug($response->json());
         $response->assertOk();
     }
 }
