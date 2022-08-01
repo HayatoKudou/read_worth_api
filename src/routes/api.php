@@ -15,13 +15,15 @@ use App\Http\Controllers\Api\BookPurchaseApplyController;
 
 Route::post('/signIn', [AuthController::class, 'signIn']);
 Route::post('/signUp', [AuthController::class, 'signUp']);
+Route::post('/signUpGoogle', [AuthController::class, 'signUpGoogle']);
+Route::post('/client', [ClientController::class, 'create']);
+Route::post('/password-setting', [AuthController::class, 'passwordSetting']);
 Route::post('/email/verify/resend', [VerifyEmailController::class, 'resendVerify']);
 Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword'])->name('password.email');
 Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])->name('password.update');
-Route::post('/password-setting', [AuthController::class, 'passwordSetting']);
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
-Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']], function (): void {
+Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/user', [UserController::class, 'me']);
     Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);

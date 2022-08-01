@@ -2,16 +2,19 @@
 
 namespace Tests\Unit\Api;
 
-use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\BookCategory;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AuthControllerTest extends TestCase
 {
+    private User $user;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -21,14 +24,14 @@ class AuthControllerTest extends TestCase
             'name' => '株式会社かぶかぶ',
             'plan_id' => $plan->id,
         ]);
-        $user = User::factory()->create([
+        $this->user = User::factory()->create([
             'client_id' => $client->id,
             'name' => '佐藤 太郎',
             'email' => 'aaabbbccc@test.com',
             'password' => Hash::make('pass'),
         ]);
         Role::factory()->create([
-            'user_id' => $user->id,
+            'user_id' => $this->user->id,
             'is_account_manager' => 1,
             'is_book_manager' => 1,
             'is_client_manager' => 1,
@@ -38,12 +41,11 @@ class AuthControllerTest extends TestCase
     /** @test */
     public function サインインができること(): void
     {
-        $response = $this->json('POST', '/api/signIn', [
+        $this->json('POST', '/api/signIn', [
             'email' => 'aaabbbccc@test.com',
             'password' => 'pass',
-        ]);
-        $response->assertStatus(200);
-        $response->assertJson([
+        ])->assertStatus(200)
+            ->assertJson([
             'me' => [
                 'name' => '佐藤 太郎',
                 'email' => 'aaabbbccc@test.com',
@@ -57,11 +59,11 @@ class AuthControllerTest extends TestCase
     }
 
     /** @test */
-    public function サインインバリデーションが機能していること()
+    public function サインインバリデーションが機能していること(): void
     {
-        $response = $this->json('POST', '/api/signIn');
-        $response->assertStatus(422);
-        $response->assertJson([
+        $this->json('POST', '/api/signIn')
+            ->assertStatus(422)
+            ->assertJson([
             'errors' => [
                 'email' => ['メールアドレスは必ず指定してください。'],
                 'password' => ['パスワードは必ず指定してください。'],
@@ -70,14 +72,26 @@ class AuthControllerTest extends TestCase
     }
 
     /** @test */
-    public function サインインカスタムエラーが機能していること()
+    public function サインインメール認証チェックが機能していること(): void
     {
-        $response = $this->json('POST', '/api/signIn', [
+        $this->user->update(['email_verified_at' => null]);
+        $this->json('POST', '/api/signIn', [
+            'email' => 'aaabbbccc@test.com',
+            'password' => 'pass',
+        ])
+            ->assertStatus(403)
+            ->assertJson(['errors' => ['custom' => 'メール認証を完了させてください']]);
+    }
+
+    /** @test */
+    public function サインインカスタムエラーが機能していること(): void
+    {
+        $this->json('POST', '/api/signIn', [
             'email' => 'hogehoge',
             'password' => 'hogehoge',
-        ]);
-        $response->assertStatus(401);
-        $response->assertJson([
+        ])
+            ->assertStatus(401)
+            ->assertJson([
             'errors' => [
                 'custom' => 'メールアドレスもしくはパスワードが一致しません',
             ],
@@ -87,15 +101,15 @@ class AuthControllerTest extends TestCase
     /** @test */
     public function サインアップができること(): void
     {
-        $response = $this->json('POST', '/api/signUp', [
+        $this->json('POST', '/api/signUp', [
             'name' => '検証 太郎',
             'email' => 'aaa@test.com',
             'password' => 'password',
             'client_name' => '株式会社検証',
             'plan' => 'premier',
-        ]);
-        $response->assertStatus(200);
-        $response->assertJson([
+        ])
+            ->assertStatus(200)
+            ->assertJson([
             'me' => [
                 'name' => '検証 太郎',
                 'email' => 'aaa@test.com',
@@ -121,9 +135,9 @@ class AuthControllerTest extends TestCase
     /** @test */
     public function サインアップバリデーションが機能していること(): void
     {
-        $response = $this->json('POST', '/api/signUp');
-        $response->assertStatus(422);
-        $response->assertJson([
+        $this->json('POST', '/api/signUp')
+            ->assertStatus(422)
+            ->assertJson([
             'errors' => [
                 'email' => ['メールアドレスは必ず指定してください。'],
                 'password' => ['パスワードは必ず指定してください。'],
@@ -131,5 +145,16 @@ class AuthControllerTest extends TestCase
                 'plan' => ['プランは必ず指定してください。'],
             ],
         ]);
+    }
+
+    /** @test */
+    public function パスワード設定ができること(): void
+    {
+//        Auth::shouldReceive('id')->andReturn($this->user->id);
+//         $this->json('POST', '/api/password-setting', [
+//            'password' => 'repass',
+//            'password_confirmation' => 'repass'
+//        ]);
+//        $this->assertSame(Hash::make('repass'), $this->user->password);
     }
 }

@@ -17,7 +17,7 @@ class AppServiceProvider extends ServiceProvider
     {
         VerifyEmail::toMailUsing(function ($notifiable, $url) {
             return (new MailMessage())
-                ->greeting('こんにちは。')
+                ->greeting('こんにちは')
                 ->subject('メール認証')
                 ->line('下のボタンをクリックして、メールアドレスを確認してください。')
                 ->action('メール認証', $url)
@@ -31,7 +31,7 @@ class AppServiceProvider extends ServiceProvider
                     'email' => $notifiable->getEmailForPasswordReset(),
                 ], false));
             return (new MailMessage())
-                ->greeting('こんにちは。')
+                ->greeting('こんにちは')
                 ->subject('パスワード再設定のお知らせ')
                 ->line('下のボタンをクリックして、パスワードを再設定してください。')
                 ->action('パスワード再設定', $url)

@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Client;
 
-use App\Models\Client;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CreateRequest extends FormRequest
@@ -10,19 +9,17 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'plan' => 'required|string',
             'name' => 'required|unique:clients|string|max:255',
+            'userId' => 'required',
         ];
     }
 
     public function attributes(): array
     {
         return [
+            'plan' => 'プラン',
             'name' => '組織名',
         ];
-    }
-
-    public function createClient(): Client
-    {
-        return new Client($this->validated());
     }
 }
