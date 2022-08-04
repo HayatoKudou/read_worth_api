@@ -10,7 +10,7 @@ class SignUpGoogleRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'email' => 'required|string|max:255|email',
+            'email' => 'required|string|max:255|email|unique:users',
             'accessToken' => 'required|string',
         ];
     }

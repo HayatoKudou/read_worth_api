@@ -12,21 +12,19 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property number $id
  * @property number $client_id
  * @property string $name
- *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory query()
  * @method static Builder|BookCategory organization()
  * @mixin Builder
- *
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- *
  * @method static Builder|BookCategory whereClientId($value)
  * @method static Builder|BookCategory whereCreatedAt($value)
  * @method static Builder|BookCategory whereId($value)
  * @method static Builder|BookCategory whereName($value)
  * @method static Builder|BookCategory whereUpdatedAt($value)
+ * @method static \Database\Factories\BookCategoryFactory factory(...$parameters)
  */
 class BookCategory extends Model
 {

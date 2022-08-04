@@ -21,7 +21,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|Carbon $updated_at
  * @property \App\Models\User[]|Collection $users
  * @property null|int $users_count
- *
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()
@@ -33,6 +32,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Plan wherePrice($value)
  * @method static Builder|Plan whereUpdatedAt($value)
  * @mixin \Eloquent
+ * @method static \Database\Factories\PlanFactory factory(...$parameters)
  */
 class Plan extends Authenticate
 {

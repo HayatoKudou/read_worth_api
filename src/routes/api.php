@@ -13,8 +13,9 @@ use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
 
-Route::post('/signIn', [AuthController::class, 'signIn']);
-Route::post('/signUp', [AuthController::class, 'signUp']);
+Route::post('/signIn', [AuthController::class, 'signInEmail']);
+Route::post('/signInGoogle', [AuthController::class, 'signInGoogle']);
+Route::post('/signUp', [AuthController::class, 'signUpEmail']);
 Route::post('/signUpGoogle', [AuthController::class, 'signUpGoogle']);
 Route::post('/client', [ClientController::class, 'create']);
 Route::post('/password-setting', [AuthController::class, 'passwordSetting']);
@@ -23,6 +24,7 @@ Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword']
 Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])->name('password.update');
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
+// TODO: verified は後で
 Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/user', [UserController::class, 'me']);
     Route::get('/users', [UserController::class, 'list']);

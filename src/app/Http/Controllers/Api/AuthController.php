@@ -11,14 +11,15 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use App\Http\Requests\Auth\SignInRequest;
-use App\Http\Requests\Auth\SignUpRequest;
+use App\Http\Requests\Auth\SignInRequestEmail;
+use App\Http\Requests\Auth\SignUpRequestEmail;
+use App\Http\Requests\Auth\SignInGoogleRequest;
 use App\Http\Requests\Auth\SignUpGoogleRequest;
 use App\Http\Requests\Auth\PasswordSettingRequest;
 
 class AuthController
 {
-    public function signIn(SignInRequest $request): JsonResponse
+    public function signInEmail(SignInRequestEmail $request): JsonResponse
     {
         $validated = $request->validated();
         $user = User::where(['email' => $validated['email']])->first();
@@ -47,7 +48,32 @@ class AuthController
         ]);
     }
 
-    public function signUp(SignUpRequest $request): JsonResponse
+    public function signInGoogle(SignInGoogleRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $user = User::where(['email' => $validated['email']])->first();
+
+        if (null === $user || $user->google_access_token !== $validated->accessToken) {
+            return response()->json(['errors' => ['custom' => '認証に失敗しました']], 401);
+        }
+
+        return response()->json([
+            'me' => [
+                'id' => $user->id,
+                'clientId' => $user->client_id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'apiToken' => $user->api_token,
+                'role' => [
+                    'is_account_manager' => $user->role->is_account_manager,
+                    'is_book_manager' => $user->role->is_book_manager,
+                    'is_client_manager' => $user->role->is_client_manager,
+                ],
+            ],
+        ]);
+    }
+
+    public function signUpEmail(SignUpRequestEmail $request): JsonResponse
     {
         $validated = $request->validated();
         return DB::transaction(function () use ($validated): JsonResponse {
@@ -76,9 +102,8 @@ class AuthController
     {
         $validated = $request->validated();
         return DB::transaction(function () use ($validated): JsonResponse {
-            $user = User::updateOrcreate([
+            $user = User::create([
                 'email' => $validated['email'],
-            ], [
                 'name' => $validated['name'],
                 'google_access_token' => $validated['accessToken'],
                 'purchase_balance' => 0,
