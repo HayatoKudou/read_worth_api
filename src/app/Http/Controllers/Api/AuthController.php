@@ -102,6 +102,10 @@ class AuthController
         $user = User::where('email', $googleUser->getEmail())->first();
 
         if ($user) {
+            $user->update([
+                'email_verified_at' => now(),
+                'google_access_token' => $googleUser->token,
+            ]);
             return CallbackGoogleAuthResponse::make($user);
         }
 
