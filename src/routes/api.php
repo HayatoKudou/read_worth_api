@@ -24,7 +24,7 @@ Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])-
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
 // TODO: verified は後で
-Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verify']], function (): void {
+Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']], function (): void {
     Route::get('/user', [UserController::class, 'me']);
     Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);

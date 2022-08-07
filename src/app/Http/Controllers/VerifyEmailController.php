@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Auth\Events\PasswordReset;
+use App\Http\Response\Auth\CallbackGoogleAuthResponse;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class VerifyEmailController extends Controller
@@ -19,21 +20,9 @@ class VerifyEmailController extends Controller
     public function verify(Request $request): RedirectResponse
     {
         $user = User::find($request->route('id'));
-        $param = [
-            'id' => $user->id,
-            'clientId' => $user->client_id,
-            'name' => $user->name,
-            'email' => $user->email,
-            'apiToken' => $user->api_token,
-            'purchase_balance' => $user->purchase_balance,
-            'is_account_manager' => $user->role->is_account_manager,
-            'is_book_manager' => $user->role->is_book_manager,
-            'is_client_manager' => $user->role->is_client_manager,
-        ];
 
         if ($user->hasVerifiedEmail()) {
-            $query = http_build_query($param);
-            return redirect()->away(config('front.url') . "/callback-auth?${query}");
+            return CallbackGoogleAuthResponse::make($user);
         }
 
         if ($user->markEmailAsVerified()) {
@@ -41,8 +30,7 @@ class VerifyEmailController extends Controller
         }
 
         if ($user->password_setting_at) {
-            $query = http_build_query($param);
-            return redirect()->away(config('front.url') . "/callback-auth?${query}");
+            return CallbackGoogleAuthResponse::make($user);
         }
         return redirect()->away(config('front.url') . '/password-setting');
     }

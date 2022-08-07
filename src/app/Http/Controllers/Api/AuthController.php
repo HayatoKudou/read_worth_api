@@ -13,12 +13,13 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Auth\Events\Registered;
 use Laravel\Socialite\Facades\Socialite;
 use App\Http\Requests\Auth\SignInRequestEmail;
 use App\Http\Requests\Auth\SignUpRequestEmail;
-use App\Http\Requests\Auth\SignInGoogleRequest;
 use App\Http\Requests\Auth\PasswordSettingRequest;
+use App\Http\Response\Auth\CallbackGoogleAuthResponse;
 
 class AuthController
 {
@@ -33,31 +34,6 @@ class AuthController
 
         if (!$user->hasVerifiedEmail()) {
             return response()->json(['errors' => ['custom' => 'メール認証を完了させてください']], 403);
-        }
-
-        return response()->json([
-            'me' => [
-                'id' => $user->id,
-                'clientId' => $user->client_id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'apiToken' => $user->api_token,
-                'role' => [
-                    'is_account_manager' => $user->role->is_account_manager,
-                    'is_book_manager' => $user->role->is_book_manager,
-                    'is_client_manager' => $user->role->is_client_manager,
-                ],
-            ],
-        ]);
-    }
-
-    public function signInGoogle(SignInGoogleRequest $request): JsonResponse
-    {
-        $validated = $request->validated();
-        $user = User::where(['email' => $validated['email']])->first();
-
-        if (null === $user || $user->google_access_token !== $validated->accessToken) {
-            return response()->json(['errors' => ['custom' => '認証に失敗しました']], 401);
         }
 
         return response()->json([
@@ -120,9 +96,15 @@ class AuthController
         return response()->json(['connectUrl' => $connectUrl]);
     }
 
-    public function callbackGoogleAuth(): \Illuminate\Http\RedirectResponse
+    public function callbackGoogleAuth(): RedirectResponse
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
+        $user = User::where('email', $googleUser->getEmail())->first();
+
+        if ($user) {
+            return CallbackGoogleAuthResponse::make($user);
+        }
+
         return DB::transaction(function () use ($googleUser) {
             $plan = Plan::where('name', 'free')->first();
             $client = Client::create([
@@ -153,19 +135,7 @@ class AuthController
                 'is_client_manager' => 1,
             ]);
 
-            $param = [
-                'id' => $user->id,
-                'clientId' => $user->client_id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'apiToken' => $user->api_token,
-                'purchase_balance' => $user->purchase_balance,
-                'is_account_manager' => $user->role->is_account_manager,
-                'is_book_manager' => $user->role->is_book_manager,
-                'is_client_manager' => $user->role->is_client_manager,
-            ];
-            $query = http_build_query($param);
-            return redirect()->away(config('front.url') . "/callback-auth?${query}");
+            return CallbackGoogleAuthResponse::make($user);
         });
     }
 
