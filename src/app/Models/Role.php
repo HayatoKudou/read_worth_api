@@ -14,14 +14,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property bool $is_account_manager
  * @property bool $is_book_manager
  * @property bool $is_client_manager
+ *
  * @method static Builder|\App\Models\User newModelQuery()
  * @method static Builder|\App\Models\User newQuery()
  * @method static Builder|\App\Models\User query()
  * @mixin Builder
+ *
  * @property int $id
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\User $user
+ *
  * @method static Builder|Role whereCreatedAt($value)
  * @method static Builder|Role whereId($value)
  * @method static Builder|Role whereIsAccountManager($value)

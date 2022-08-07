@@ -3,18 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
+use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Client;
 use Illuminate\Support\Str;
+use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
+use Laravel\Socialite\Facades\Socialite;
 use App\Http\Requests\Auth\SignInRequestEmail;
 use App\Http\Requests\Auth\SignUpRequestEmail;
 use App\Http\Requests\Auth\SignInGoogleRequest;
-use App\Http\Requests\Auth\SignUpGoogleRequest;
 use App\Http\Requests\Auth\PasswordSettingRequest;
 
 class AuthController
@@ -77,8 +80,21 @@ class AuthController
     {
         $validated = $request->validated();
         return DB::transaction(function () use ($validated): JsonResponse {
+            $plan = Plan::where('name', 'free')->first();
+            $client = Client::create([
+                'name' => uniqid(),
+                'enable_purchase_limit' => false,
+                'purchase_limit' => 0,
+                'purchase_limit_unit' => 'monthly',
+                'private_ownership_allow' => false,
+                'plan_id' => $plan->id,
+            ]);
+            BookCategory::create([
+                'client_id' => $client->id,
+                'name' => 'ALL',
+            ]);
             $user = User::create([
-                'client_id' => null,
+                'client_id' => $client->id,
                 'name' => $validated['name'],
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
@@ -94,18 +110,39 @@ class AuthController
             ]);
             event(new Registered($user));
 
-            return response()->json(['userId' => $user->id]);
+            return response()->json();
         });
     }
 
-    public function signUpGoogle(SignUpGoogleRequest $request)
+    public function generateGoogleAuthUrl(): JsonResponse
     {
-        $validated = $request->validated();
-        return DB::transaction(function () use ($validated): JsonResponse {
+        $connectUrl = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
+        return response()->json(['connectUrl' => $connectUrl]);
+    }
+
+    public function callbackGoogleAuth(): \Illuminate\Http\RedirectResponse
+    {
+        $googleUser = Socialite::driver('google')->stateless()->user();
+        return DB::transaction(function () use ($googleUser) {
+            $plan = Plan::where('name', 'free')->first();
+            $client = Client::create([
+                'name' => uniqid(),
+                'enable_purchase_limit' => false,
+                'purchase_limit' => 0,
+                'purchase_limit_unit' => 'monthly',
+                'private_ownership_allow' => false,
+                'plan_id' => $plan->id,
+            ]);
+            BookCategory::create([
+                'client_id' => $client->id,
+                'name' => 'ALL',
+            ]);
             $user = User::create([
-                'email' => $validated['email'],
-                'name' => $validated['name'],
-                'google_access_token' => $validated['accessToken'],
+                'client_id' => $client->id,
+                'email' => $googleUser->getEmail(),
+                'name' => $googleUser->getName(),
+                'email_verified_at' => now(),
+                'google_access_token' => $googleUser->token,
                 'purchase_balance' => 0,
                 'api_token' => Str::random(60),
             ]);
@@ -116,7 +153,19 @@ class AuthController
                 'is_client_manager' => 1,
             ]);
 
-            return response()->json(['userId' => $user->id]);
+            $param = [
+                'id' => $user->id,
+                'clientId' => $user->client_id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'apiToken' => $user->api_token,
+                'purchase_balance' => $user->purchase_balance,
+                'is_account_manager' => $user->role->is_account_manager,
+                'is_book_manager' => $user->role->is_book_manager,
+                'is_client_manager' => $user->role->is_client_manager,
+            ];
+            $query = http_build_query($param);
+            return redirect()->away(config('front.url') . "/callback-auth?${query}");
         });
     }
 
