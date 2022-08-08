@@ -232,6 +232,7 @@ class BookController extends Controller
                 return response()->json([], 201);
             });
         } catch (AuthorizationException $e) {
+            \Log::debug($e->getMessage());
             return response()->json([], 402);
         }
     }
