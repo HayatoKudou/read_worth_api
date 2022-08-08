@@ -1,22 +1,48 @@
-version: "3.9"
-volumes:
-  db-store:
-  psysh-store:
+version: "3"
+
 services:
   app:
-    build:
-      context: .
-      dockerfile: ./infra/docker/php/Dockerfile
-      target: ${APP_BUILD_TARGET:-development}
+    container_name: read_worth_app
+    image: read_worth_backend
+    command: /opt/app/docker/start-webapp.sh
+    ports:
+      - 8000:80
     volumes:
-      - type: bind
-        source: ./src
-        target: /data
-      - type: volume
-        source: psysh-store
-        target: /root/.config/psysh
-        volume:
-          nocopy: true
+      - ./src/docker/php/app-dev.ini:/etc/php/8.1/mods-available/app.ini:ro
+      - ./src:/opt/app
+
+  swagger-editor:
+    container_name: read_worth_swagger_editor
+    image: swaggerapi/swagger-editor
+    ports:
+      - 8001:8080
+    volumes:
+      - ./api_oas_v3.yaml:/opt/api_oas_v3.yaml
+    environment:
+      SWAGGER_FILE: /opt/api_oas_v3.yaml
+
+  db:
+    container_name: read_worth_db
+    image: mysql:8
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: read_worth
+      TZ: 'Asia/Tokyo'
+    command: mysqld --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - ./database/docker/db/data:/var/lib/mysql
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    ports:
+      - 3307:3306
+
+  mailhog:
+    container_name: read_worth_mailhog
+    image: mailhog/mailhog
+    ports:
+      - target: 8025
+        published: 8025
+        protocol: tcp
+        mode: host
 
   https-portal:
     image: steveltn/https-portal:1
@@ -28,43 +54,3 @@ services:
       DOMAINS: 'api-readworth.info-> http://web:8000'
       # STAGE: 'production'
       # FORCE_RENEW: 'true'
-
-  web:
-    build:
-      context: .
-      dockerfile: ./infra/docker/nginx/Dockerfile
-    ports:
-      - "8000:8000"
-    volumes:
-      - type: bind
-        source: ./src
-        target: /data
-
-  db:
-    build:
-      context: .
-      dockerfile: ./infra/docker/mysql/Dockerfile
-    ports:
-      - target: 3306
-        published: 3306
-        protocol: tcp
-        mode: host
-    volumes:
-      - type: volume
-        source: db-store
-        target: /var/lib/mysql
-        volume:
-          nocopy: true
-    environment:
-      - MYSQL_DATABASE=laravel
-      - MYSQL_USER=phper
-      - MYSQL_PASSWORD=secret
-      - MYSQL_ROOT_PASSWORD=secret
-
-  mailhog:
-    image: mailhog/mailhog
-    ports:
-      - target: 8025
-        published: 8025
-        protocol: tcp
-        mode: host
