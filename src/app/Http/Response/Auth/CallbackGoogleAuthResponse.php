@@ -21,6 +21,6 @@ class CallbackGoogleAuthResponse
             'is_client_manager' => $user->role->is_client_manager,
         ];
         $query = http_build_query($param);
-        return redirect()->away(config('front.url') . "/callback-auth?${query}");
+        return redirect()->away(config('front.url') . "/callback-auth?{$query}");
     }
 }

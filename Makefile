@@ -7,7 +7,7 @@ lint:
 	yarn prettier --check "**/*.php"
 
 fmt:
-	yarn prettier --write "**/*.php"
+	./src/vendor/bin/php-cs-fixer fix ./src -v --allow-risky=yes
 
 test:
 	yarn dredd
