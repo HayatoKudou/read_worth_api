@@ -1,6 +1,4 @@
-FROM public.ecr.aws/ubuntu/ubuntu:22.04_stable
-
-ENV DEBIAN_FRONTEND=noninteractive
+FROM ubuntu
 
 # Basic
 ## Locale
