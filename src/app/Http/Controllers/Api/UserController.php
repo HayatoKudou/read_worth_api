@@ -36,9 +36,9 @@ class UserController extends Controller
                 'email' => $user->email,
                 'apiToken' => $user->api_token,
                 'role' => [
-                    'is_account_manager' => $user->role->is_account_manager,
-                    'is_book_manager' => $user->role->is_book_manager,
-                    'is_client_manager' => $user->role->is_client_manager,
+                    'isAccountManager' => $user->role->is_account_manager,
+                    'isBookManager' => $user->role->is_book_manager,
+                    'isClientManager' => $user->role->is_client_manager,
                 ],
             ]]);
         } catch (AuthorizationException $e) {
@@ -59,9 +59,9 @@ class UserController extends Controller
                     'name' => $user->name,
                     'email' => $user->email,
                     'role' => [
-                        'is_account_manager' => $user->role->is_account_manager,
-                        'is_book_manager' => $user->role->is_book_manager,
-                        'is_client_manager' => $user->role->is_client_manager,
+                        'isAccountManager' => $user->role->is_account_manager,
+                        'isBookManager' => $user->role->is_book_manager,
+                        'isClientManager' => $user->role->is_client_manager,
                     ],
                 ]),
             ]);

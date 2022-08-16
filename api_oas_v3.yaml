@@ -14,15 +14,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  user:
-                    type: object
-                    properties:
-                      id:
-                        type: number
-                      clientId:
-                        type: number
+                $ref: '#/components/schemas/UserResponse'
 
 components:
   schemas:
@@ -39,3 +31,12 @@ components:
           type: string
         apiToken:
             type: string
+        role:
+          type: array
+          properties:
+            isAccountManager:
+              type: boolean
+            isBookManager:
+              type: boolean
+            isClientManager:
+              type: boolean
