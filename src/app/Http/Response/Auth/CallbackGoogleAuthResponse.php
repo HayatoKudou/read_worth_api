@@ -15,7 +15,6 @@ class CallbackGoogleAuthResponse
             'name' => $user->name,
             'email' => $user->email,
             'apiToken' => $user->api_token,
-            'purchase_balance' => $user->purchase_balance,
             'is_account_manager' => $user->role->is_account_manager,
             'is_book_manager' => $user->role->is_book_manager,
             'is_client_manager' => $user->role->is_client_manager,

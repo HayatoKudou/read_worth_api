@@ -59,10 +59,6 @@ class AuthController
             $plan = Plan::where('name', 'free')->first();
             $client = Client::create([
                 'name' => uniqid(),
-                'enable_purchase_limit' => false,
-                'purchase_limit' => 0,
-                'purchase_limit_unit' => 'monthly',
-                'private_ownership_allow' => false,
                 'plan_id' => $plan->id,
             ]);
             BookCategory::create([
@@ -75,7 +71,6 @@ class AuthController
                 'email' => $validated['email'],
                 'password' => Hash::make($validated['password']),
                 'password_setting_at' => Carbon::now(),
-                'purchase_balance' => 0,
                 'api_token' => Str::random(60),
             ]);
             Role::create([
@@ -113,10 +108,6 @@ class AuthController
             $plan = Plan::where('name', 'free')->first();
             $client = Client::create([
                 'name' => uniqid(),
-                'enable_purchase_limit' => false,
-                'purchase_limit' => 0,
-                'purchase_limit_unit' => 'monthly',
-                'private_ownership_allow' => false,
                 'plan_id' => $plan->id,
             ]);
             BookCategory::create([
@@ -129,7 +120,6 @@ class AuthController
                 'name' => $googleUser->getName(),
                 'email_verified_at' => now(),
                 'google_access_token' => $googleUser->token,
-                'purchase_balance' => 0,
                 'api_token' => Str::random(60),
             ]);
             Role::create([

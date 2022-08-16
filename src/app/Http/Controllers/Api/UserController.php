@@ -35,7 +35,6 @@ class UserController extends Controller
                 'name' => $user->name,
                 'email' => $user->email,
                 'apiToken' => $user->api_token,
-                'purchase_balance' => $user->purchase_balance,
                 'role' => [
                     'is_account_manager' => $user->role->is_account_manager,
                     'is_book_manager' => $user->role->is_book_manager,
@@ -82,7 +81,6 @@ class UserController extends Controller
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
                     'password' => Str::random(60),
-                    'purchase_balance' => $client->purchase_limit,
                     'api_token' => Str::random(60),
                 ]);
                 event(new Registered($user));

@@ -16,10 +16,6 @@ class ClientController
             'id' => $client->id,
             'name' => $client->name,
             'plan' => $client->plan->name,
-            'enablePurchaseLimit' => (bool) $client->enable_purchase_limit,
-            'purchaseLimit' => $client->purchase_limit,
-            'purchaseLimitUnit' => $client->purchase_limit_unit,
-            'privateOwnershipAllow' => (bool) $client->private_ownership_allow,
             'users' => count($client->users),
             'books' => count($client->books),
         ]]);
@@ -28,13 +24,7 @@ class ClientController
     public function update(UpdateRequest $request): JsonResponse
     {
         $client = User::find(Auth::id())->client;
-        $client->update([
-            'name' => $request->get('name'),
-            'enable_purchase_limit' => $request->get('enable_purchase_limit'),
-            'purchase_limit' => $request->get('purchase_limit'),
-            'purchase_limit_unit' => $request->get('purchase_limit_unit'),
-            'private_ownership_allow' => $request->get('private_ownership_allow'),
-        ]);
+        $client->update(['name' => $request->get('name')]);
         return response()->json(['client' => $client], 201);
     }
 }
