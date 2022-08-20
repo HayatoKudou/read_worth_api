@@ -36,7 +36,7 @@ class BookReviewController extends Controller
                 return response()->json([], 201);
             });
         } catch (AuthorizationException $e) {
-            return response()->json([], 402);
+            return response()->json([], 403);
         }
     }
 }

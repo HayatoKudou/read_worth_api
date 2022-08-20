@@ -5,7 +5,6 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ClientController;
-use App\Http\Controllers\VerifyEmailController;
 use App\Http\Controllers\Api\FeedBackController;
 use App\Http\Controllers\Api\BookReviewController;
 use App\Http\Controllers\Api\BookHistoryController;
@@ -13,18 +12,12 @@ use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
 
-Route::post('/signIn', [AuthController::class, 'signInEmail']);
 Route::post('/signInGoogle', [AuthController::class, 'signInGoogle']);
-Route::post('/signUp', [AuthController::class, 'signUpEmail']);
 Route::post('/signUpGoogle', [AuthController::class, 'signUpGoogle']);
-Route::post('/password-setting', [AuthController::class, 'passwordSetting']);
-Route::post('/email/verify/resend', [VerifyEmailController::class, 'resendVerify']);
-Route::post('/forgot-password', [VerifyEmailController::class, 'forgotPassword'])->name('password.email');
-Route::post('/reset-password', [VerifyEmailController::class, 'resetPassword'])->name('password.update');
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
 // TODO: verified は後で
-Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api', 'verified']], function (): void {
+Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/me', [UserController::class, 'me']);
     Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);

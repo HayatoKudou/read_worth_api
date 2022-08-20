@@ -10,21 +10,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * App\Models\Role.
  *
- * @property number $user_id
- * @property bool $is_account_manager
- * @property bool $is_book_manager
- * @property bool $is_client_manager
- *
- * @method static Builder|\App\Models\User newModelQuery()
- * @method static Builder|\App\Models\User newQuery()
- * @method static Builder|\App\Models\User query()
- * @mixin Builder
- *
  * @property int $id
+ * @property int $user_id
+ * @property int $is_account_manager
+ * @property int $is_book_manager
+ * @property int $is_client_manager
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\User $user
  *
+ * @method static Builder|Role newModelQuery()
+ * @method static Builder|Role newQuery()
+ * @method static Builder|Role query()
  * @method static Builder|Role whereCreatedAt($value)
  * @method static Builder|Role whereId($value)
  * @method static Builder|Role whereIsAccountManager($value)
@@ -32,7 +29,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Role whereIsClientManager($value)
  * @method static Builder|Role whereUpdatedAt($value)
  * @method static Builder|Role whereUserId($value)
- * @method static \Database\Factories\RoleFactory factory(...$parameters)
+ * @mixin \Eloquent
  */
 class Role extends Model
 {

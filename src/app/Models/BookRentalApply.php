@@ -2,35 +2,30 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\BookPurchaseApply.
+ * App\Models\BookRentalApply.
  *
- * @property number $id
- * @property number $user_id
- * @property number $client_id
- * @property number $book_id
- * @property string $reason
- * @property string $review
- * @property Carbon $rental_date
- * @property Carbon $expected_return_date
- * @property Carbon $return_date
- * @property User $user
- *
- * @method static Builder|BookCategory newModelQuery()
- * @method static Builder|BookCategory newQuery()
- * @method static Builder|BookCategory query()
- * @method static Builder|BookCategory organization()
- * @mixin Builder
- *
+ * @property int $id
+ * @property int $user_id
+ * @property int $client_id
+ * @property int $book_id
+ * @property string $reason 申請理由
+ * @property string $rental_date 貸出日
+ * @property string $expected_return_date 返却予定日
+ * @property null|string $return_date 返却日
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\User $user
  *
+ * @method static Builder|BookRentalApply newModelQuery()
+ * @method static Builder|BookRentalApply newQuery()
+ * @method static Builder|BookRentalApply organization(string $clientId)
+ * @method static Builder|BookRentalApply query()
  * @method static Builder|BookRentalApply whereBookId($value)
  * @method static Builder|BookRentalApply whereClientId($value)
  * @method static Builder|BookRentalApply whereCreatedAt($value)
@@ -39,9 +34,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|BookRentalApply whereReason($value)
  * @method static Builder|BookRentalApply whereRentalDate($value)
  * @method static Builder|BookRentalApply whereReturnDate($value)
- * @method static Builder|BookRentalApply whereReview($value)
  * @method static Builder|BookRentalApply whereUpdatedAt($value)
  * @method static Builder|BookRentalApply whereUserId($value)
+ * @mixin \Eloquent
  */
 class BookRentalApply extends Model
 {

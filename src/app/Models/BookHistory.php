@@ -10,6 +10,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\BookHistory.
  *
  * @property int $id
+ * @property int $user_id
  * @property int $book_id
  * @property string $action
  * @property null|\Illuminate\Support\Carbon $created_at
@@ -25,11 +26,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|BookHistory whereCreatedAt($value)
  * @method static Builder|BookHistory whereId($value)
  * @method static Builder|BookHistory whereUpdatedAt($value)
- * @mixin \Eloquent
- *
- * @property int $user_id
- *
  * @method static Builder|BookHistory whereUserId($value)
+ * @mixin \Eloquent
  */
 class BookHistory extends Model
 {

@@ -9,36 +9,26 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 /**
  * App\Models\BookReview.
  *
- * @property number $id
- * @property number $user_id
- * @property number $book_id
- * @property int rate
+ * @property int $id
+ * @property int $user_id
+ * @property int $book_id
  * @property string $review
- * @property User $user
- *
- * @method static Builder|BookCategory newModelQuery()
- * @method static Builder|BookCategory newQuery()
- * @method static Builder|BookCategory query()
- * @method static Builder|BookCategory organization()
- * @mixin Builder
- *
+ * @property int $rate
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\User $user
  *
- * @method static Builder|BookRentalApply whereBookId($value)
- * @method static Builder|BookRentalApply whereClientId($value)
- * @method static Builder|BookRentalApply whereCreatedAt($value)
- * @method static Builder|BookRentalApply whereExpectedReturnDate($value)
- * @method static Builder|BookRentalApply whereId($value)
- * @method static Builder|BookRentalApply whereReason($value)
- * @method static Builder|BookRentalApply whereRentalDate($value)
- * @method static Builder|BookRentalApply whereReturnDate($value)
- * @method static Builder|BookRentalApply whereReview($value)
- * @method static Builder|BookRentalApply whereUpdatedAt($value)
- * @method static Builder|BookRentalApply whereUserId($value)
+ * @method static Builder|BookReview newModelQuery()
+ * @method static Builder|BookReview newQuery()
+ * @method static Builder|BookReview query()
+ * @method static Builder|BookReview whereBookId($value)
+ * @method static Builder|BookReview whereCreatedAt($value)
+ * @method static Builder|BookReview whereId($value)
  * @method static Builder|BookReview whereRate($value)
- *
- * @property int $rate
+ * @method static Builder|BookReview whereReview($value)
+ * @method static Builder|BookReview whereUpdatedAt($value)
+ * @method static Builder|BookReview whereUserId($value)
+ * @mixin \Eloquent
  */
 class BookReview extends Model
 {

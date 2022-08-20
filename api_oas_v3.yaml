@@ -8,6 +8,13 @@ paths:
   /api/{clientId}/me:
     get:
       summary: 自分の情報
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
       responses:
         "200":
           description: OK
@@ -15,6 +22,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
+        "403":
+          description: "指定された組織にユーザーがいない場合"
 
 components:
   schemas:
@@ -23,20 +32,30 @@ components:
       properties:
         id:
           type: number
+          example: 1
         clientId:
           type: number
+          example: 1
         name:
           type: string
+          example: 工藤
         email:
           type: string
+          example: tetetest@gmail.com
         apiToken:
             type: string
+            example: xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T
         role:
           type: array
-          properties:
-            isAccountManager:
-              type: boolean
-            isBookManager:
-              type: boolean
-            isClientManager:
-              type: boolean
+          items:
+            type: object
+            properties:
+              isAccountManager:
+                type: boolean
+                example: true
+              isBookManager:
+                type: boolean
+                example: true
+              isClientManager:
+                type: boolean
+                example: true

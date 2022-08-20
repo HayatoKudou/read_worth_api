@@ -33,8 +33,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Plan wherePrice($value)
  * @method static Builder|Plan whereUpdatedAt($value)
  * @mixin \Eloquent
- *
- * @method static \Database\Factories\PlanFactory factory(...$parameters)
  */
 class Plan extends Authenticate
 {

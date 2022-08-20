@@ -42,7 +42,7 @@ class UserController extends Controller
                 ],
             ]]);
         } catch (AuthorizationException $e) {
-            return response()->json([], 402);
+            return response()->json([], 403);
         }
     }
 
@@ -66,7 +66,7 @@ class UserController extends Controller
                 ]),
             ]);
         } catch (AuthorizationException $e) {
-            return response()->json([], 402);
+            return response()->json([], 403);
         }
     }
 
@@ -93,7 +93,7 @@ class UserController extends Controller
             });
             return response()->json();
         } catch (AuthorizationException $e) {
-            return response()->json([], 402);
+            return response()->json([], 403);
         }
     }
 
@@ -127,7 +127,7 @@ class UserController extends Controller
                 return response()->json();
             });
         } catch (AuthorizationException $e) {
-            return response()->json([], 402);
+            return response()->json([], 403);
         }
     }
 
@@ -147,7 +147,7 @@ class UserController extends Controller
             });
             return response()->json([]);
         } catch (AuthorizationException $e) {
-            return response()->json([], 402);
+            return response()->json([], 403);
         }
     }
 }

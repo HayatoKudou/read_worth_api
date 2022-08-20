@@ -16,30 +16,31 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 /**
  * App\Models\Book.
  *
- * @property number $id
- * @property number $client_id
- * @property number $book_category_id
- * @property number $status
+ * @property int $id
+ * @property int $client_id
+ * @property int $book_category_id
+ * @property int $status
  * @property string $title
- * @property string $description
- * @property string $image_path
- * @property string $url
- * @property BookCategory $category
- * @property BookPurchaseApply $purchaseApply
- * @property BookRentalApply $rentalApply
- * @property BookHistory[] $histories
- * @property BookReview[] $reviews
- *
- * @method static Builder|\App\Models\User newModelQuery()
- * @method static Builder|\App\Models\User newQuery()
- * @method static Builder|\App\Models\User query()
- * @method static Builder|\App\Models\User organization()
- * @mixin Builder
- *
+ * @property null|string $description
+ * @property null|string $image_path
+ * @property null|string $url
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\BookCategory $category
  * @property \App\Models\Client $client
+ * @property \App\Models\BookHistory[]|\Illuminate\Database\Eloquent\Collection $histories
+ * @property null|int $histories_count
+ * @property null|\App\Models\BookPurchaseApply $purchaseApply
+ * @property null|\App\Models\BookRentalApply $rentalApply
+ * @property \App\Models\BookRentalApply[]|\Illuminate\Database\Eloquent\Collection $rentalHistories
+ * @property null|int $rental_histories_count
+ * @property \App\Models\BookReview[]|\Illuminate\Database\Eloquent\Collection $reviews
+ * @property null|int $reviews_count
  *
+ * @method static Builder|Book newModelQuery()
+ * @method static Builder|Book newQuery()
+ * @method static Builder|Book organization(string $clientId)
+ * @method static Builder|Book query()
  * @method static Builder|Book whereBookCategoryId($value)
  * @method static Builder|Book whereClientId($value)
  * @method static Builder|Book whereCreatedAt($value)
@@ -49,15 +50,8 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @method static Builder|Book whereStatus($value)
  * @method static Builder|Book whereTitle($value)
  * @method static Builder|Book whereUpdatedAt($value)
- *
- * @property null|int $reviews_count
- *
- * @method static \Database\Factories\BookFactory factory(...$parameters)
  * @method static Builder|Book whereUrl($value)
- *
- * @property null|int $histories_count
- * @property \App\Models\BookRentalApply[]|\Illuminate\Database\Eloquent\Collection $rentalHistories
- * @property null|int $rental_histories_count
+ * @mixin \Eloquent
  */
 class Book extends Model
 {
