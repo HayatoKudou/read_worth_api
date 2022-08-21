@@ -49,7 +49,10 @@ class Handler extends ExceptionHandler
 
     public function report(Throwable $e): void
     {
-        \Log::debug($e->getMessage());
+        \Log::error($e->getMessage(), [
+            'file' => $e->getFile(),
+            'line' => $e->getLine(),
+        ]);
 
         if ($this->shouldReport($e) && 'production' === config('app.env')) {
             $postMessage = sprintf("File: %s\nLine: %d\nMessage: %s", $e->getFile(), $e->getLine(), $e->getMessage());

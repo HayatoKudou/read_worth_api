@@ -1,3 +1,58 @@
+CREATE TABLE `plans`
+(
+    `id`          bigint unsigned NOT NULL AUTO_INCREMENT,
+    `name`        varchar(50)     NOT NULL COMMENT 'プラン名',
+    `price`       smallint        NOT NULL COMMENT 'プラン価格',
+    `max_members` smallint        NOT NULL COMMENT 'メンバー上限数',
+    `max_books`   smallint        NOT NULL COMMENT '書籍上限数',
+    `created_at`  timestamp       NULL DEFAULT NULL,
+    `updated_at`  timestamp       NULL DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `clients`
+(
+    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
+    `plan_id`    bigint unsigned NOT NULL,
+    `name`       varchar(255)    NOT NULL,
+    `created_at` timestamp       NULL DEFAULT NULL,
+    `updated_at` timestamp       NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `clients_name_unique` (`name`),
+    CONSTRAINT `clients_fk1` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `users`
+(
+    `id`                  bigint unsigned NOT NULL AUTO_INCREMENT,
+    `name`                varchar(255)    NOT NULL,
+    `email`               varchar(255)    NOT NULL,
+    `google_access_token` varchar(255)         DEFAULT NULL,
+    `api_token`           varchar(80)          DEFAULT NULL,
+    `created_at`          timestamp       NULL DEFAULT NULL,
+    `updated_at`          timestamp       NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `users_email_unique` (`email`),
+    UNIQUE KEY `users_api_token_unique` (`api_token`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `belongings`
+(
+    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
+    `user_id`    bigint unsigned      DEFAULT NULL,
+    `client_id`  bigint unsigned      DEFAULT NULL,
+    `created_at` timestamp       NULL DEFAULT NULL,
+    `updated_at` timestamp       NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    CONSTRAINT `belongings_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
+    CONSTRAINT `belongings_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+
 CREATE TABLE `book_category`
 (
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -7,6 +62,25 @@ CREATE TABLE `book_category`
     `updated_at` timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `book_category_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `books`
+(
+    `id`               bigint unsigned NOT NULL AUTO_INCREMENT,
+    `client_id`        bigint unsigned NOT NULL,
+    `book_category_id` bigint unsigned NOT NULL,
+    `status`           smallint        NOT NULL,
+    `title`            varchar(255)    NOT NULL,
+    `description`      text,
+    `image_path`       varchar(255)         DEFAULT NULL,
+    `url`              text,
+    `created_at`       timestamp       NULL DEFAULT NULL,
+    `updated_at`       timestamp       NULL DEFAULT NULL,
+    PRIMARY KEY (`id`),
+    KEY `books_book_category_id_foreign` (`book_category_id`),
+    CONSTRAINT `books_fk1` FOREIGN KEY (`book_category_id`) REFERENCES `book_category` (`id`),
+    CONSTRAINT `books_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -79,51 +153,6 @@ CREATE TABLE `book_reviews`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE `books`
-(
-    `id`               bigint unsigned NOT NULL AUTO_INCREMENT,
-    `client_id`        bigint unsigned NOT NULL,
-    `book_category_id` bigint unsigned NOT NULL,
-    `status`           smallint        NOT NULL,
-    `title`            varchar(255)    NOT NULL,
-    `description`      text,
-    `image_path`       varchar(255)         DEFAULT NULL,
-    `url`              text,
-    `created_at`       timestamp       NULL DEFAULT NULL,
-    `updated_at`       timestamp       NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    KEY `books_book_category_id_foreign` (`book_category_id`),
-    CONSTRAINT `books_fk1` FOREIGN KEY (`book_category_id`) REFERENCES `book_category` (`id`),
-    CONSTRAINT `books_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `clients`
-(
-    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
-    `plan_id`    bigint unsigned NOT NULL,
-    `name`       varchar(255)    NOT NULL,
-    `created_at` timestamp       NULL DEFAULT NULL,
-    `updated_at` timestamp       NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `clients_name_unique` (`name`),
-    CONSTRAINT `clients_fk1` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `plans`
-(
-    `id`          bigint unsigned NOT NULL AUTO_INCREMENT,
-    `name`        varchar(50)     NOT NULL COMMENT 'プラン名',
-    `price`       smallint        NOT NULL COMMENT 'プラン価格',
-    `max_members` smallint        NOT NULL COMMENT 'メンバー上限数',
-    `max_books`   smallint        NOT NULL COMMENT '書籍上限数',
-    `created_at`  timestamp       NULL DEFAULT NULL,
-    `updated_at`  timestamp       NULL DEFAULT NULL,
-    PRIMARY KEY (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
 CREATE TABLE `roles`
 (
     `id`                 bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -149,35 +178,5 @@ CREATE TABLE `slack_credentials`
     `updated_at`   timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `users`
-(
-    `id`                  bigint unsigned NOT NULL AUTO_INCREMENT,
-    `client_id`           bigint unsigned      DEFAULT NULL,
-    `name`                varchar(255)    NOT NULL,
-    `email`               varchar(255)    NOT NULL,
-    `google_access_token` varchar(255)         DEFAULT NULL,
-    `api_token`           varchar(80)          DEFAULT NULL,
-    `created_at`          timestamp       NULL DEFAULT NULL,
-    `updated_at`          timestamp       NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    UNIQUE KEY `users_email_unique` (`email`),
-    UNIQUE KEY `users_api_token_unique` (`api_token`),
-    CONSTRAINT `users_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `employments`
-(
-    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`    bigint unsigned      DEFAULT NULL,
-    `client_id`  bigint unsigned      DEFAULT NULL,
-    `created_at` timestamp       NULL DEFAULT NULL,
-    `updated_at` timestamp       NULL DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    CONSTRAINT `employments_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    CONSTRAINT `employments_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

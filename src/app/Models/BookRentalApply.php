@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * App\Models\BookRentalApply.
@@ -40,8 +39,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class BookRentalApply extends Model
 {
-    use HasFactory;
-
     protected $guarded = [];
     protected $table = 'book_rental_applies';
 

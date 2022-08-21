@@ -6,6 +6,7 @@ use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Belonging;
 use Illuminate\Support\Str;
 use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
@@ -43,11 +44,14 @@ class AuthController
                 'name' => 'ALL',
             ]);
             $user = User::create([
-                'client_id' => $client->id,
                 'email' => $googleUser->getEmail(),
                 'name' => $googleUser->getName(),
                 'google_access_token' => $googleUser->token,
                 'api_token' => Str::random(60),
+            ]);
+            Belonging::create([
+                'user_id' => $user->id,
+                'client_id' => $user->id,
             ]);
             Role::create([
                 'user_id' => $user->id,

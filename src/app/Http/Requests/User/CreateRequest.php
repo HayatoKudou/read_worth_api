@@ -9,10 +9,8 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'client_id' => '',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
-            'roles' => '',
         ];
     }
 
@@ -21,7 +19,6 @@ class CreateRequest extends FormRequest
         return [
             'name' => '名前',
             'email' => 'メールアドレス',
-            'password' => 'パスワード',
         ];
     }
 }

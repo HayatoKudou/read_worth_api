@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
  * App\Models\Client.
@@ -37,13 +36,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  */
 class Client extends Authenticate
 {
-    use HasFactory;
-
     protected $guarded = [];
 
-    public function users(): HasMany
+    public function users(): BelongsToMany
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(
+            User::class,
+            'belongings',
+            'user_id',
+        );
     }
 
     public function books(): HasMany
@@ -54,10 +55,5 @@ class Client extends Authenticate
     public function plan(): BelongsTo
     {
         return $this->belongsTo(Plan::class);
-    }
-
-    public function slackCredential(): HasOne
-    {
-        return $this->hasOne(SlackCredential::class);
     }
 }

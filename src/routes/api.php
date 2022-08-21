@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ClientController;
@@ -12,8 +11,6 @@ use App\Http\Controllers\Api\BookCategoryController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use App\Http\Controllers\Api\BookPurchaseApplyController;
 
-Route::post('/signInGoogle', [AuthController::class, 'signInGoogle']);
-Route::post('/signUpGoogle', [AuthController::class, 'signUpGoogle']);
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
 // TODO: verified は後で

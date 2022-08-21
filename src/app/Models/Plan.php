@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property \App\Models\User[]|Collection $users
  * @property null|int $users_count
  *
+ * @method static \Database\Factories\PlanFactory factory(...$parameters)
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()

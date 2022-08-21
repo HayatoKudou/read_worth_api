@@ -15,6 +15,8 @@ paths:
             type: integer
           required: true
           example: 1
+      security:
+        - Bearer: [ ]
       responses:
         "200":
           description: OK
@@ -22,18 +24,68 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UserResponse'
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/users:
+    get:
+      summary: 組織に所属しているユーザー情報
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/user:
+    post:
+      summary: 組織にユーザー追加
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
         "403":
           description: "指定された組織にユーザーがいない場合"
 
 components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
   schemas:
     UserResponse:
       type: object
       properties:
         id:
-          type: number
-          example: 1
-        clientId:
           type: number
           example: 1
         name:
@@ -43,8 +95,8 @@ components:
           type: string
           example: tetetest@gmail.com
         apiToken:
-            type: string
-            example: xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T
+          type: string
+          example: xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T
         role:
           type: array
           items:
@@ -59,3 +111,60 @@ components:
               isClientManager:
                 type: boolean
                 example: true
+        clients:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: テテマーチ
+      required:
+        - id
+        - name
+        - email
+        - apiToken
+        - role
+        - clients
+    UsersResponse:
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: 工藤
+              email:
+                type: string
+                example: tetetest@gmail.com
+              apiToken:
+                type: string
+                example: xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T
+              role:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    isAccountManager:
+                      type: boolean
+                      example: true
+                    isBookManager:
+                      type: boolean
+                      example: true
+                    isClientManager:
+                      type: boolean
+                      example: true
+    UserCreateRequest:
+      properties:
+        name:
+          type: string
+          example: ""
+

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use Carbon\Carbon;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
@@ -14,8 +13,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Auth\Events\Registered;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\DeleteRequest;
 use App\Http\Requests\User\UpdateRequest;
@@ -28,10 +25,10 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $user = User::find(Auth::id());
-            return response()->json(['user' => [
+            $user = Auth::user();
+            $clients = $user->clients;
+            return response()->json([
                 'id' => $user->id,
-                'clientId' => $user->client_id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'apiToken' => $user->api_token,
@@ -40,7 +37,13 @@ class UserController extends Controller
                     'isBookManager' => $user->role->is_book_manager,
                     'isClientManager' => $user->role->is_client_manager,
                 ],
-            ]]);
+                'clients' => $clients->map(function ($client) {
+                    return [
+                        'id' => $client->id,
+                        'name' => $client->name,
+                    ];
+                }),
+            ]);
         } catch (AuthorizationException $e) {
             return response()->json([], 403);
         }
@@ -80,10 +83,8 @@ class UserController extends Controller
                     'client_id' => $client->id,
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
-                    'password' => Str::random(60),
                     'api_token' => Str::random(60),
                 ]);
-                event(new Registered($user));
                 Role::create([
                     'user_id' => $user->id,
                     'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),
@@ -112,13 +113,6 @@ class UserController extends Controller
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
                 ]);
-
-                if ($request->get('password')) {
-                    $user->update([
-                        'password' => Hash::make($request->get('password')),
-                        'password_setting_at' => Carbon::now(),
-                    ]);
-                }
                 Role::where('user_id', $user->id)->update([
                     'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),
                     'is_book_manager' => in_array('書籍管理', $request->get('roles'), true),

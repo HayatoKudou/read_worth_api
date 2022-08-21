@@ -15,7 +15,7 @@ class ClientPolicy
     {
         $userBelongsToClient = $client
             ->users()
-            ->where('id', $user->id)
+            ->where('users.id', $user->id)
             ->exists();
 
         return $userBelongsToClient
