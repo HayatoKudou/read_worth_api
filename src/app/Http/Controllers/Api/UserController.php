@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Belonging;
 use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
@@ -26,18 +27,17 @@ class UserController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $user = Auth::user();
-            $clients = $user->clients;
             return response()->json([
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
                 'apiToken' => $user->api_token,
                 'role' => [
-                    'isAccountManager' => $user->role->is_account_manager,
-                    'isBookManager' => $user->role->is_book_manager,
-                    'isClientManager' => $user->role->is_client_manager,
+                    'isAccountManager' => $user->role($clientId)->is_account_manager,
+                    'isBookManager' => $user->role($clientId)->is_book_manager,
+                    'isClientManager' => $user->role($clientId)->is_client_manager,
                 ],
-                'clients' => $clients->map(function ($client) {
+                'clients' => $user->clients->map(function ($client) {
                     return [
                         'id' => $client->id,
                         'name' => $client->name,
@@ -54,17 +54,15 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $users = User::organization($clientId)->get();
             return response()->json([
-                'users' => $users->map(fn (User $user) => [
+                'users' => $client->users->map(fn (User $user) => [
                     'id' => $user->id,
-                    'clientId' => $user->client_id,
                     'name' => $user->name,
                     'email' => $user->email,
                     'role' => [
-                        'isAccountManager' => $user->role->is_account_manager,
-                        'isBookManager' => $user->role->is_book_manager,
-                        'isClientManager' => $user->role->is_client_manager,
+                        'isAccountManager' => $user->role($clientId)->is_account_manager,
+                        'isBookManager' => $user->role($clientId)->is_book_manager,
+                        'isClientManager' => $user->role($clientId)->is_client_manager,
                     ],
                 ]),
             ]);
@@ -78,18 +76,23 @@ class UserController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            DB::transaction(function () use ($request, $client): void {
-                $user = User::create([
-                    'client_id' => $client->id,
-                    'name' => $request->get('name'),
-                    'email' => $request->get('email'),
+            $validated = $request->validated();
+            DB::transaction(function () use ($validated, $client): void {
+                $user = User::firstOrCreate([
+                    'email' => $validated['email'],
+                ], [
+                    'name' => $validated['name'],
                     'api_token' => Str::random(60),
+                ]);
+                Belonging::create([
+                    'user_id' => $user->id,
+                    'client_id' => $client->id,
                 ]);
                 Role::create([
                     'user_id' => $user->id,
-                    'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),
-                    'is_book_manager' => in_array('書籍管理', $request->get('roles'), true),
-                    'is_client_manager' => in_array('組織管理', $request->get('roles'), true),
+                    'is_account_manager' => in_array('アカウント管理', $validated['roles'], true),
+                    'is_book_manager' => in_array('書籍管理', $validated['roles'], true),
+                    'is_client_manager' => in_array('組織管理', $validated['roles'], true),
                 ]);
             });
             return response()->json();

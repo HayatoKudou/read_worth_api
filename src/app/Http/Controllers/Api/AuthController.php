@@ -51,7 +51,7 @@ class AuthController
             ]);
             Belonging::create([
                 'user_id' => $user->id,
-                'client_id' => $user->id,
+                'client_id' => $client->id,
             ]);
             Role::create([
                 'user_id' => $user->id,

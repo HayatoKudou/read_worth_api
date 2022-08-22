@@ -47,11 +47,14 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersResponse'
+        "401":
+          description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
+
   /api/{clientId}/user:
     post:
-      summary: 組織にユーザー追加
+      summary: ユーザー追加
       parameters:
         - in: path
           name: clientId
@@ -73,8 +76,66 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/UsersResponse'
+        "401":
+          description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
+    put:
+      summary: ユーザー更新
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserUpdateRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+    delete:
+      summary: ユーザー削除
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserCreateRequest'
+      responses:
+        "200":
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UsersResponse'
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+
+
 
 components:
   securitySchemes:
@@ -90,13 +151,13 @@ components:
           example: 1
         name:
           type: string
-          example: 工藤
+          example: "工藤"
         email:
           type: string
-          example: tetetest@gmail.com
+          example: "tetetest@gmail.com"
         apiToken:
           type: string
-          example: xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T
+          example: "xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T"
         role:
           type: array
           items:
@@ -121,7 +182,7 @@ components:
                 example: 1
               name:
                 type: string
-                example: テテマーチ
+                example: "テテマーチ"
       required:
         - id
         - name
@@ -141,13 +202,13 @@ components:
                 example: 1
               name:
                 type: string
-                example: 工藤
+                example: "工藤"
               email:
                 type: string
-                example: tetetest@gmail.com
+                example: "tetetest@gmail.com"
               apiToken:
                 type: string
-                example: xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T
+                example: "xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T"
               role:
                 type: array
                 items:
@@ -162,9 +223,27 @@ components:
                     isClientManager:
                       type: boolean
                       example: true
+      required:
+        - users
+        - id
+        - name
+        - email
+        - apiToken
+        - role
+        - clients
     UserCreateRequest:
       properties:
         name:
           type: string
-          example: ""
-
+          example: "工藤"
+        email:
+          type: string
+          example: "tetetest@gmail.com"
+        roles:
+          type: array
+          example: ["組織管理", "書籍管理"]
+      required:
+        - name
+        - email
+        - roles
+    UserUpdateRequest:

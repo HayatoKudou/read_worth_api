@@ -6,21 +6,22 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticate;
 
 /**
- * App\Models\Belonging.
+ * App\Models\Belonging
  *
  * @property int $id
- * @property null|int $user_id
- * @property null|int $client_id
- * @property null|\Illuminate\Support\Carbon $created_at
- * @property null|\Illuminate\Support\Carbon $updated_at
- * @property null|\App\Models\Client $client
- *
+ * @property int $user_id
+ * @property int $client_id
+ * @property int $role_id
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Client|null $client
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging query()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereClientId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereCreatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereRoleId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereUserId($value)
  * @mixin \Eloquent

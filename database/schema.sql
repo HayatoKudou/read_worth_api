@@ -42,13 +42,15 @@ CREATE TABLE `users`
 CREATE TABLE `belongings`
 (
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`    bigint unsigned      DEFAULT NULL,
-    `client_id`  bigint unsigned      DEFAULT NULL,
+    `user_id`    bigint unsigned NOT NULL,
+    `client_id`  bigint unsigned NOT NULL,
+    `role_id`    bigint unsigned NOT NULL,
     `created_at` timestamp       NULL DEFAULT NULL,
     `updated_at` timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `belongings_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    CONSTRAINT `belongings_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+    CONSTRAINT `belongings_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+    CONSTRAINT `belongings_fk3` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -156,14 +158,12 @@ CREATE TABLE `book_reviews`
 CREATE TABLE `roles`
 (
     `id`                 bigint unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`            bigint unsigned NOT NULL,
     `is_account_manager` tinyint(1)      NOT NULL DEFAULT '0',
     `is_book_manager`    tinyint(1)      NOT NULL DEFAULT '0',
     `is_client_manager`  tinyint(1)      NOT NULL DEFAULT '0',
     `created_at`         timestamp       NULL     DEFAULT NULL,
     `updated_at`         timestamp       NULL     DEFAULT NULL,
-    PRIMARY KEY (`id`),
-    CONSTRAINT `roles_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
+    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
