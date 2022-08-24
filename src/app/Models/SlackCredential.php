@@ -6,15 +6,16 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * App\Models\SlackCredential
+ * App\Models\SlackCredential.
  *
  * @property int $id
  * @property int $client_id
  * @property string $access_token
  * @property string $channel_id
  * @property string $channel_name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ *
  * @method static Builder|SlackCredential newModelQuery()
  * @method static Builder|SlackCredential newQuery()
  * @method static Builder|SlackCredential query()

@@ -13,13 +13,11 @@ class ClientController
     public function info(string $clientId): JsonResponse
     {
         $client = Client::find($clientId);
-        return response()->json(['client' => [
+        return response()->json([
             'id' => $client->id,
             'name' => $client->name,
             'plan' => $client->plan->name,
-            'users' => $client->users->count(),
-            'books' => $client->books->count(),
-        ]]);
+        ]);
     }
 
     public function update(UpdateRequest $request): JsonResponse

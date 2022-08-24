@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BookHistory
+ * App\Models\BookHistory.
  *
  * @property int $id
  * @property int $user_id
  * @property int $book_id
  * @property string $action
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\Book $book
- * @property-read \App\Models\User $user
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\Book $book
+ * @property \App\Models\User $user
+ *
  * @method static Builder|BookHistory newModelQuery()
  * @method static Builder|BookHistory newQuery()
  * @method static Builder|BookHistory query()
