@@ -12,16 +12,17 @@ class UpdateRequest extends FormRequest
             'id' => 'required',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
-            'password' => 'confirmed',
+            'roles' => 'required|array',
         ];
     }
 
     public function attributes(): array
     {
         return [
+            'id' => 'ユーザーID',
             'name' => '名前',
             'email' => 'メールアドレス',
-            'password' => 'パスワード',
+            'roles' => 'ロール',
         ];
     }
 }
