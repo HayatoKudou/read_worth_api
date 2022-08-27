@@ -84,15 +84,15 @@ class UserController extends Controller
                     'name' => $validated['name'],
                     'api_token' => Str::random(60),
                 ]);
-                Belonging::create([
-                    'user_id' => $user->id,
-                    'client_id' => $client->id,
-                ]);
-                Role::create([
-                    'user_id' => $user->id,
+                $role = Role::create([
                     'is_account_manager' => in_array('アカウント管理', $validated['roles'], true),
                     'is_book_manager' => in_array('書籍管理', $validated['roles'], true),
                     'is_client_manager' => in_array('組織管理', $validated['roles'], true),
+                ]);
+                Belonging::create([
+                    'user_id' => $user->id,
+                    'client_id' => $client->id,
+                    'role_id' => $role->id,
                 ]);
             });
             return response()->json();
