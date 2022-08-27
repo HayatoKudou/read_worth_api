@@ -19,6 +19,7 @@ class UpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'id' => 'ユーザーID',
             'name' => '名前',
             'email' => 'メールアドレス',
             'password' => 'パスワード',
