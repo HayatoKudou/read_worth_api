@@ -16,12 +16,13 @@ Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 // TODO: verified は後で
 Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/me', [UserController::class, 'me']);
-    Route::get('/users', [UserController::class, 'list']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
+    Route::get('/users', [UserController::class, 'list']);
     Route::delete('/user', [UserController::class, 'delete']);
     Route::get('/client', [ClientController::class, 'info']);
     Route::put('/client', [ClientController::class, 'update']);
+    Route::get('/clients', [ClientController::class, 'list']);
     Route::get('/books', [BookController::class, 'list']);
     Route::put('/book', [BookController::class, 'update']);
     Route::post('/book', [BookController::class, 'create']);
