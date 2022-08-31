@@ -296,8 +296,6 @@ paths:
                   - id
                   - name
                   - plan
-                  - userCount
-                  - bookCount
                 type: object
                 properties:
                   id:
@@ -309,7 +307,154 @@ paths:
                   plan:
                     type: string
                     example: "工藤"
-
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/clients:
+    get:
+      summary: 組織一覧
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  required:
+                    - id
+                    - name
+                    - plan
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      example: 1
+                    name:
+                      type: string
+                      example: "工藤"
+                    plan:
+                      type: string
+                      example: "工藤"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/bookPurchaseApplies:
+    get:
+      summary: 書籍購入申請一覧
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                required:
+                  - slackCredentialExists
+                  - bookPurchaseApplies
+                type: object
+                properties:
+                  slackCredentialExists:
+                    type: boolean
+                    example: true
+                  bookPurchaseApplies:
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - reason
+                        - price
+                        - step
+                        - location
+                        - createdAt
+                        - user
+                        - book
+                      properties:
+                        reason:
+                          type: string
+                          example: "読みたいから"
+                        price:
+                          type: integer
+                          example: 3000
+                        step:
+                          type: integer
+                          example: 1
+                        location:
+                          type: string
+                          example: "7F本棚"
+                        createdAt:
+                          type: string
+                          example: "2022/08/01"
+                        user:
+                          type: object
+                          required:
+                            - id
+                            - name
+                            - email
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            name:
+                              type: string
+                              example: "工藤"
+                            email:
+                              type: string
+                              example: "kudoh115@gmail.com"
+                        book:
+                          type: object
+                          required:
+                            - id
+                            - status
+                            - category
+                            - title
+                            - description
+                            - url
+                            - createdAt
+                          properties:
+                            id:
+                              type: integer
+                              example: 1
+                            status:
+                              type: integer
+                              example: 1
+                            category:
+                              type: string
+                              example: "IT"
+                            title:
+                              type: string
+                              example: "プロダクトレッドグロース"
+                            description:
+                              type: string
+                              example: "マーケティングの本"
+                            image:
+                              type: string
+                              example: "gvdsngvaongaflafafeao"
+                            url:
+                              type: string
+                              example: "https://www.amazon.co.jp/gp/product/4297128462/ref=ox_sc_saved_image_3?smid=AN1VRQENFRJN5&psc=1"
+                            createdAt:
+                              type: string
+                              example: "2022/08/01"
         "401":
           description: "apiトークンが無効の場合"
         "403":

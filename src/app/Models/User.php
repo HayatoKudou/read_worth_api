@@ -44,7 +44,7 @@ class User extends Authenticate
     {
         return $this->belongsToMany(
             Client::class,
-            'belongings',
+            'belongings'
         );
     }
 

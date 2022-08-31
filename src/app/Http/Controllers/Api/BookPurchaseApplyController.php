@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use App\Http\Requests\BookPurchaseApply\CreateRequest;
 use App\Http\Requests\BookPurchaseApply\NotificationRequest;
@@ -24,30 +25,38 @@ class BookPurchaseApplyController extends Controller
 {
     public function list(string $clientId): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
-        $bookPurchaseApplies = BookPurchaseApply::where('client_id', $clientId)->get();
-        return response()->json([
-            'slackCredentialExists' => (bool) $client->slackCredential,
-            'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
-                'reason' => $bookPurchaseApply->reason,
-                'price' => $bookPurchaseApply->price,
-                'step' => $bookPurchaseApply->step,
-                'location' => $bookPurchaseApply->location,
-                'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y/m/d'),
-                'user' => $bookPurchaseApply->user,
-                'book' => [
-                    'id' => $bookPurchaseApply->book->id,
-                    'status' => $bookPurchaseApply->book->status,
-                    'category' => $bookPurchaseApply->book->category->name,
-                    'title' => $bookPurchaseApply->book->title,
-                    'description' => $bookPurchaseApply->book->description,
-                    'image' => $bookPurchaseApply->book->image_path ? base64_encode(Storage::get($bookPurchaseApply->book->image_path)) : null,
-                    'url' => $bookPurchaseApply->book->url,
-                    'createdAt' => Carbon::parse($bookPurchaseApply->book->created_at)->format('Y年m月d日'),
-                ],
-            ]),
-        ]);
+        try {
+            $client = Client::find($clientId);
+            $this->authorize('affiliation', $client);
+            $bookPurchaseApplies = BookPurchaseApply::where('client_id', $clientId)->get();
+            return response()->json([
+                'slackCredentialExists' => (bool) $client->slackCredential,
+                'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
+                    'reason' => $bookPurchaseApply->reason,
+                    'price' => $bookPurchaseApply->price,
+                    'step' => $bookPurchaseApply->step,
+                    'location' => $bookPurchaseApply->location,
+                    'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y/m/d'),
+                    'user' => [
+                        'id' => $bookPurchaseApply->user->id,
+                        'name' => $bookPurchaseApply->user->name,
+                        'email' => $bookPurchaseApply->user->email,
+                    ],
+                    'book' => [
+                        'id' => $bookPurchaseApply->book->id,
+                        'status' => $bookPurchaseApply->book->status,
+                        'category' => $bookPurchaseApply->book->category->name,
+                        'title' => $bookPurchaseApply->book->title,
+                        'description' => $bookPurchaseApply->book->description,
+                        'image' => $bookPurchaseApply->book->image_path ? base64_encode(Storage::get($bookPurchaseApply->book->image_path)) : null,
+                        'url' => $bookPurchaseApply->book->url,
+                        'createdAt' => Carbon::parse($bookPurchaseApply->book->created_at)->format('Y年m月d日'),
+                    ],
+                ]),
+            ]);
+        } catch (AuthorizationException $e) {
+            return response()->json([], 403);
+        }
     }
 
     public function create(string $clientId, CreateRequest $request): JsonResponse

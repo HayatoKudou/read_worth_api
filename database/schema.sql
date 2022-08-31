@@ -48,6 +48,7 @@ CREATE TABLE `belongings`
     `created_at` timestamp       NULL DEFAULT NULL,
     `updated_at` timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
+    UNIQUE (`user_id`, `client_id`),
     CONSTRAINT `belongings_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
     CONSTRAINT `belongings_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
     CONSTRAINT `belongings_fk3` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
