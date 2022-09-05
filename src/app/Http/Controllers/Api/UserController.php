@@ -77,7 +77,7 @@ class UserController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $validated = $request->validated();
-            return DB::transaction(function () use ($validated, $client):JsonResponse  {
+            return DB::transaction(function () use ($validated, $client): JsonResponse {
                 $user = User::firstOrCreate([
                     'email' => $validated['email'],
                 ], [
@@ -89,7 +89,8 @@ class UserController extends Controller
                     'is_book_manager' => in_array('書籍管理', $validated['roles'], true),
                     'is_client_manager' => in_array('組織管理', $validated['roles'], true),
                 ]);
-                if(Belonging::where('user_id', $user->id)->where('client_id', $client->id)->exists()){
+
+                if (Belonging::where('user_id', $user->id)->where('client_id', $client->id)->exists()) {
                     return response()->json(['errors' => ['email' => ['該当ユーザーはすでに登録されています。']]], 402);
                 }
                 Belonging::create([

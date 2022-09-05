@@ -32,9 +32,9 @@ class ClientController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
-            $user = User::find(Auth::id());
+            $user = Auth::user();
             return response()->json(
-                $user->clients->map(function (Client $client){
+                $user->clients->map(function (Client $client) {
                     return [
                         'id' => $client->id,
                         'name' => $client->name,
