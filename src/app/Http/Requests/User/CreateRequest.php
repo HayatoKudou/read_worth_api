@@ -11,7 +11,7 @@ class CreateRequest extends FormRequest
         return [
             'name' => 'required|max:255',
             'email' => 'required|max:255|email',
-            'roles' => 'required|array',
+            'roles' => 'array',
         ];
     }
 

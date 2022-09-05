@@ -23,57 +23,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                required:
-                  - id
-                  - name
-                  - email
-                  - apiToken
-                  - role
-                  - clients
-                properties:
-                  id:
-                    type: number
-                    example: 1
-                  name:
-                    type: string
-                    example: "工藤"
-                  email:
-                    type: string
-                    example: "tetetest@gmail.com"
-                  apiToken:
-                    type: string
-                    example: "xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T"
-                  role:
-                    type: object
-                    required:
-                      - isAccountManager
-                      - isBookManager
-                      - isClientManager
-                    properties:
-                      isAccountManager:
-                        type: boolean
-                        example: true
-                      isBookManager:
-                        type: boolean
-                        example: true
-                      isClientManager:
-                        type: boolean
-                        example: true
-                  clients:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - id
-                        - name
-                      properties:
-                        id:
-                          type: number
-                          example: 1
-                        name:
-                          type: string
-                          example: "テテマーチ"
+                $ref: "#/components/schemas/MeResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
@@ -96,49 +46,7 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                  - users
-                type: object
-                properties:
-                  users:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - id
-                        - name
-                        - email
-                        - apiToken
-                        - role
-                      properties:
-                        id:
-                          type: number
-                          example: 1
-                        name:
-                          type: string
-                          example: "工藤"
-                        email:
-                          type: string
-                          example: "tetetest@gmail.com"
-                        apiToken:
-                          type: string
-                          example: "xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T"
-                        role:
-                          type: object
-                          required:
-                            - isAccountManager
-                            - isBookManager
-                            - isClientManager
-                          properties:
-                            isAccountManager:
-                              type: boolean
-                              example: true
-                            isBookManager:
-                              type: boolean
-                              example: true
-                            isClientManager:
-                              type: boolean
-                              example: true
+                $ref: "#/components/schemas/UsersListResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
@@ -159,26 +67,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                id:
-                  type: integer
-                  example: 1
-                name:
-                  type: string
-                  example: "工藤"
-                email:
-                  type: string
-                  example: "tetetest@gmail.com"
-                roles:
-                  type: array
-                  example: [ "組織管理", "書籍管理" ]
-                  items:
-                    type: string
-              required:
-                - id
-                - name
-                - email
-                - roles
+              $ref: "#/components/schemas/UserUpdateRequest"
       responses:
         "200":
           description: "OK"
@@ -191,28 +80,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  id:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "ユーザーIDは必ず指定してください。" ]
-                  name:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "名前は必ず指定してください。" ]
-                  email:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "メールアドレスは必ず指定してください。" ]
-                  roles:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "ロールは必ず指定してください。" ]
+                $ref: "#/components/schemas/UserUpdateValidateErrorResponse"
     post:
       summary: ユーザー追加
       parameters:
@@ -228,22 +96,7 @@ paths:
         content:
           application/json:
             schema:
-              properties:
-                name:
-                  type: string
-                  example: "工藤"
-                email:
-                  type: string
-                  example: "tetetest@gmail.com"
-                roles:
-                  type: array
-                  example: [ "組織管理", "書籍管理" ]
-                  items:
-                    type: string
-              required:
-                - name
-                - email
-                - roles
+              $ref: "#/components/schemas/UserCreateRequest"
       responses:
         "200":
           description: "OK"
@@ -256,24 +109,7 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  name:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "名前は必ず指定してください。" ]
-                  email:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "メールアドレスは必ず指定してください。" ]
-                  roles:
-                    type: array
-                    items:
-                      type: string
-                      example: [ "ロールは必ず指定してください。" ]
-
+                $ref: "#/components/schemas/UserCreateValidateErrorResponse"
   /api/{clientId}/client:
     get:
       summary: 組織情報
@@ -292,21 +128,7 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                  - id
-                  - name
-                  - plan
-                type: object
-                properties:
-                  id:
-                    type: number
-                    example: 1
-                  name:
-                    type: string
-                    example: "工藤"
-                  plan:
-                    type: string
-                    example: "工藤"
+                $ref: "#/components/schemas/ClientResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
@@ -329,23 +151,30 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  required:
-                    - id
-                    - name
-                    - plan
-                  type: object
-                  properties:
-                    id:
-                      type: number
-                      example: 1
-                    name:
-                      type: string
-                      example: "工藤"
-                    plan:
-                      type: string
-                      example: "工藤"
+                $ref: "#/components/schemas/ClientsResponse"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/books:
+    get:
+      summary: 書籍一覧
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BooksResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
@@ -368,93 +197,7 @@ paths:
           content:
             application/json:
               schema:
-                required:
-                  - slackCredentialExists
-                  - bookPurchaseApplies
-                type: object
-                properties:
-                  slackCredentialExists:
-                    type: boolean
-                    example: true
-                  bookPurchaseApplies:
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - reason
-                        - price
-                        - step
-                        - location
-                        - createdAt
-                        - user
-                        - book
-                      properties:
-                        reason:
-                          type: string
-                          example: "読みたいから"
-                        price:
-                          type: integer
-                          example: 3000
-                        step:
-                          type: integer
-                          example: 1
-                        location:
-                          type: string
-                          example: "7F本棚"
-                        createdAt:
-                          type: string
-                          example: "2022/08/01"
-                        user:
-                          type: object
-                          required:
-                            - id
-                            - name
-                            - email
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            name:
-                              type: string
-                              example: "工藤"
-                            email:
-                              type: string
-                              example: "kudoh115@gmail.com"
-                        book:
-                          type: object
-                          required:
-                            - id
-                            - status
-                            - category
-                            - title
-                            - description
-                            - url
-                            - createdAt
-                          properties:
-                            id:
-                              type: integer
-                              example: 1
-                            status:
-                              type: integer
-                              example: 1
-                            category:
-                              type: string
-                              example: "IT"
-                            title:
-                              type: string
-                              example: "プロダクトレッドグロース"
-                            description:
-                              type: string
-                              example: "マーケティングの本"
-                            image:
-                              type: string
-                              example: "gvdsngvaongaflafafeao"
-                            url:
-                              type: string
-                              example: "https://www.amazon.co.jp/gp/product/4297128462/ref=ox_sc_saved_image_3?smid=AN1VRQENFRJN5&psc=1"
-                            createdAt:
-                              type: string
-                              example: "2022/08/01"
+                $ref: "#/components/schemas/bookPurchaseAppliesListResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
@@ -465,4 +208,398 @@ components:
   securitySchemes:
     Bearer:
       type: http
-      scheme: beare
+      scheme: bear
+  schemas:
+    MeResponse:
+      type: object
+      required:
+        - id
+        - name
+        - email
+        - apiToken
+        - role
+        - clients
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "工藤"
+        email:
+          type: string
+          example: "tetetest@gmail.com"
+        apiToken:
+          type: string
+          example: "xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T"
+        role:
+          type: object
+          required:
+            - isAccountManager
+            - isBookManager
+            - isClientManager
+          properties:
+            isAccountManager:
+              type: boolean
+              example: true
+            isBookManager:
+              type: boolean
+              example: true
+            isClientManager:
+              type: boolean
+              example: true
+        clients:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - name
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: "テテマーチ"
+    UsersListResponse:
+      required:
+        - users
+      type: object
+      properties:
+        users:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - name
+              - email
+              - apiToken
+              - role
+            properties:
+              id:
+                type: number
+                example: 1
+              name:
+                type: string
+                example: "工藤"
+              email:
+                type: string
+                example: "tetetest@gmail.com"
+              apiToken:
+                type: string
+                example: "xtGq57ENtxfHL7MB63jRoEhPM5d7Bah2rXRpUGowAuXsE2lzlM8DvnqH163T"
+              role:
+                type: object
+                required:
+                  - isAccountManager
+                  - isBookManager
+                  - isClientManager
+                properties:
+                  isAccountManager:
+                    type: boolean
+                    example: true
+                  isBookManager:
+                    type: boolean
+                    example: true
+                  isClientManager:
+                    type: boolean
+                    example: true
+    UserUpdateRequest:
+      properties:
+        id:
+          type: integer
+          example: 1
+        name:
+          type: string
+          example: "工藤"
+        email:
+          type: string
+          example: "tetetest@gmail.com"
+        roles:
+          type: array
+          example: [ "組織管理", "書籍管理" ]
+          items:
+            type: string
+      required:
+        - id
+        - name
+        - email
+        - roles
+    UserUpdateValidateErrorResponse:
+      type: object
+      properties:
+        id:
+          type: array
+          items:
+            type: string
+            example: [ "ユーザーIDは必ず指定してください。" ]
+        name:
+          type: array
+          items:
+            type: string
+            example: [ "名前は必ず指定してください。" ]
+        email:
+          type: array
+          items:
+            type: string
+            example: [ "メールアドレスは必ず指定してください。" ]
+        roles:
+          type: array
+          items:
+            type: string
+            example: [ "ロールは必ず指定してください。" ]
+    UserCreateRequest:
+      properties:
+        name:
+          type: string
+          example: "工藤"
+        email:
+          type: string
+          example: "tetetest@gmail.com"
+        roles:
+          type: array
+          example: [ "組織管理", "書籍管理" ]
+          items:
+            type: string
+      required:
+        - name
+        - email
+        - roles
+    UserCreateValidateErrorResponse:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            type: string
+            example: [ "名前は必ず指定してください。" ]
+        email:
+          type: array
+          items:
+            type: string
+            example: [ "メールアドレスは必ず指定してください。" ]
+        roles:
+          type: array
+          items:
+            type: string
+            example: [ "ロールは必ず指定してください。" ]
+    ClientResponse:
+      required:
+        - id
+        - name
+        - plan
+      type: object
+      properties:
+        id:
+          type: number
+          example: 1
+        name:
+          type: string
+          example: "工藤"
+        plan:
+          type: string
+          example: "工藤"
+    ClientsResponse:
+      type: array
+      items:
+        required:
+          - id
+          - name
+          - plan
+        type: object
+        properties:
+          id:
+            type: number
+            example: 1
+          name:
+            type: string
+            example: "工藤"
+          plan:
+            type: string
+            example: "工藤"
+    BooksResponse:
+      required:
+        - books
+        - bookCategories
+      type: object
+      properties:
+        books:
+          type: array
+          items:
+            type: object
+            required:
+              - id
+              - status
+              - category
+              - title
+              - description
+              - url
+              - createdAt
+              - purchaseApplicant
+              - rentalApplicant
+            properties:
+              id:
+                type: integer
+                example: 1
+              status:
+                type: integer
+                example: 1
+              category:
+                type: string
+                example: "IT"
+              title:
+                type: string
+                example: "プロダクトレッドグロース"
+              description:
+                type: string
+                example: "マーケティングの本"
+              image:
+                type: string
+                example: "gvdsngvaongaflafafeao"
+              url:
+                type: string
+                example: "https://www.amazon.co.jp/gp/product/4297128462/ref=ox_sc_saved_image_3?smid=AN1VRQENFRJN5&psc=1"
+              createdAt:
+                type: string
+                example: "2022/08/01"
+              purchaseApplicant:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+                  name:
+                    type: string
+                    example: "たかし君"
+              rentalApplicant:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    example: 1
+                  name:
+                    type: string
+                    example: "たかし君"
+              reviews:
+                type: object
+                required:
+                  - rate
+                  - review
+                  - reviewedAt
+                  - reviewer
+                properties:
+                  rate:
+                    type: number
+                    example: 4
+                  review:
+                    type: string
+                    example: "いい本だった"
+                  reviewedAt:
+                    type: string
+                    example: "2022年09月04日 13時56分"
+                  reviewer:
+                    type: string
+                    example: "たなか君"
+                  rentalCount:
+                    type: number
+                    example: 5
+        bookCategories:
+          type: array
+          items:
+            type: object
+            required:
+              - name
+            properties:
+              name:
+                type: string
+                example: "ALL"
+    bookPurchaseAppliesListResponse:
+      required:
+        - slackCredentialExists
+        - bookPurchaseApplies
+      type: object
+      properties:
+        slackCredentialExists:
+          type: boolean
+          example: true
+        bookPurchaseApplies:
+          type: array
+          items:
+            type: object
+            required:
+              - reason
+              - price
+              - step
+              - location
+              - createdAt
+              - user
+              - book
+            properties:
+              reason:
+                type: string
+                example: "読みたいから"
+              price:
+                type: integer
+                example: 3000
+              step:
+                type: integer
+                example: 1
+              location:
+                type: string
+                example: "7F本棚"
+              createdAt:
+                type: string
+                example: "2022/08/01"
+              user:
+                type: object
+                required:
+                  - id
+                  - name
+                  - email
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  name:
+                    type: string
+                    example: "工藤"
+                  email:
+                    type: string
+                    example: "kudoh115@gmail.com"
+              book:
+                type: object
+                required:
+                  - id
+                  - status
+                  - category
+                  - title
+                  - description
+                  - url
+                  - createdAt
+                properties:
+                  id:
+                    type: integer
+                    example: 1
+                  status:
+                    type: integer
+                    example: 1
+                  category:
+                    type: string
+                    example: "IT"
+                  title:
+                    type: string
+                    example: "プロダクトレッドグロース"
+                  description:
+                    type: string
+                    example: "マーケティングの本"
+                  image:
+                    type: string
+                    example: "gvdsngvaongaflafafeao"
+                  url:
+                    type: string
+                    example: "https://www.amazon.co.jp/gp/product/4297128462/ref=ox_sc_saved_image_3?smid=AN1VRQENFRJN5&psc=1"
+                  createdAt:
+                    type: string
+                    example: "2022/08/01"
