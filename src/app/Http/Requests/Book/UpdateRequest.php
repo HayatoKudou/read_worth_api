@@ -9,11 +9,11 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'id' => 'required',
             'title' => 'required|string|max:255',
             'description' => 'max:255',
             'category' => 'required|string',
             'status' => 'required',
-            'url' => '',
         ];
     }
 
@@ -24,7 +24,6 @@ class UpdateRequest extends FormRequest
             'description' => '本の説明',
             'category' => 'カテゴリ',
             'status' => 'ステータス',
-            'url' => 'URL',
         ];
     }
 }

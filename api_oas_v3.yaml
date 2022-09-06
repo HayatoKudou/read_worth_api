@@ -179,6 +179,36 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/book:
+    put:
+      summary: 書籍更新
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookUpdateRequest"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookUpdateValidateErrorResponse"
   /api/{clientId}/bookPurchaseApplies:
     get:
       summary: 書籍購入申請一覧
@@ -515,6 +545,65 @@ components:
               name:
                 type: string
                 example: "ALL"
+    BookUpdateRequest:
+      required:
+        - id
+        - category
+        - status
+        - title
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        category:
+          type: string
+          example: "IT"
+        status:
+          type: integer
+          example: 1
+        title:
+          type: string
+          example: "すごい本"
+        description:
+          type: string
+          example: "すごいことが書かれている本"
+        image:
+          type: string
+          nullable: true
+          example: "gvdsngvaongaflafafeao"
+        url:
+          type: string
+          nullable: true
+          example: "https://www.amazon.co.jp/%E5%90%8D%E5%8F%96%E3%81%95%E3%81%AA-%E5%85%AC%E5%BC%8F%E5%90%8C%E4%BA%BA%E8%AA%8C-%E3%81%9D%E3%81%93%E3%81%BE%E3%81%A7%E8%96%84%E3%81%8F%E3%81%AF%E3%81%AA%E3%81%84%E6%9C%AC-%E5%90%8D%E5%8F%96-%E3%81%95%E3%81%AA-ebook/dp/B08SW59KYQ/?_encoding=UTF8&pd_rd_w=iHhuf&content-id=amzn1.sym.af35e228-fbbe-4fd1-8057-e8d8d004b773&pf_rd_p=af35e228-fbbe-4fd1-8057-e8d8d004b773&pf_rd_r=7JM6CNDNKTA4C0H53HVB&pd_rd_wg=bxbZ5&pd_rd_r=32c17768-2e9f-4f4f-a523-fb08d2fe6eec&ref_=pd_gw_ci_mcx_mi"
+    BookUpdateValidateErrorResponse:
+      type: object
+      properties:
+        id:
+          type: array
+          items:
+            type: string
+            example: [ "IDは必ず指定してください。" ]
+        category:
+          type: array
+          items:
+            type: string
+            example: [ "カテゴリは必ず指定してください。" ]
+        status:
+          type: array
+          items:
+            type: string
+            example: [ "ステータスは必ず指定してください。" ]
+        title:
+          type: array
+          items:
+            type: string
+            example: [ "タイトルは、255文字以下で指定してください。" ]
+        description:
+          type: array
+          items:
+            type: string
+            example: [ "本の説明は、255文字以下で指定してください。" ]
     bookPurchaseAppliesListResponse:
       required:
         - slackCredentialExists

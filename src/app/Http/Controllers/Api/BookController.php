@@ -104,10 +104,6 @@ class BookController extends Controller
             if ($book->image_path) {
                 \Storage::delete($book->image_path);
             }
-
-            if (!$bookCategory) {
-                return response()->json('一致するカテゴリが見つかりません', 500);
-            }
             $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
 
             DB::transaction(function () use ($clientId, $bookCategory, $book, $request, $imagePath): void {
