@@ -49,17 +49,17 @@ class AuthController
                 'google_access_token' => $googleUser->token,
                 'api_token' => Str::random(60),
             ]);
-            Belonging::create([
-                'user_id' => $user->id,
-                'client_id' => $client->id,
-            ]);
-            Role::create([
+            $role = Role::create([
                 'user_id' => $user->id,
                 'is_account_manager' => 1,
                 'is_book_manager' => 1,
                 'is_client_manager' => 1,
             ]);
-
+            Belonging::create([
+                'user_id' => $user->id,
+                'client_id' => $client->id,
+                'role_id' => $role->id
+            ]);
             return CallbackGoogleAuthResponse::make($user);
         });
     }
