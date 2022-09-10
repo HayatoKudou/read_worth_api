@@ -54,7 +54,7 @@ class Handler extends ExceptionHandler
             'line' => $e->getLine(),
         ]);
 
-        if ($this->shouldReport($e) && 'production' === config('app.env')) {
+        if ($this->shouldReport($e) && 'prod' === config('app.env')) {
             $postMessage = sprintf("File: %s\nLine: %d\nMessage: %s", $e->getFile(), $e->getLine(), $e->getMessage());
             $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), config('slack.errorChannelAccessToken'));
             $slackClient->postMessage(config('slack.errorChannelId'), '', $postMessage);
