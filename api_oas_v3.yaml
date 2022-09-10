@@ -232,7 +232,35 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-
+  /api/{clientId}/{bookId}/histories:
+    get:
+      summary: 書籍履歴
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+        - in: path
+          name: bookId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/bookHistoriesListResponse"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定された組織にユーザーがいない場合"
 
 components:
   securitySchemes:
@@ -465,10 +493,13 @@ components:
               - category
               - title
               - description
+              - image
               - url
               - createdAt
               - purchaseApplicant
               - rentalApplicant
+              - reviews
+              - rentalCount
             properties:
               id:
                 type: integer
@@ -487,6 +518,7 @@ components:
                 example: "マーケティングの本"
               image:
                 type: string
+                nullable: true
                 example: "gvdsngvaongaflafafeao"
               url:
                 type: string
@@ -513,28 +545,30 @@ components:
                     type: string
                     example: "たかし君"
               reviews:
-                type: object
-                required:
-                  - rate
-                  - review
-                  - reviewedAt
-                  - reviewer
-                properties:
-                  rate:
-                    type: number
-                    example: 4
-                  review:
-                    type: string
-                    example: "いい本だった"
-                  reviewedAt:
-                    type: string
-                    example: "2022年09月04日 13時56分"
-                  reviewer:
-                    type: string
-                    example: "たなか君"
-                  rentalCount:
-                    type: number
-                    example: 5
+                type: array
+                items:
+                  required:
+                    - rate
+                    - review
+                    - reviewedAt
+                    - reviewer
+                  type: object
+                  properties:
+                    rate:
+                      type: number
+                      example: 4
+                    review:
+                      type: string
+                      example: "いい本だった"
+                    reviewedAt:
+                      type: string
+                      example: "2022年09月04日 13時56分"
+                    reviewer:
+                      type: string
+                      example: "たなか君"
+              rentalCount:
+                type: number
+                example: 5
         bookCategories:
           type: array
           items:
@@ -551,6 +585,7 @@ components:
         - category
         - status
         - title
+        - image
       type: object
       properties:
         id:
@@ -665,6 +700,7 @@ components:
                   - category
                   - title
                   - description
+                  - image
                   - url
                   - createdAt
                 properties:
@@ -685,6 +721,7 @@ components:
                     example: "マーケティングの本"
                   image:
                     type: string
+                    nullable: true
                     example: "gvdsngvaongaflafafeao"
                   url:
                     type: string
@@ -692,3 +729,21 @@ components:
                   createdAt:
                     type: string
                     example: "2022/08/01"
+    bookHistoriesListResponse:
+      type: array
+      items:
+        type: object
+        required:
+          - userName
+          - actionName
+          - createdAt
+        properties:
+          userName:
+            type: string
+            example: "工藤"
+          actionName:
+            type: string
+            example: "create book"
+          createdAt:
+            type: string
+            example: "2022/08/01"

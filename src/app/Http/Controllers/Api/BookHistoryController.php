@@ -18,13 +18,13 @@ class BookHistoryController extends Controller
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
             $bookHistories = Book::find($bookId)->histories;
-            return response()->json([
-                'histories' => $bookHistories->map(fn (BookHistory $bookHistory) => [
+            return response()->json(
+                $bookHistories->map(fn (BookHistory $bookHistory) => [
                   'userName' => $bookHistory->user->name,
-                  'action' => $bookHistory->action,
+                  'actionName' => $bookHistory->action,
                   'createdAt' => Carbon::parse($bookHistory->created_at)->format('Y/m/d H:i:s'),
                 ]),
-            ]);
+            );
         } catch (AuthorizationException $e) {
             return response()->json([], 403);
         }

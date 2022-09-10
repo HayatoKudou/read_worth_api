@@ -44,10 +44,10 @@ class BookController extends Controller
                         'id' => $book->purchaseApply?->user->id,
                         'name' => $book->purchaseApply?->user->name,
                     ],
-                    'rentalApplicant' => [
-                        'id' => $book->rentalApply?->user->id,
-                        'name' => $book->rentalApply?->user->name,
-                    ],
+                    'rentalApplicant' => $book->rentalApply ? [
+                        'id' => $book->rentalApply->user->id,
+                        'name' => $book->rentalApply->user->name,
+                    ] : null,
                     'reviews' => collect($book->reviews)?->map(fn (BookReview $bookReview) => [
                         'rate' => $bookReview->rate,
                         'review' => $bookReview->review,
