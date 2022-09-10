@@ -50,7 +50,6 @@ class AuthController
                 'api_token' => Str::random(60),
             ]);
             $role = Role::create([
-                'user_id' => $user->id,
                 'is_account_manager' => 1,
                 'is_book_manager' => 1,
                 'is_client_manager' => 1,
