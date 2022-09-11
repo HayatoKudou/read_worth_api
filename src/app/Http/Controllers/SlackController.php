@@ -17,8 +17,11 @@ class SlackController extends Controller
     {
         $connectSlackUsers = session()->get('connect_slack_users', []);
 
-        $sessionExists = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
-        if($sessionExists){
+        $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
+        \Log::debug($connectSlackUsers);
+        \Log::debug($userInSession);
+
+        if($userInSession){
             return response()->json();
         }
 
