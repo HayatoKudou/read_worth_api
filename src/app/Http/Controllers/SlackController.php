@@ -15,23 +15,10 @@ class SlackController extends Controller
 {
     public function connect(string $clientId): JsonResponse
     {
-        $connectSlackUsers = session()->get('connect_slack_users', []);
-
-        $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
-        \Log::debug($connectSlackUsers);
-        \Log::debug($userInSession);
-
-        if($userInSession){
-            \Log::debug("test");
-            return response()->json();
-        }
-
-        session()->push('connect_slack_users', [
-            'userId' => \Auth::id(),
-            'clientId' => $clientId
+        SlackCredential::firstOrCreate([
+            'client_id'=> $clientId,
+            'connected_user_id'=> \Auth::id(),
         ]);
-        \Log::debug(session()->get('connect_slack_users', []));
-
         return response()->json();
     }
 
@@ -66,23 +53,16 @@ class SlackController extends Controller
         $userInfo = $slackClient->userInfo($userId);
 
         $user = User::where('email', $userInfo['user']['profile']['email'])->first();
-
         if (!$user) {
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        $connectSlackUsers = session()->get('connect_slack_users', []);
-        $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
-        \Log::debug($connectSlackUsers);
-        \Log::debug($userInSession);
-
-        if(!$userInSession){
+        $connectSlackUser = SlackCredential::where('user_id', $user->id)->first();
+        if(!$connectSlackUser){
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
 
-        SlackCredential::updateOrCreate([
-            'client_id' => $userInSession["clientId"],
-        ], [
+        $connectSlackUser->update([
             'access_token' => $accessToken,
             'channel_name' => $body['incoming_webhook']['channel'],
             'channel_id' => $body['incoming_webhook']['channel_id'],

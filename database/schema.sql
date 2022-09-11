@@ -48,13 +48,12 @@ CREATE TABLE `belongings`
     `created_at` timestamp       NULL DEFAULT NULL,
     `updated_at` timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE (`user_id`, `client_id`),
+    UNIQUE INDEX (user_id, client_id),
     CONSTRAINT `belongings_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
     CONSTRAINT `belongings_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
     CONSTRAINT `belongings_fk3` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
-
 
 CREATE TABLE `book_category`
 (
@@ -172,12 +171,15 @@ CREATE TABLE `slack_credentials`
 (
     `id`           bigint unsigned NOT NULL AUTO_INCREMENT,
     `client_id`    bigint unsigned NOT NULL,
-    `access_token` varchar(255)    NOT NULL,
-    `channel_id`   varchar(255)    NOT NULL,
-    `channel_name` varchar(255)    NOT NULL,
+    `connected_user_id`      bigint unsigned NOT NULL,
+    `access_token` varchar(255)    NULL DEFAULT NULL,
+    `channel_id`   varchar(255)    NULL DEFAULT NULL,
+    `channel_name` varchar(255)    NULL DEFAULT NULL,
     `created_at`   timestamp       NULL DEFAULT NULL,
     `updated_at`   timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+    UNIQUE INDEX (client_id, connected_user_id),
+    CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+    CONSTRAINT `slack_credentials_fk2` FOREIGN KEY (`connected_user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
