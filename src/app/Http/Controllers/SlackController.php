@@ -29,6 +29,7 @@ class SlackController extends Controller
             'userId' => \Auth::id(),
             'clientId' => $clientId
         ]);
+        \Log::debug(session()->get('connect_slack_users', []));
 
         return response()->json();
     }
