@@ -40,5 +40,4 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function 
     Route::post('/{bookId}/bookReturn', [BookController::class, 'return']);
     Route::post('/{bookId}/bookReview', [BookReviewController::class, 'create']);
     Route::get('/{bookId}/histories', [BookHistoryController::class, 'list']);
-    Route::get('/slack/connect', [SlackController::class, 'connect']);
 });

@@ -261,7 +261,7 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/slack/connect:
+  /api/slack/{clientId}/connect:
     get:
       summary: Slack連携
       parameters:
