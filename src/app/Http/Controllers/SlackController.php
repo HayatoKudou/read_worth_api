@@ -13,9 +13,9 @@ use Illuminate\Contracts\View\View;
 
 class SlackController extends Controller
 {
-    public function connect(string $clientId): JsonResponse
+    public function connect(string $clientId, Request $request): JsonResponse
     {
-        $connectSlackUsers = session()->get('connect_slack_users', []);
+        $connectSlackUsers = $request->session()->get('connect_slack_users', []);
 
         $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
         \Log::debug($connectSlackUsers);
@@ -25,11 +25,11 @@ class SlackController extends Controller
             return response()->json();
         }
 
-        session()->push('connect_slack_users', [
+        $request->session()->push('connect_slack_users', [
             'userId' => \Auth::id(),
             'clientId' => $clientId
         ]);
-        \Log::debug(session()->get('connect_slack_users', []));
+        \Log::debug($request->session()->get('connect_slack_users', []));
 
         return response()->json();
     }
@@ -70,7 +70,7 @@ class SlackController extends Controller
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        $connectSlackUsers = session()->get('connect_slack_users', []);
+        $connectSlackUsers = $request->session()->get('connect_slack_users', []);
         $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
         \Log::debug($connectSlackUsers);
         \Log::debug($userInSession);
