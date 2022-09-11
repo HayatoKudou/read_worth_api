@@ -26,8 +26,8 @@ class SlackController extends Controller
         if ($request->has('error')) {
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
-        $client = new Client();
-        $response = $client->post('https://slack.com/api/oauth.v2.access', [
+        $apiClient = new Client();
+        $response = $apiClient->post('https://slack.com/api/oauth.v2.access', [
             'headers' => [
                     'Content-Type' => 'application/x-www-form-urlencoded',
                 ],
@@ -45,6 +45,7 @@ class SlackController extends Controller
         if (false === $body['ok']) {
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
+
         $accessToken = $body['access_token'];
         $userId = $body['authed_user']['id'];
 
@@ -52,13 +53,11 @@ class SlackController extends Controller
         $userInfo = $slackClient->userInfo($userId);
 
         $user = User::where('email', $userInfo['user']['profile']['email'])->first();
-
         if (!$user) {
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        $connectSlackUser = SlackCredential::where('connected_user_id', $user->id)->first();
-
+        $connectSlackUser = SlackCredential::where('connected_user_id', $user->id)->whereNotNull("access_token")->first();
         if (!$connectSlackUser) {
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
