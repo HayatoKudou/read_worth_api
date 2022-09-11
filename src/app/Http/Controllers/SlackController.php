@@ -57,7 +57,7 @@ class SlackController extends Controller
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        $connectSlackUser = SlackCredential::where('user_id', $user->id)->first();
+        $connectSlackUser = SlackCredential::where('connected_user_id', $user->id)->first();
         if(!$connectSlackUser){
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
