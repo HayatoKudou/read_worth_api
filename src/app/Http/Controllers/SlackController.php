@@ -4,11 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use GuzzleHttp\Client;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Slack\SlackApiClient;
 use App\Models\SlackCredential;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
 
 class SlackController extends Controller
@@ -16,8 +15,8 @@ class SlackController extends Controller
     public function connect(string $clientId): JsonResponse
     {
         SlackCredential::firstOrCreate([
-            'client_id'=> $clientId,
-            'connected_user_id'=> \Auth::id(),
+            'client_id' => $clientId,
+            'connected_user_id' => \Auth::id(),
         ]);
         return response()->json();
     }
@@ -53,12 +52,14 @@ class SlackController extends Controller
         $userInfo = $slackClient->userInfo($userId);
 
         $user = User::where('email', $userInfo['user']['profile']['email'])->first();
+
         if (!$user) {
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
         $connectSlackUser = SlackCredential::where('connected_user_id', $user->id)->first();
-        if(!$connectSlackUser){
+
+        if (!$connectSlackUser) {
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
 

@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BookRentalApply
+ * App\Models\BookRentalApply.
  *
  * @property int $id
  * @property int $user_id
@@ -16,10 +16,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $reason 申請理由
  * @property string $rental_date 貸出日
  * @property string $expected_return_date 返却予定日
- * @property string|null $return_date 返却日
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $user
+ * @property null|string $return_date 返却日
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\User $user
+ *
  * @method static Builder|BookRentalApply newModelQuery()
  * @method static Builder|BookRentalApply newQuery()
  * @method static Builder|BookRentalApply organization(string $clientId)

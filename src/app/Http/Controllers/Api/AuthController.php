@@ -57,7 +57,7 @@ class AuthController
             Belonging::create([
                 'user_id' => $user->id,
                 'client_id' => $client->id,
-                'role_id' => $role->id
+                'role_id' => $role->id,
             ]);
             return CallbackGoogleAuthResponse::make($user);
         });

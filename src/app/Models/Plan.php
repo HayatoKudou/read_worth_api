@@ -10,17 +10,18 @@ use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Plan
+ * App\Models\Plan.
  *
  * @property int $id
  * @property string $name プラン名
  * @property int $price プラン価格
  * @property int $max_members メンバー上限数
  * @property int $max_books 書籍上限数
- * @property Carbon|null $created_at
- * @property Carbon|null $updated_at
- * @property-read Collection|\App\Models\User[] $users
- * @property-read int|null $users_count
+ * @property null|Carbon $created_at
+ * @property null|Carbon $updated_at
+ * @property \App\Models\User[]|Collection $users
+ * @property null|int $users_count
+ *
  * @method static \Database\Factories\PlanFactory factory(...$parameters)
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()

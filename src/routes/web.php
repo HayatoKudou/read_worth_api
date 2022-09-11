@@ -5,7 +5,7 @@ use App\Http\Controllers\SlackController;
 use App\Http\Controllers\Api\AuthController;
 
 Route::get('/', function () {
-    return response()->json("勇者よ立ち去れ、ここには何もない");
+    return response()->json('勇者よ立ち去れ、ここには何もない');
 });
 
 Route::group(['prefix' => '/api/slack'], function (): void {

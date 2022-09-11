@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\SlackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
