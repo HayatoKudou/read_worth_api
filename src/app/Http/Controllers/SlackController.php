@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use GuzzleHttp\Client;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Slack\SlackApiClient;
 use App\Models\SlackCredential;
@@ -11,6 +13,23 @@ use Illuminate\Contracts\View\View;
 
 class SlackController extends Controller
 {
+    public function connect(string $clientId): JsonResponse
+    {
+        $connectSlackUsers = session()->get('connect_slack_users', []);
+
+        $sessionExists = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
+        if($sessionExists){
+            return response()->json();
+        }
+
+        session()->push('connect_slack_users', [
+            'userId' => \Auth::id(),
+            'clientId' => $clientId
+        ]);
+
+        return response()->json();
+    }
+
     public function callback(Request $request): View
     {
         if ($request->has('error')) {
@@ -47,8 +66,15 @@ class SlackController extends Controller
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
+        $connectSlackUsers = session()->get('connect_slack_users', []);
+        $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
+
+        if(!$userInSession){
+            return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
+        }
+
         SlackCredential::updateOrCreate([
-            'client_id' => $user->client->id,
+            'client_id' => $userInSession["clientId"],
         ], [
             'access_token' => $accessToken,
             'channel_name' => $body['incoming_webhook']['channel'],

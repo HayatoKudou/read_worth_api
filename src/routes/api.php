@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SlackController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
@@ -13,7 +14,6 @@ use App\Http\Controllers\Api\BookPurchaseApplyController;
 
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
-// TODO: verified は後で
 Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/me', [UserController::class, 'me']);
     Route::post('/user', [UserController::class, 'create']);
@@ -40,4 +40,5 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function 
     Route::post('/{bookId}/bookReturn', [BookController::class, 'return']);
     Route::post('/{bookId}/bookReview', [BookReviewController::class, 'create']);
     Route::get('/{bookId}/histories', [BookHistoryController::class, 'list']);
+    Route::get('/slack/connect', [SlackController::class, 'connect']);
 });

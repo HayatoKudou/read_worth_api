@@ -23,7 +23,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class BookController extends Controller
 {
-    public function list($clientId): JsonResponse
+    public function list(string $clientId): JsonResponse
     {
         try {
             $client = Client::find($clientId);

@@ -261,6 +261,21 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
+  /api/{clientId}/slack/connect:
+    get:
+      summary: Slack連携
+      parameters:
+        - in: path
+          name: clientId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      responses:
+        "200":
+          description: "OK"
 
 components:
   securitySchemes:
