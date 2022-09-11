@@ -28,9 +28,10 @@ class BookPurchaseApplyController extends Controller
         try {
             $client = Client::find($clientId);
             $this->authorize('affiliation', $client);
+            assert($client instanceof Client);
             $bookPurchaseApplies = BookPurchaseApply::where('client_id', $clientId)->get();
             return response()->json([
-                'slackCredentialExists' => (bool) $client->slackCredential,
+                'slackCredentialExists' => $client->slackCredential()->whereNotNull('access_token')->exists(),
                 'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
                     'reason' => $bookPurchaseApply->reason,
                     'price' => $bookPurchaseApply->price,

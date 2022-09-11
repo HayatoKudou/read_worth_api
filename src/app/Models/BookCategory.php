@@ -6,14 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 
 /**
- * App\Models\BookCategory.
+ * App\Models\BookCategory
  *
  * @property int $id
  * @property int $client_id
  * @property string $name
- * @property null|\Illuminate\Support\Carbon $created_at
- * @property null|\Illuminate\Support\Carbon $updated_at
- *
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory organization(string $clientId)

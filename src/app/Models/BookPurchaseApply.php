@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BookPurchaseApply.
+ * App\Models\BookPurchaseApply
  *
  * @property int $id
  * @property int $user_id
@@ -16,13 +16,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property string $reason
  * @property int $price
  * @property int $step
- * @property null|string $location
- * @property null|\Illuminate\Support\Carbon $created_at
- * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Book $book
- * @property \App\Models\Client $client
- * @property \App\Models\User $user
- *
+ * @property string|null $location
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Book $book
+ * @property-read \App\Models\Client $client
+ * @property-read \App\Models\User $user
  * @method static Builder|BookPurchaseApply newModelQuery()
  * @method static Builder|BookPurchaseApply newQuery()
  * @method static Builder|BookPurchaseApply organization(string $clientId)

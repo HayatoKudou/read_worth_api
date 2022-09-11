@@ -178,7 +178,7 @@ CREATE TABLE `slack_credentials`
     `created_at`   timestamp       NULL DEFAULT NULL,
     `updated_at`   timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX (client_id, connected_user_id),
+    UNIQUE INDEX (client_id),
     CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
     CONSTRAINT `slack_credentials_fk2` FOREIGN KEY (`connected_user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB
