@@ -68,6 +68,8 @@ class SlackController extends Controller
 
         $connectSlackUsers = session()->get('connect_slack_users', []);
         $userInSession = collect($connectSlackUsers)->firstWhere('userId', \Auth::id());
+        \Log::debug($connectSlackUsers);
+        \Log::debug($userInSession);
 
         if(!$userInSession){
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
