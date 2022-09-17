@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Requests\Client\CreateRequest;
+use App\Models\Plan;
 use App\Models\User;
 use App\Models\Client;
+use App\Models\Belonging;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -47,12 +50,27 @@ class ClientController extends Controller
         }
     }
 
-    public function update(UpdateRequest $request): JsonResponse
+    public function update(string $clientId, UpdateRequest $request): JsonResponse
     {
         try {
-            $client = User::find(Auth::id())->client;
-            $client->update(['name' => $request->get('name')]);
+            $validated = $request->validated();
+            $client = Client::find($clientId);
+            $client->update(['name' => $validated['name']]);
             return response()->json(['client' => $client], 201);
+        } catch (AuthorizationException $e) {
+            return response()->json([], 403);
+        }
+    }
+
+    public function create(CreateRequest $request)
+    {
+        try {
+            $validated = $request->validated();
+            $plan = Plan::where('name', 'free')->first();
+            Client::create([
+                'plan_id' => $plan->id,
+                'name' => $validated['name'],
+            ]);
         } catch (AuthorizationException $e) {
             return response()->json([], 403);
         }

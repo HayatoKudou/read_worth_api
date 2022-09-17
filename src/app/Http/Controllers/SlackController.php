@@ -29,15 +29,15 @@ class SlackController extends Controller
         $apiClient = new Client();
         $response = $apiClient->post('https://slack.com/api/oauth.v2.access', [
             'headers' => [
-                    'Content-Type' => 'application/x-www-form-urlencoded',
-                ],
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
             'form_params' => [
-                    'client_id' => \Config::get('slack.clientId'),
-                    'client_secret' => \Config::get('slack.clientSecret'),
-                    'code' => $request->get('code'),
-                    'grant_type' => 'authorization_code',
-                    'redirect_uri' => \Config::get('slack.redirectUri'),
-                ],
+                'client_id' => \Config::get('slack.clientId'),
+                'client_secret' => \Config::get('slack.clientSecret'),
+                'code' => $request->get('code'),
+                'grant_type' => 'authorization_code',
+                'redirect_uri' => \Config::get('slack.redirectUri'),
+            ],
         ]);
         $json = $response->getBody()->getContents();
         $body = json_decode($json, true);
