@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Requests\Client\CreateRequest;
 use App\Models\Plan;
+use App\Models\Role;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Belonging;
@@ -67,9 +68,19 @@ class ClientController extends Controller
         try {
             $validated = $request->validated();
             $plan = Plan::where('name', 'free')->first();
-            Client::create([
+            $client = Client::create([
                 'plan_id' => $plan->id,
                 'name' => $validated['name'],
+            ]);
+            $role = Role::create([
+                'is_account_manager' => 1,
+                'is_book_manager' => 1,
+                'is_client_manager' => 1,
+            ]);
+            Belonging::create([
+                'user_id' => Auth::id(),
+                'client_id' => $client->id,
+                'role_id' => $role->id,
             ]);
         } catch (AuthorizationException $e) {
             return response()->json([], 403);

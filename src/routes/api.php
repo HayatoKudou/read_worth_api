@@ -21,7 +21,7 @@ Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function 
     Route::delete('/user', [UserController::class, 'delete']);
     Route::get('/client', [ClientController::class, 'info']);
     Route::put('/client', [ClientController::class, 'update']);
-    Route::put('/client', [ClientController::class, 'create']);
+    Route::post('/client', [ClientController::class, 'create']);
     Route::get('/clients', [ClientController::class, 'list']);
     Route::get('/books', [BookController::class, 'list']);
     Route::put('/book', [BookController::class, 'update']);
