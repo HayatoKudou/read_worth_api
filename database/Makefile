@@ -8,7 +8,7 @@ setup-local:
 
 setup-prod:
 	curl -sSfL https://github.com/k0kubun/sqldef/releases/download/$(SQLDEF_VERSION)/mssqldef_linux_amd64.tar.gz -o mysqldef.tar.gz
-	tar -zxvf mysqldef.tar.gz -d ./bin
+	tar -zxvf mysqldef.tar.gz ./bin
 	rm mysqldef.tar.gz
 
 seed:
