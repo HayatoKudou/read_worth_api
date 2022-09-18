@@ -7,7 +7,7 @@ setup-local:
 	rm mysqldef.zip
 
 setup-prod:
-	curl -sSfL https://github.com/k0kubun/sqldef/releases/download/$(SQLDEF_VERSION)/mssqldef_linux_amd64.tar.gz -o mysqldef.tar.gz
+	curl -sSfL https://github.com/k0kubun/sqldef/releases/download/$(SQLDEF_VERSION)/mysqldef_linux_amd64.tar.gz -o mysqldef.tar.gz
 	tar -zxvf mysqldef.tar.gz -C ./bin
 	rm mysqldef.tar.gz
 
