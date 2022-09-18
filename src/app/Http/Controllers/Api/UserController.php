@@ -35,7 +35,7 @@ class UserController extends Controller
                 'role' => [
                     'isAccountManager' => $user->role($workspaceId)->is_account_manager,
                     'isBookManager' => $user->role($workspaceId)->is_book_manager,
-                    'isClientManager' => $user->role($workspaceId)->is_workspace_manager,
+                    'isWorkspaceManager' => $user->role($workspaceId)->is_workspace_manager,
                 ],
                 'workspaces' => $user->workspaces->map(function ($workspace) {
                     return [
@@ -62,7 +62,7 @@ class UserController extends Controller
                     'role' => [
                         'isAccountManager' => $user->role($workspaceId)->is_account_manager,
                         'isBookManager' => $user->role($workspaceId)->is_book_manager,
-                        'isClientManager' => $user->role($workspaceId)->is_workspace_manager,
+                        'isWorkspaceManager' => $user->role($workspaceId)->is_workspace_manager,
                     ],
                 ]),
             ]);

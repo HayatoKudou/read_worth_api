@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Client;
+namespace App\Http\Requests\Workspace;
 
 use App\Models\Plan;
 use Illuminate\Validation\Rule;

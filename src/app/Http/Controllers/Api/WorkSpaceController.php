@@ -9,11 +9,11 @@ use App\Models\Workspace;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Client\CreateRequest;
-use App\Http\Requests\Client\UpdateRequest;
+use App\Http\Requests\Workspace\CreateRequest;
+use App\Http\Requests\Workspace\UpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
-class ClientController extends Controller
+class WorkSpaceController extends Controller
 {
     public function info(string $workspaceId): JsonResponse
     {

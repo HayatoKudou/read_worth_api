@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\BookController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\ClientController;
+use App\Http\Controllers\Api\WorkSpaceController;
 use App\Http\Controllers\Api\FeedBackController;
 use App\Http\Controllers\Api\BookReviewController;
 use App\Http\Controllers\Api\BookHistoryController;
@@ -19,10 +19,10 @@ Route::group(['prefix' => '{workspaceId}', 'middleware' => ['auth:api']], functi
     Route::put('/user', [UserController::class, 'update']);
     Route::get('/users', [UserController::class, 'list']);
     Route::delete('/user', [UserController::class, 'delete']);
-    Route::get('/client', [ClientController::class, 'info']);
-    Route::put('/client', [ClientController::class, 'update']);
-    Route::post('/client', [ClientController::class, 'create']);
-    Route::get('/clients', [ClientController::class, 'list']);
+    Route::get('/workspace', [WorkSpaceController::class, 'info']);
+    Route::put('/workspace', [WorkSpaceController::class, 'update']);
+    Route::post('/workspace', [WorkSpaceController::class, 'create']);
+    Route::get('/workspaces', [WorkSpaceController::class, 'list']);
     Route::get('/books', [BookController::class, 'list']);
     Route::put('/book', [BookController::class, 'update']);
     Route::post('/book', [BookController::class, 'create']);

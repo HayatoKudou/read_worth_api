@@ -110,7 +110,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserCreateValidateErrorResponse"
-  /api/{workspaceId}/client:
+  /api/{workspaceId}/workspace:
     get:
       summary: ワークスペース情報
       parameters:
@@ -128,11 +128,40 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ClientResponse"
+                $ref: "#/components/schemas/WorkspaceResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
           description: "指定されたワークスペースにユーザーがいない場合"
+    put:
+      summary: ワークスペース更新
+      parameters:
+        - in: path
+          name: workspaceId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkspaceUpdateRequest"
+      responses:
+        "201":
+          description: "OK"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定されたワークスペースにユーザーがいない場合"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceUpdateValidateErrorResponse"
     post:
       summary: ワークスペース追加
       parameters:
@@ -162,7 +191,7 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WorkspaceCreateValidateErrorResponse"
-  /api/{workspaceId}/clients:
+  /api/{workspaceId}/workspaces:
     get:
       summary: ワークスペース一覧
       parameters:
@@ -180,7 +209,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ClientsResponse"
+                $ref: "#/components/schemas/WorkspacesResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
@@ -339,7 +368,7 @@ components:
           required:
             - isAccountManager
             - isBookManager
-            - isClientManager
+            - isWorkspaceManager
           properties:
             isAccountManager:
               type: boolean
@@ -347,7 +376,7 @@ components:
             isBookManager:
               type: boolean
               example: true
-            isClientManager:
+            isWorkspaceManager:
               type: boolean
               example: true
         workspaces:
@@ -397,7 +426,7 @@ components:
                 required:
                   - isAccountManager
                   - isBookManager
-                  - isClientManager
+                  - isWorkspaceManager
                 properties:
                   isAccountManager:
                     type: boolean
@@ -405,7 +434,7 @@ components:
                   isBookManager:
                     type: boolean
                     example: true
-                  isClientManager:
+                  isWorkspaceManager:
                     type: boolean
                     example: true
     UserUpdateRequest:
@@ -487,7 +516,7 @@ components:
           items:
             type: string
             example: [ "ロールは必ず指定してください。" ]
-    ClientResponse:
+    WorkspaceResponse:
       required:
         - id
         - name
@@ -503,6 +532,30 @@ components:
         plan:
           type: string
           example: "工藤"
+    WorkspaceUpdateRequest:
+      properties:
+        name:
+          type: string
+          example: "テテマーチ"
+        plan:
+          type: string
+          example: "テテマーチ"
+      required:
+        - name
+        - plan
+    WorkspaceUpdateValidateErrorResponse:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            type: string
+            example: [ "ワークスペース名は必ず指定してください。" ]
+        plan:
+          type: array
+          items:
+            type: string
+            example: [ "プランは必ず指定してください。" ]
     WorkspaceCreateRequest:
       properties:
         name:
@@ -518,7 +571,7 @@ components:
           items:
             type: string
             example: [ "名前は必ず指定してください。" ]
-    ClientsResponse:
+    WorkspacesResponse:
       type: array
       items:
         required:

@@ -17,7 +17,7 @@ class CallbackGoogleAuthResponse
             'apiToken' => $user->api_token,
             'isAccountManager' => $user->role($workspace->id)->is_account_manager,
             'isBookManager' => $user->role($workspace->id)->is_book_manager,
-            'isClientManager' => $user->role($workspace->id)->is_workspace_manager,
+            'isWorkspaceManager' => $user->role($workspace->id)->is_workspace_manager,
             'workspaceId' => $workspace->id,
             'clientName' => $workspace->name,
         ];
