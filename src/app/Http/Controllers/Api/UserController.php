@@ -37,7 +37,7 @@ class UserController extends Controller
                     'isBookManager' => $user->role($workspaceId)->is_book_manager,
                     'isClientManager' => $user->role($workspaceId)->is_workspace_manager,
                 ],
-                'clients' => $user->workspaces->map(function ($workspace) {
+                'workspaces' => $user->workspaces->map(function ($workspace) {
                     return [
                         'id' => $workspace->id,
                         'name' => $workspace->name,
@@ -87,7 +87,7 @@ class UserController extends Controller
                 $role = Role::create([
                     'is_account_manager' => in_array('アカウント管理', $validated['roles'], true),
                     'is_book_manager' => in_array('書籍管理', $validated['roles'], true),
-                    'is_workspace_manager' => in_array('組織管理', $validated['roles'], true),
+                    'is_workspace_manager' => in_array('ワークスペース管理', $validated['roles'], true),
                 ]);
 
                 if (Belonging::where('user_id', $user->id)->where('workspace_id', $workspace->id)->exists()) {
@@ -123,7 +123,7 @@ class UserController extends Controller
                 $user->role($workspaceId)->update([
                     'is_account_manager' => in_array('アカウント管理', $request->get('roles'), true),
                     'is_book_manager' => in_array('書籍管理', $request->get('roles'), true),
-                    'is_workspace_manager' => in_array('組織管理', $request->get('roles'), true),
+                    'is_workspace_manager' => in_array('ワークスペース管理', $request->get('roles'), true),
                 ]);
                 return response()->json();
             });

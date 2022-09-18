@@ -56,7 +56,7 @@ class ClientController extends Controller
             $validated = $request->validated();
             $workspace = Workspace::find($workspaceId);
             $workspace->update(['name' => $validated['name']]);
-            return response()->json(['client' => $workspace], 201);
+            return response()->json([], 201);
         } catch (AuthorizationException $e) {
             return response()->json([], 403);
         }

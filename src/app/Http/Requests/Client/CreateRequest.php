@@ -9,14 +9,14 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|unique:clients|string|max:255',
+            'name' => 'required|unique:workspaces|string|max:255',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'name' => '組織名',
+            'name' => 'ワークスペース名',
         ];
     }
 }

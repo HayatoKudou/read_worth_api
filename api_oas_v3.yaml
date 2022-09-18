@@ -27,10 +27,10 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
   /api/{workspaceId}/users:
     get:
-      summary: 組織に所属しているユーザー情報
+      summary: ワークスペースに所属しているユーザー情報
       parameters:
         - in: path
           name: workspaceId
@@ -50,7 +50,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
   /api/{workspaceId}/user:
     put:
       summary: ユーザー更新
@@ -74,7 +74,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
@@ -103,7 +103,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
@@ -112,7 +112,7 @@ paths:
                 $ref: "#/components/schemas/UserCreateValidateErrorResponse"
   /api/{workspaceId}/client:
     get:
-      summary: 組織情報
+      summary: ワークスペース情報
       parameters:
         - in: path
           name: workspaceId
@@ -132,7 +132,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
     post:
       summary: ワークスペース追加
       parameters:
@@ -155,7 +155,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
@@ -164,7 +164,7 @@ paths:
                 $ref: "#/components/schemas/WorkspaceCreateValidateErrorResponse"
   /api/{workspaceId}/clients:
     get:
-      summary: 組織一覧
+      summary: ワークスペース一覧
       parameters:
         - in: path
           name: workspaceId
@@ -184,7 +184,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
   /api/{workspaceId}/books:
     get:
       summary: 書籍一覧
@@ -207,7 +207,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
   /api/{workspaceId}/book:
     put:
       summary: 書籍更新
@@ -231,7 +231,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
@@ -260,7 +260,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
   /api/{workspaceId}/{bookId}/histories:
     get:
       summary: 書籍履歴
@@ -289,7 +289,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
   /api/slack/{workspaceId}/connect:
     get:
       summary: Slack連携
@@ -320,7 +320,7 @@ components:
         - email
         - apiToken
         - role
-        - clients
+        - workspaces
       properties:
         id:
           type: number
@@ -350,7 +350,7 @@ components:
             isClientManager:
               type: boolean
               example: true
-        clients:
+        workspaces:
           type: array
           items:
             type: object
@@ -421,7 +421,7 @@ components:
           example: "tetetest@gmail.com"
         roles:
           type: array
-          example: [ "組織管理", "書籍管理" ]
+          example: [ "ワークスペース管理", "書籍管理" ]
           items:
             type: string
       required:
@@ -462,7 +462,7 @@ components:
           example: "tetetest@gmail.com"
         roles:
           type: array
-          example: [ "組織管理", "書籍管理" ]
+          example: [ "ワークスペース管理", "書籍管理" ]
           items:
             type: string
       required:

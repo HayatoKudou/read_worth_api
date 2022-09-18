@@ -10,10 +10,10 @@ class UpdateRequest extends FormRequest
 {
     public function rules()
     {
-        $workspaceId = $this->route()->parameter('clientId');
+        $workspaceId = $this->route()->parameter('workspaceId');
         return [
             'name' => [
-                Rule::unique('clients')->ignore($workspaceId),
+                Rule::unique('workspaces')->ignore($workspaceId),
                 'string',
                 'max:255',
             ],
@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => '組織名',
+            'name' => 'ワークスペース名',
             'plan' => 'プラン',
         ];
     }

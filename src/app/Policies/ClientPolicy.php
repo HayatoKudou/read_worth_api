@@ -20,6 +20,6 @@ class ClientPolicy
 
         return $userBelongsToClient
             ? $this->allow()
-            : $this->deny('ユーザは指定された組織に所属していません');
+            : $this->deny('ユーザは指定されたワークスペースに所属していません');
     }
 }
