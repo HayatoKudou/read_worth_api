@@ -5,12 +5,12 @@ info:
 servers:
   - url: "http://localhost:8000/"
 paths:
-  /api/{clientId}/me:
+  /api/{workspaceId}/me:
     get:
       summary: 自分の情報
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -27,13 +27,13 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/users:
+          description: "指定されたワークスペースにユーザーがいない場合"
+  /api/{workspaceId}/users:
     get:
-      summary: 組織に所属しているユーザー情報
+      summary: ワークスペースに所属しているユーザー情報
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -50,13 +50,13 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/user:
+          description: "指定されたワークスペースにユーザーがいない場合"
+  /api/{workspaceId}/user:
     put:
       summary: ユーザー更新
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -74,7 +74,7 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
@@ -85,7 +85,7 @@ paths:
       summary: ユーザー追加
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -103,19 +103,19 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserCreateValidateErrorResponse"
-  /api/{clientId}/client:
+  /api/{workspaceId}/workspace:
     get:
-      summary: 組織情報
+      summary: ワークスペース情報
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -128,16 +128,45 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ClientResponse"
+                $ref: "#/components/schemas/WorkspaceResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
+    put:
+      summary: ワークスペース更新
+      parameters:
+        - in: path
+          name: workspaceId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/WorkspaceUpdateRequest"
+      responses:
+        "201":
+          description: "OK"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定されたワークスペースにユーザーがいない場合"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/WorkspaceUpdateValidateErrorResponse"
     post:
       summary: ワークスペース追加
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -155,19 +184,19 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/WorkspaceCreateValidateErrorResponse"
-  /api/{clientId}/clients:
+  /api/{workspaceId}/workspaces:
     get:
-      summary: 組織一覧
+      summary: ワークスペース一覧
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -180,17 +209,17 @@ paths:
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/ClientsResponse"
+                $ref: "#/components/schemas/WorkspacesResponse"
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/books:
+          description: "指定されたワークスペースにユーザーがいない場合"
+  /api/{workspaceId}/books:
     get:
       summary: 書籍一覧
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -207,13 +236,13 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/book:
+          description: "指定されたワークスペースにユーザーがいない場合"
+  /api/{workspaceId}/book:
     put:
       summary: 書籍更新
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -231,19 +260,19 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
+          description: "指定されたワークスペースにユーザーがいない場合"
         "422":
           description: "バリデーションエラー"
           content:
             application/json:
               schema:
                 $ref: "#/components/schemas/BookUpdateValidateErrorResponse"
-  /api/{clientId}/bookPurchaseApplies:
+  /api/{workspaceId}/bookPurchaseApplies:
     get:
       summary: 書籍購入申請一覧
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -260,13 +289,13 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/{bookId}/histories:
+          description: "指定されたワークスペースにユーザーがいない場合"
+  /api/{workspaceId}/{bookId}/histories:
     get:
       summary: 書籍履歴
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -289,13 +318,13 @@ paths:
         "401":
           description: "apiトークンが無効の場合"
         "403":
-          description: "指定された組織にユーザーがいない場合"
-  /api/slack/{clientId}/connect:
+          description: "指定されたワークスペースにユーザーがいない場合"
+  /api/slack/{workspaceId}/connect:
     get:
       summary: Slack連携
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -320,7 +349,7 @@ components:
         - email
         - apiToken
         - role
-        - clients
+        - workspaces
       properties:
         id:
           type: number
@@ -339,7 +368,7 @@ components:
           required:
             - isAccountManager
             - isBookManager
-            - isClientManager
+            - isWorkspaceManager
           properties:
             isAccountManager:
               type: boolean
@@ -347,10 +376,10 @@ components:
             isBookManager:
               type: boolean
               example: true
-            isClientManager:
+            isWorkspaceManager:
               type: boolean
               example: true
-        clients:
+        workspaces:
           type: array
           items:
             type: object
@@ -397,7 +426,7 @@ components:
                 required:
                   - isAccountManager
                   - isBookManager
-                  - isClientManager
+                  - isWorkspaceManager
                 properties:
                   isAccountManager:
                     type: boolean
@@ -405,7 +434,7 @@ components:
                   isBookManager:
                     type: boolean
                     example: true
-                  isClientManager:
+                  isWorkspaceManager:
                     type: boolean
                     example: true
     UserUpdateRequest:
@@ -421,7 +450,7 @@ components:
           example: "tetetest@gmail.com"
         roles:
           type: array
-          example: [ "組織管理", "書籍管理" ]
+          example: [ "ワークスペース管理", "書籍管理" ]
           items:
             type: string
       required:
@@ -462,7 +491,7 @@ components:
           example: "tetetest@gmail.com"
         roles:
           type: array
-          example: [ "組織管理", "書籍管理" ]
+          example: [ "ワークスペース管理", "書籍管理" ]
           items:
             type: string
       required:
@@ -487,7 +516,7 @@ components:
           items:
             type: string
             example: [ "ロールは必ず指定してください。" ]
-    ClientResponse:
+    WorkspaceResponse:
       required:
         - id
         - name
@@ -503,6 +532,30 @@ components:
         plan:
           type: string
           example: "工藤"
+    WorkspaceUpdateRequest:
+      properties:
+        name:
+          type: string
+          example: "テテマーチ"
+        plan:
+          type: string
+          example: "テテマーチ"
+      required:
+        - name
+        - plan
+    WorkspaceUpdateValidateErrorResponse:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            type: string
+            example: [ "ワークスペース名は必ず指定してください。" ]
+        plan:
+          type: array
+          items:
+            type: string
+            example: [ "プランは必ず指定してください。" ]
     WorkspaceCreateRequest:
       properties:
         name:
@@ -518,7 +571,7 @@ components:
           items:
             type: string
             example: [ "名前は必ず指定してください。" ]
-    ClientsResponse:
+    WorkspacesResponse:
       type: array
       items:
         required:

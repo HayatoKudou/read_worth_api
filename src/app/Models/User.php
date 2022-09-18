@@ -17,10 +17,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property null|string $api_token
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Client[]|\Illuminate\Database\Eloquent\Collection $clients
- * @property null|int $clients_count
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property null|int $tokens_count
+ * @property \App\Models\Workspace[]|\Illuminate\Database\Eloquent\Collection $workspaces
+ * @property null|int $workspaces_count
  *
  * @method static Builder|User newModelQuery()
  * @method static Builder|User newQuery()
@@ -40,19 +40,19 @@ class User extends Authenticate
 
     protected $guarded = [];
 
-    public function clients(): BelongsToMany
+    public function workspaces(): BelongsToMany
     {
         return $this->belongsToMany(
-            Client::class,
+            Workspace::class,
             'belongings'
         );
     }
 
-    public function role(string $clientId)
+    public function role(string $workspaceId)
     {
         return $this->belongsToMany(
             Role::class,
             'belongings',
-        )->where('client_id', $clientId)->first();
+        )->where('workspace_id', $workspaceId)->first();
     }
 }

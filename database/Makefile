@@ -6,6 +6,9 @@ setup:
 	unzip mysqldef.zip -d ./bin
 	rm mysqldef.zip
 
+seed:
+	mysql -h 127.0.0.1 -P 3307 -u root -proot read_worth < dev_seed.sql
+
 dryrun:
 	./bin/mysqldef -P 3307 -u root -p root read_worth --dry-run < schema.sql
 

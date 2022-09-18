@@ -9,14 +9,14 @@ use App\Http\Requests\BookCategory\CreateRequest;
 
 class BookCategoryController extends Controller
 {
-    public function create(string $clientId, CreateRequest $request): JsonResponse
+    public function create(string $workspaceId, CreateRequest $request): JsonResponse
     {
         $validated = $request->createBookCategory();
         BookCategory::create([
-            'client_id' => $clientId,
+            'workspace_id' => $workspaceId,
             'name' => $validated->name,
         ]);
-        $bookCategories = BookCategory::organization($clientId)->get();
+        $bookCategories = BookCategory::organization($workspaceId)->get();
         return response()->json([
             'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                 'name' => $bookCategory->name,

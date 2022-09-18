@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api;
 use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Client;
 use App\Models\Belonging;
+use App\Models\Workspace;
 use Illuminate\Support\Str;
 use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
@@ -35,12 +35,12 @@ class AuthController
 
         return DB::transaction(function () use ($googleUser) {
             $plan = Plan::where('name', 'free')->first();
-            $client = Client::create([
+            $workspace = Workspace::create([
                 'name' => uniqid(),
                 'plan_id' => $plan->id,
             ]);
             BookCategory::create([
-                'client_id' => $client->id,
+                'workspace_id' => $workspace->id,
                 'name' => 'ALL',
             ]);
             $user = User::create([
@@ -52,11 +52,11 @@ class AuthController
             $role = Role::create([
                 'is_account_manager' => 1,
                 'is_book_manager' => 1,
-                'is_client_manager' => 1,
+                'is_workspace_manager' => 1,
             ]);
             Belonging::create([
                 'user_id' => $user->id,
-                'client_id' => $client->id,
+                'workspace_id' => $workspace->id,
                 'role_id' => $role->id,
             ]);
             return CallbackGoogleAuthResponse::make($user);

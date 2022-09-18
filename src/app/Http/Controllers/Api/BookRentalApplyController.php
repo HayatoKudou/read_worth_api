@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\Book;
-use App\Models\Client;
+use App\Models\Workspace;
 use App\Models\BookHistory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -15,19 +15,19 @@ use App\Http\Requests\BookRentalApply\CreateRequest;
 
 class BookRentalApplyController extends Controller
 {
-    public function create(string $clientId, string $bookId, CreateRequest $request): JsonResponse
+    public function create(string $workspaceId, string $bookId, CreateRequest $request): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
 
-            return DB::transaction(function () use ($request, $clientId, $bookId): JsonResponse {
+            return DB::transaction(function () use ($request, $workspaceId, $bookId): JsonResponse {
                 $book = Book::find($bookId);
                 $book->update(['status' => Book::STATUS_CAN_NOT_LEND]);
                 $bookRentalApply = $request->createBookRentalApply();
                 $bookRentalApply::create([
                     'user_id' => Auth::id(),
-                    'client_id' => $clientId,
+                    'workspace_id' => $workspaceId,
                     'book_id' => $bookId,
                     'reason' => $request->get('reason'),
                     'rental_date' => Carbon::now(),

@@ -13,7 +13,7 @@ class RoleFactory extends Factory
             'user_id' => User::factory()->make()->id,
             'is_account_manager' => 1,
             'is_book_manager' => 1,
-            'is_client_manager' => 1,
+            'is_workspace_manager' => 1,
         ];
     }
 }

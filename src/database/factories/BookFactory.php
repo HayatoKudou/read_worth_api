@@ -3,7 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Book;
-use App\Models\Client;
+use App\Models\Workspace;
 use App\Models\BookCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,7 +12,7 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            'client_id' => Client::factory()->make()->id,
+            'workspace_id' => Workspace::factory()->make()->id,
             'book_category_id' => BookCategory::factory()->make()->id,
             'status' => Book::STATUS_CAN_LEND,
             'title' => $this->faker->sentence(2),

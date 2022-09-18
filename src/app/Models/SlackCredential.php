@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
  * App\Models\SlackCredential.
  *
  * @property int $id
- * @property int $client_id
+ * @property int $workspace_id
  * @property int $connected_user_id
  * @property null|string $access_token
  * @property null|string $channel_id
@@ -23,11 +23,11 @@ use Illuminate\Database\Eloquent\Builder;
  * @method static Builder|SlackCredential whereAccessToken($value)
  * @method static Builder|SlackCredential whereChannelId($value)
  * @method static Builder|SlackCredential whereChannelName($value)
- * @method static Builder|SlackCredential whereClientId($value)
  * @method static Builder|SlackCredential whereConnectedUserId($value)
  * @method static Builder|SlackCredential whereCreatedAt($value)
  * @method static Builder|SlackCredential whereId($value)
  * @method static Builder|SlackCredential whereUpdatedAt($value)
+ * @method static Builder|SlackCredential whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class SlackCredential extends Model

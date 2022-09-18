@@ -9,20 +9,20 @@ use Illuminate\Database\Eloquent\Builder;
  * App\Models\BookCategory.
  *
  * @property int $id
- * @property int $client_id
+ * @property int $workspace_id
  * @property string $name
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
- * @method static Builder|BookCategory organization(string $clientId)
+ * @method static Builder|BookCategory organization(string $workspaceId)
  * @method static Builder|BookCategory query()
- * @method static Builder|BookCategory whereClientId($value)
  * @method static Builder|BookCategory whereCreatedAt($value)
  * @method static Builder|BookCategory whereId($value)
  * @method static Builder|BookCategory whereName($value)
  * @method static Builder|BookCategory whereUpdatedAt($value)
+ * @method static Builder|BookCategory whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class BookCategory extends Model
@@ -30,8 +30,8 @@ class BookCategory extends Model
     protected $guarded = [];
     protected $table = 'book_category';
 
-    public function scopeOrganization(Builder $query, string $clientId): Builder
+    public function scopeOrganization(Builder $query, string $workspaceId): Builder
     {
-        return $query->where('client_id', $clientId);
+        return $query->where('workspace_id', $workspaceId);
     }
 }

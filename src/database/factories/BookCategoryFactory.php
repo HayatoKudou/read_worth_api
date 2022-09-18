@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Client;
+use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class BookCategoryFactory extends Factory
@@ -10,7 +10,7 @@ class BookCategoryFactory extends Factory
     public function definition()
     {
         return [
-            'client_id' => Client::factory()->make()->id,
+            'workspace_id' => Workspace::factory()->make()->id,
             'name' => 1,
         ];
     }
