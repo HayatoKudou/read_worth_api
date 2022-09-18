@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
-use App\Models\Client;
+use App\Models\Workspace;
 use App\Models\BookHistory;
 use App\Models\BookCategory;
 use App\Slack\SlackApiClient;
@@ -23,15 +23,15 @@ use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 
 class BookPurchaseApplyController extends Controller
 {
-    public function list(string $clientId): JsonResponse
+    public function list(string $workspaceId): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
-            assert($client instanceof Client);
-            $bookPurchaseApplies = BookPurchaseApply::where('client_id', $clientId)->get();
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
+            assert($workspace instanceof Workspace);
+            $bookPurchaseApplies = BookPurchaseApply::where('workspace_id', $workspaceId)->get();
             return response()->json([
-                'slackCredentialExists' => $client->slackCredential()->whereNotNull('access_token')->exists(),
+                'slackCredentialExists' => $workspace->slackCredential()->whereNotNull('access_token')->exists(),
                 'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
                     'reason' => $bookPurchaseApply->reason,
                     'price' => $bookPurchaseApply->price,
@@ -60,19 +60,19 @@ class BookPurchaseApplyController extends Controller
         }
     }
 
-    public function create(string $clientId, CreateRequest $request): JsonResponse
+    public function create(string $workspaceId, CreateRequest $request): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
+        $workspace = Workspace::find($workspaceId);
+        $this->authorize('affiliation', $workspace);
         $user = User::find(Auth::id());
 
-        DB::transaction(function () use ($user, $request, $clientId): void {
+        DB::transaction(function () use ($user, $request, $workspaceId): void {
             $book = new Book();
             $imagePath = $book->storeImage($request->get('image'));
             $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
 
             $book = Book::create([
-                'client_id' => $clientId,
+                'workspace_id' => $workspaceId,
                 'book_category_id' => $bookCategory->id,
                 'status' => Book::STATUS_APPLYING,
                 'title' => $request->get('title'),
@@ -82,7 +82,7 @@ class BookPurchaseApplyController extends Controller
             ]);
             BookPurchaseApply::create([
                 'user_id' => $user->id,
-                'client_id' => $clientId,
+                'workspace_id' => $workspaceId,
                 'book_id' => $book->id,
                 'reason' => $request->get('reason'),
                 'price' => $request->get('price'),
@@ -98,7 +98,7 @@ class BookPurchaseApplyController extends Controller
         try {
             $title = '書籍購入申請のお知らせ';
             $message = '【タイトル】' . $request->get('title') . "\n【申請者】" . $user->name;
-            $slackCredential = SlackCredential::where('client_id', $clientId)->first();
+            $slackCredential = SlackCredential::where('workspace_id', $workspaceId)->first();
 
             if ($slackCredential) {
                 $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
@@ -111,10 +111,10 @@ class BookPurchaseApplyController extends Controller
         }
     }
 
-    public function accept(string $clientId, string $bookId): JsonResponse
+    public function accept(string $workspaceId, string $bookId): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
+        $workspace = Workspace::find($workspaceId);
+        $this->authorize('affiliation', $workspace);
         DB::transaction(function () use ($bookId): void {
             Book::find($bookId)->purchaseApply->update([
                 'step' => BookPurchaseApply::NEED_BUY,
@@ -128,10 +128,10 @@ class BookPurchaseApplyController extends Controller
         return response()->json([]);
     }
 
-    public function done(string $clientId, string $bookId, DoneRequest $request): JsonResponse
+    public function done(string $workspaceId, string $bookId, DoneRequest $request): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
+        $workspace = Workspace::find($workspaceId);
+        $this->authorize('affiliation', $workspace);
         DB::transaction(function () use ($request, $bookId): void {
             $book = Book::find($bookId);
             $book->update(['status' => Book::STATUS_CAN_LEND]);
@@ -148,10 +148,10 @@ class BookPurchaseApplyController extends Controller
         return response()->json([]);
     }
 
-    public function refuse(string $clientId, string $bookId): JsonResponse
+    public function refuse(string $workspaceId, string $bookId): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
+        $workspace = Workspace::find($workspaceId);
+        $this->authorize('affiliation', $workspace);
         DB::transaction(function () use ($bookId): void {
             Book::find($bookId)->purchaseApply->update([
                 'step' => BookPurchaseApply::REFUSED,
@@ -166,10 +166,10 @@ class BookPurchaseApplyController extends Controller
         return response()->json([]);
     }
 
-    public function init(string $clientId, string $bookId): JsonResponse
+    public function init(string $workspaceId, string $bookId): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
+        $workspace = Workspace::find($workspaceId);
+        $this->authorize('affiliation', $workspace);
         DB::transaction(function () use ($bookId): void {
             Book::find($bookId)->purchaseApply->update([
                 'step' => BookPurchaseApply::NEED_ACCEPT,
@@ -183,18 +183,18 @@ class BookPurchaseApplyController extends Controller
         return response()->json([]);
     }
 
-    public function notification(string $clientId, string $bookId, NotificationRequest $request): JsonResponse
+    public function notification(string $workspaceId, string $bookId, NotificationRequest $request): JsonResponse
     {
-        $client = Client::find($clientId);
-        $this->authorize('affiliation', $client);
+        $workspace = Workspace::find($workspaceId);
+        $this->authorize('affiliation', $workspace);
 
         try {
-            DB::transaction(function () use ($clientId, $bookId, $request) {
+            DB::transaction(function () use ($workspaceId, $bookId, $request) {
                 $book = Book::find($bookId);
                 $book->purchaseApply->delete();
 
                 // 通知が失敗したらロールバック
-                $slackCredential = SlackCredential::where('client_id', $clientId)->first();
+                $slackCredential = SlackCredential::where('workspace_id', $workspaceId)->first();
 
                 if (!$slackCredential) {
                     return response()->json(['errors' => [

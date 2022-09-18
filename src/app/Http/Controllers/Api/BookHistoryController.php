@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\Book;
-use App\Models\Client;
+use App\Models\Workspace;
 use App\Models\BookHistory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
@@ -12,11 +12,11 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class BookHistoryController extends Controller
 {
-    public function list(string $clientId, string $bookId): JsonResponse
+    public function list(string $workspaceId, string $bookId): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
             $bookHistories = Book::find($bookId)->histories;
             return response()->json(
                 $bookHistories->map(fn (BookHistory $bookHistory) => [

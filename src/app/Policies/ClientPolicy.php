@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Models\user;
-use App\Models\Client;
+use App\Models\Workspace;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -11,15 +11,15 @@ class ClientPolicy
 {
     use HandlesAuthorization;
 
-    public function affiliation(user $user, Client $client): Response
+    public function affiliation(user $user, Workspace $workspace): Response
     {
-        $userBelongsToClient = $client
+        $userBelongsToClient = $workspace
             ->users()
             ->where('users.id', $user->id)
             ->exists();
 
         return $userBelongsToClient
             ? $this->allow()
-            : $this->deny('ユーザは指定された組織に所属していません');
+            : $this->deny('ユーザは指定されたワークスペースに所属していません');
     }
 }

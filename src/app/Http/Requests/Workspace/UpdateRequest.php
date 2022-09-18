@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Client;
+namespace App\Http\Requests\Workspace;
 
 use App\Models\Plan;
 use Illuminate\Validation\Rule;
@@ -10,10 +10,10 @@ class UpdateRequest extends FormRequest
 {
     public function rules()
     {
-        $clientId = $this->route()->parameter('clientId');
+        $workspaceId = $this->route()->parameter('workspaceId');
         return [
             'name' => [
-                Rule::unique('clients')->ignore($clientId),
+                Rule::unique('workspaces')->ignore($workspaceId),
                 'string',
                 'max:255',
             ],
@@ -27,7 +27,7 @@ class UpdateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'name' => '組織名',
+            'name' => 'ワークスペース名',
             'plan' => 'プラン',
         ];
     }

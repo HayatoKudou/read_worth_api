@@ -6,7 +6,7 @@ use Tests\TestCase;
 use App\Models\Plan;
 use App\Models\Role;
 use App\Models\User;
-use App\Models\Client;
+use App\Models\Workspace;
 use Illuminate\Support\Facades\Hash;
 
 class AuthControllerTest extends TestCase
@@ -16,12 +16,12 @@ class AuthControllerTest extends TestCase
         parent::setUp();
 
         $plan = Plan::factory()->create(['name' => 'premier']);
-        $client = Client::factory()->create([
+        $workspace = Workspace::factory()->create([
             'name' => '株式会社かぶかぶ',
             'plan_id' => $plan->id,
         ]);
         $user = User::factory()->create([
-            'client_id' => $client->id,
+            'workspace_id' => $workspace->id,
             'email' => 'aaabbbccc@test.com',
             'password' => Hash::make('pass'),
         ]);
@@ -29,7 +29,7 @@ class AuthControllerTest extends TestCase
             'user_id' => $user->id,
             'is_account_manager' => 1,
             'is_book_manager' => 1,
-            'is_client_manager' => 1,
+            'is_workspace_manager' => 1,
         ]);
     }
 

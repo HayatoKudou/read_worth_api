@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @property int $id
  * @property int $user_id
- * @property int $client_id
+ * @property int $workspace_id
  * @property int $book_id
  * @property string $reason 申請理由
  * @property string $rental_date 貸出日
@@ -23,10 +23,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @method static Builder|BookRentalApply newModelQuery()
  * @method static Builder|BookRentalApply newQuery()
- * @method static Builder|BookRentalApply organization(string $clientId)
+ * @method static Builder|BookRentalApply organization(string $workspaceId)
  * @method static Builder|BookRentalApply query()
  * @method static Builder|BookRentalApply whereBookId($value)
- * @method static Builder|BookRentalApply whereClientId($value)
  * @method static Builder|BookRentalApply whereCreatedAt($value)
  * @method static Builder|BookRentalApply whereExpectedReturnDate($value)
  * @method static Builder|BookRentalApply whereId($value)
@@ -35,6 +34,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|BookRentalApply whereReturnDate($value)
  * @method static Builder|BookRentalApply whereUpdatedAt($value)
  * @method static Builder|BookRentalApply whereUserId($value)
+ * @method static Builder|BookRentalApply whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class BookRentalApply extends Model
@@ -47,8 +47,8 @@ class BookRentalApply extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function scopeOrganization(Builder $query, string $clientId): Builder
+    public function scopeOrganization(Builder $query, string $workspaceId): Builder
     {
-        return $query->where('client_id', $clientId);
+        return $query->where('workspace_id', $workspaceId);
     }
 }

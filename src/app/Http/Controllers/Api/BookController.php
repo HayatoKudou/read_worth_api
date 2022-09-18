@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
 use App\Models\Book;
-use App\Models\Client;
+use App\Models\Workspace;
 use App\Models\BookReview;
 use App\Models\BookHistory;
 use App\Models\BookCategory;
@@ -23,13 +23,13 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class BookController extends Controller
 {
-    public function list(string $clientId): JsonResponse
+    public function list(string $workspaceId): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
-            $books = Book::organization($clientId)->with('purchaseApply')->get();
-            $bookCategories = BookCategory::organization($clientId)->get();
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
+            $books = Book::organization($workspaceId)->with('purchaseApply')->get();
+            $bookCategories = BookCategory::organization($workspaceId)->get();
             return response()->json([
                 'books' => $books->map(fn (Book $book) => [
                     'id' => $book->id,
@@ -65,15 +65,15 @@ class BookController extends Controller
         }
     }
 
-    public function create(string $clientId, CreateRequest $request): JsonResponse
+    public function create(string $workspaceId, CreateRequest $request): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
-            DB::transaction(function () use ($clientId, $request): void {
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
+            DB::transaction(function () use ($workspaceId, $request): void {
                 $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
                 $book = Book::create([
-                    'client_id' => $clientId,
+                    'workspace_id' => $workspaceId,
                     'book_category_id' => $bookCategory->id,
                     'status' => Book::STATUS_CAN_LEND,
                     'title' => $request->get('title'),
@@ -93,11 +93,11 @@ class BookController extends Controller
         }
     }
 
-    public function update(string $clientId, UpdateRequest $request): JsonResponse
+    public function update(string $workspaceId, UpdateRequest $request): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
             $book = Book::find($request->get('id'));
             $bookCategory = BookCategory::where('name', $request->get('category'))->first();
 
@@ -106,7 +106,7 @@ class BookController extends Controller
             }
             $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
 
-            DB::transaction(function () use ($clientId, $bookCategory, $book, $request, $imagePath): void {
+            DB::transaction(function () use ($workspaceId, $bookCategory, $book, $request, $imagePath): void {
                 if ($book->status != $request->get('status')) {
                     $action = 'other';
                     // 申請中 ⇨ 登録
@@ -126,7 +126,7 @@ class BookController extends Controller
                     ]);
                 }
                 $book->update([
-                    'client_id' => $clientId,
+                    'workspace_id' => $workspaceId,
                     'book_category_id' => $bookCategory->id,
                     'status' => $request->get('status'),
                     'title' => $request->get('title'),
@@ -142,11 +142,11 @@ class BookController extends Controller
         }
     }
 
-    public function delete(string $clientId, DeleteRequest $request): JsonResponse
+    public function delete(string $workspaceId, DeleteRequest $request): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
             DB::transaction(function () use ($request): void {
                 $request->collect('book_ids')->each(function ($bookId): void {
                     BookPurchaseApply::where('book_id', $bookId)->delete();
@@ -162,11 +162,11 @@ class BookController extends Controller
         }
     }
 
-    public function return(string $clientId, string $bookId): JsonResponse
+    public function return(string $workspaceId, string $bookId): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
 
             DB::transaction(function () use ($bookId): void {
                 BookRentalApply::where('user_id', Auth::id())->where('book_id', $bookId)->update(['return_date' => Carbon::now()]);
@@ -183,12 +183,12 @@ class BookController extends Controller
         }
     }
 
-    public function csvBulkCreate(string $clientId, Request $request): JsonResponse
+    public function csvBulkCreate(string $workspaceId, Request $request): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
-            return DB::transaction(function () use ($request, $clientId): JsonResponse {
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
+            return DB::transaction(function () use ($request, $workspaceId): JsonResponse {
                 foreach ($request->get('books') as $csvData) {
                     $bookCategory = BookCategory::where('name', $csvData['カテゴリ'])->first();
 
@@ -201,7 +201,7 @@ class BookController extends Controller
 
                     if ($bookExists) {
                         $book->update([
-                            'client_id' => $clientId,
+                            'workspace_id' => $workspaceId,
                             'book_category_id' => $bookCategory->id,
                             'status' => Book::STATUS_CAN_LEND,
                             'title' => $csvData['タイトル'],
@@ -211,7 +211,7 @@ class BookController extends Controller
                         ]);
                     } else {
                         $book = Book::create([
-                            'client_id' => $clientId,
+                            'workspace_id' => $workspaceId,
                             'book_category_id' => $bookCategory->id,
                             'status' => Book::STATUS_CAN_LEND,
                             'title' => $csvData['タイトル'],

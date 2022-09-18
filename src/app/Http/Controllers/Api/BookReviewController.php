@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
-use App\Models\Client;
+use App\Models\Workspace;
 use App\Models\BookRentalApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -16,11 +16,11 @@ use Illuminate\Auth\Access\AuthorizationException;
 
 class BookReviewController extends Controller
 {
-    public function create(string $clientId, string $bookId, CreateRequest $request): JsonResponse
+    public function create(string $workspaceId, string $bookId, CreateRequest $request): JsonResponse
     {
         try {
-            $client = Client::find($clientId);
-            $this->authorize('affiliation', $client);
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
 
             return DB::transaction(function () use ($request, $bookId): JsonResponse {
                 $user = User::find(Auth::id());

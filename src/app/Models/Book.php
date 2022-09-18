@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * App\Models\Book.
  *
  * @property int $id
- * @property int $client_id
+ * @property int $workspace_id
  * @property int $book_category_id
  * @property int $status
  * @property string $title
@@ -26,7 +26,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \App\Models\BookCategory $category
- * @property \App\Models\Client $client
+ * @property null|\App\Models\Workspace $client
  * @property \App\Models\BookHistory[]|\Illuminate\Database\Eloquent\Collection $histories
  * @property null|int $histories_count
  * @property null|\App\Models\BookPurchaseApply $purchaseApply
@@ -38,10 +38,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  *
  * @method static Builder|Book newModelQuery()
  * @method static Builder|Book newQuery()
- * @method static Builder|Book organization(string $clientId)
+ * @method static Builder|Book organization(string $workspaceId)
  * @method static Builder|Book query()
  * @method static Builder|Book whereBookCategoryId($value)
- * @method static Builder|Book whereClientId($value)
  * @method static Builder|Book whereCreatedAt($value)
  * @method static Builder|Book whereDescription($value)
  * @method static Builder|Book whereId($value)
@@ -50,6 +49,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|Book whereTitle($value)
  * @method static Builder|Book whereUpdatedAt($value)
  * @method static Builder|Book whereUrl($value)
+ * @method static Builder|Book whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class Book extends Model
@@ -62,7 +62,7 @@ class Book extends Model
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Workspace::class);
     }
 
     public function category(): BelongsTo
@@ -95,9 +95,9 @@ class Book extends Model
         return $this->hasMany(BookReview::class);
     }
 
-    public function scopeOrganization(Builder $query, string $clientId): Builder
+    public function scopeOrganization(Builder $query, string $workspaceId): Builder
     {
-        return $query->where('client_id', $clientId);
+        return $query->where('workspace_id', $workspaceId);
     }
 
     public static function storeImage(string $imageBinary): string
@@ -105,8 +105,8 @@ class Book extends Model
         $user = User::find(Auth::id());
         @[, $file_data] = explode(';', $imageBinary);
         @[, $file_data] = explode(',', $imageBinary);
-//        $imagePath = '/public/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
-        $imagePath = '/' . $user->client_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
+//        $imagePath = '/public/' . $user->workspace_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
+        $imagePath = '/' . $user->workspace_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
         Storage::put($imagePath, base64_decode($file_data, true));
         return $imagePath;
     }

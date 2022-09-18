@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Client.
+ * App\Models\Workspace.
  *
  * @property int $id
  * @property int $plan_id
@@ -25,17 +25,17 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property \App\Models\User[]|Collection $users
  * @property null|int $users_count
  *
- * @method static Builder|Client newModelQuery()
- * @method static Builder|Client newQuery()
- * @method static Builder|Client query()
- * @method static Builder|Client whereCreatedAt($value)
- * @method static Builder|Client whereId($value)
- * @method static Builder|Client whereName($value)
- * @method static Builder|Client wherePlanId($value)
- * @method static Builder|Client whereUpdatedAt($value)
+ * @method static Builder|Workspace newModelQuery()
+ * @method static Builder|Workspace newQuery()
+ * @method static Builder|Workspace query()
+ * @method static Builder|Workspace whereCreatedAt($value)
+ * @method static Builder|Workspace whereId($value)
+ * @method static Builder|Workspace whereName($value)
+ * @method static Builder|Workspace wherePlanId($value)
+ * @method static Builder|Workspace whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Client extends Authenticate
+class Workspace extends Authenticate
 {
     protected $guarded = [];
 
