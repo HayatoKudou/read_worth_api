@@ -39,6 +39,18 @@ CREATE TABLE `users`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
+CREATE TABLE `roles`
+(
+    `id`                   bigint unsigned NOT NULL AUTO_INCREMENT,
+    `is_account_manager`   tinyint(1)      NOT NULL DEFAULT '0',
+    `is_book_manager`      tinyint(1)      NOT NULL DEFAULT '0',
+    `is_workspace_manager` tinyint(1)      NOT NULL DEFAULT '0',
+    `created_at`           timestamp       NULL     DEFAULT NULL,
+    `updated_at`           timestamp       NULL     DEFAULT NULL,
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4;
+
 CREATE TABLE `belongings`
 (
     `id`           bigint unsigned NOT NULL AUTO_INCREMENT,
@@ -152,18 +164,6 @@ CREATE TABLE `book_reviews`
     PRIMARY KEY (`id`),
     CONSTRAINT `book_reviews_fk1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
     CONSTRAINT `book_reviews_fk2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4;
-
-CREATE TABLE `roles`
-(
-    `id`                   bigint unsigned NOT NULL AUTO_INCREMENT,
-    `is_account_manager`   tinyint(1)      NOT NULL DEFAULT '0',
-    `is_book_manager`      tinyint(1)      NOT NULL DEFAULT '0',
-    `is_workspace_manager` tinyint(1)      NOT NULL DEFAULT '0',
-    `created_at`           timestamp       NULL     DEFAULT NULL,
-    `updated_at`           timestamp       NULL     DEFAULT NULL,
-    PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
