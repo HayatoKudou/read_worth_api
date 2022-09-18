@@ -7,16 +7,17 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BookReview
+ * App\Models\BookReview.
  *
  * @property int $id
  * @property int $user_id
  * @property int $book_id
  * @property string $review
  * @property int $rate
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read \App\Models\User $user
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\User $user
+ *
  * @method static Builder|BookReview newModelQuery()
  * @method static Builder|BookReview newQuery()
  * @method static Builder|BookReview query()

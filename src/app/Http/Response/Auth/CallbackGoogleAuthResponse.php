@@ -18,7 +18,7 @@ class CallbackGoogleAuthResponse
             'isAccountManager' => $user->role($workspace->id)->is_account_manager,
             'isBookManager' => $user->role($workspace->id)->is_book_manager,
             'isClientManager' => $user->role($workspace->id)->is_workspace_manager,
-            'clientId' => $workspace->id,
+            'workspaceId' => $workspace->id,
             'clientName' => $workspace->name,
         ];
         $query = http_build_query($param);

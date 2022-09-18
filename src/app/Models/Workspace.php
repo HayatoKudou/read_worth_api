@@ -11,19 +11,20 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Workspace
+ * App\Models\Workspace.
  *
  * @property int $id
  * @property int $plan_id
  * @property string $name
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property-read Collection|\App\Models\Book[] $books
- * @property-read int|null $books_count
- * @property-read \App\Models\Plan $plan
- * @property-read \App\Models\SlackCredential|null $slackCredential
- * @property-read Collection|\App\Models\User[] $users
- * @property-read int|null $users_count
+ * @property null|\Illuminate\Support\Carbon $created_at
+ * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\Book[]|Collection $books
+ * @property null|int $books_count
+ * @property \App\Models\Plan $plan
+ * @property null|\App\Models\SlackCredential $slackCredential
+ * @property \App\Models\User[]|Collection $users
+ * @property null|int $users_count
+ *
  * @method static Builder|Workspace newModelQuery()
  * @method static Builder|Workspace newQuery()
  * @method static Builder|Workspace query()
