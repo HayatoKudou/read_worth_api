@@ -7,28 +7,26 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BookPurchaseApply.
+ * App\Models\BookPurchaseApply
  *
  * @property int $id
  * @property int $user_id
- * @property int $client_id
+ * @property int $workspace_id
  * @property int $book_id
  * @property string $reason
  * @property int $price
  * @property int $step
- * @property null|string $location
- * @property null|\Illuminate\Support\Carbon $created_at
- * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Book $book
- * @property \App\Models\Client $client
- * @property \App\Models\User $user
- *
+ * @property string|null $location
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \App\Models\Book $book
+ * @property-read \App\Models\Workspace|null $client
+ * @property-read \App\Models\User $user
  * @method static Builder|BookPurchaseApply newModelQuery()
  * @method static Builder|BookPurchaseApply newQuery()
- * @method static Builder|BookPurchaseApply organization(string $clientId)
+ * @method static Builder|BookPurchaseApply organization(string $workspaceId)
  * @method static Builder|BookPurchaseApply query()
  * @method static Builder|BookPurchaseApply whereBookId($value)
- * @method static Builder|BookPurchaseApply whereClientId($value)
  * @method static Builder|BookPurchaseApply whereCreatedAt($value)
  * @method static Builder|BookPurchaseApply whereId($value)
  * @method static Builder|BookPurchaseApply whereLocation($value)
@@ -37,6 +35,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @method static Builder|BookPurchaseApply whereStep($value)
  * @method static Builder|BookPurchaseApply whereUpdatedAt($value)
  * @method static Builder|BookPurchaseApply whereUserId($value)
+ * @method static Builder|BookPurchaseApply whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class BookPurchaseApply extends Model
@@ -60,11 +59,11 @@ class BookPurchaseApply extends Model
 
     public function client(): BelongsTo
     {
-        return $this->belongsTo(Client::class);
+        return $this->belongsTo(Workspace::class);
     }
 
-    public function scopeOrganization(Builder $query, string $clientId): Builder
+    public function scopeOrganization(Builder $query, string $workspaceId): Builder
     {
-        return $query->where('client_id', $clientId);
+        return $query->where('workspace_id', $workspaceId);
     }
 }

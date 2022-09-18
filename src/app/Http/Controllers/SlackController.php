@@ -12,10 +12,10 @@ use Illuminate\Contracts\View\View;
 
 class SlackController extends Controller
 {
-    public function connect(string $clientId): JsonResponse
+    public function connect(string $workspaceId): JsonResponse
     {
         SlackCredential::firstOrCreate([
-            'client_id' => $clientId,
+            'workspace_id' => $workspaceId,
             'connected_user_id' => \Auth::id(),
         ]);
         return response()->json();
@@ -32,7 +32,7 @@ class SlackController extends Controller
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
             'form_params' => [
-                'client_id' => \Config::get('slack.clientId'),
+                'workspace_id' => \Config::get('slack.clientId'),
                 'client_secret' => \Config::get('slack.clientSecret'),
                 'code' => $request->get('code'),
                 'grant_type' => 'authorization_code',
@@ -53,11 +53,13 @@ class SlackController extends Controller
         $userInfo = $slackClient->userInfo($userId);
 
         $user = User::where('email', $userInfo['user']['profile']['email'])->first();
+
         if (!$user) {
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        $connectSlackUser = SlackCredential::where('connected_user_id', $user->id)->whereNull("access_token")->first();
+        $connectSlackUser = SlackCredential::where('connected_user_id', $user->id)->whereNull('access_token')->first();
+
         if (!$connectSlackUser) {
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }

@@ -5,12 +5,12 @@ info:
 servers:
   - url: "http://localhost:8000/"
 paths:
-  /api/{clientId}/me:
+  /api/{workspaceId}/me:
     get:
       summary: 自分の情報
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -28,12 +28,12 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/users:
+  /api/{workspaceId}/users:
     get:
       summary: 組織に所属しているユーザー情報
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -51,12 +51,12 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/user:
+  /api/{workspaceId}/user:
     put:
       summary: ユーザー更新
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -85,7 +85,7 @@ paths:
       summary: ユーザー追加
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -110,12 +110,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserCreateValidateErrorResponse"
-  /api/{clientId}/client:
+  /api/{workspaceId}/client:
     get:
       summary: 組織情報
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -137,7 +137,7 @@ paths:
       summary: ワークスペース追加
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -162,12 +162,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/WorkspaceCreateValidateErrorResponse"
-  /api/{clientId}/clients:
+  /api/{workspaceId}/clients:
     get:
       summary: 組織一覧
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -185,12 +185,12 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/books:
+  /api/{workspaceId}/books:
     get:
       summary: 書籍一覧
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -208,12 +208,12 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/book:
+  /api/{workspaceId}/book:
     put:
       summary: 書籍更新
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -238,12 +238,12 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BookUpdateValidateErrorResponse"
-  /api/{clientId}/bookPurchaseApplies:
+  /api/{workspaceId}/bookPurchaseApplies:
     get:
       summary: 書籍購入申請一覧
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -261,12 +261,12 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/{clientId}/{bookId}/histories:
+  /api/{workspaceId}/{bookId}/histories:
     get:
       summary: 書籍履歴
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true
@@ -290,12 +290,12 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定された組織にユーザーがいない場合"
-  /api/slack/{clientId}/connect:
+  /api/slack/{workspaceId}/connect:
     get:
       summary: Slack連携
       parameters:
         - in: path
-          name: clientId
+          name: workspaceId
           schema:
             type: integer
           required: true

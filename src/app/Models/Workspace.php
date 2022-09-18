@@ -11,31 +11,30 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Client.
+ * App\Models\Workspace
  *
  * @property int $id
  * @property int $plan_id
  * @property string $name
- * @property null|\Illuminate\Support\Carbon $created_at
- * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Book[]|Collection $books
- * @property null|int $books_count
- * @property \App\Models\Plan $plan
- * @property null|\App\Models\SlackCredential $slackCredential
- * @property \App\Models\User[]|Collection $users
- * @property null|int $users_count
- *
- * @method static Builder|Client newModelQuery()
- * @method static Builder|Client newQuery()
- * @method static Builder|Client query()
- * @method static Builder|Client whereCreatedAt($value)
- * @method static Builder|Client whereId($value)
- * @method static Builder|Client whereName($value)
- * @method static Builder|Client wherePlanId($value)
- * @method static Builder|Client whereUpdatedAt($value)
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read Collection|\App\Models\Book[] $books
+ * @property-read int|null $books_count
+ * @property-read \App\Models\Plan $plan
+ * @property-read \App\Models\SlackCredential|null $slackCredential
+ * @property-read Collection|\App\Models\User[] $users
+ * @property-read int|null $users_count
+ * @method static Builder|Workspace newModelQuery()
+ * @method static Builder|Workspace newQuery()
+ * @method static Builder|Workspace query()
+ * @method static Builder|Workspace whereCreatedAt($value)
+ * @method static Builder|Workspace whereId($value)
+ * @method static Builder|Workspace whereName($value)
+ * @method static Builder|Workspace wherePlanId($value)
+ * @method static Builder|Workspace whereUpdatedAt($value)
  * @mixin \Eloquent
  */
-class Client extends Authenticate
+class Workspace extends Authenticate
 {
     protected $guarded = [];
 

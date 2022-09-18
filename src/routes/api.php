@@ -13,7 +13,7 @@ use App\Http\Controllers\Api\BookPurchaseApplyController;
 
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
-Route::group(['prefix' => '{clientId}', 'middleware' => ['auth:api']], function (): void {
+Route::group(['prefix' => '{workspaceId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/me', [UserController::class, 'me']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);

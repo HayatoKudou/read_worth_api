@@ -11,14 +11,14 @@ class CreateRequest extends FormRequest
 {
     public function rules(Request $request): array
     {
-        $clientId = $request->route()->parameter('clientId');
+        $workspaceId = $request->route()->parameter('clientId');
         return [
             'name' => [
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('book_category', 'name')->where(function ($query) use ($clientId): void {
-                    $query->where('client_id', $clientId);
+                Rule::unique('book_category', 'name')->where(function ($query) use ($workspaceId): void {
+                    $query->where('workspace_id', $workspaceId);
                 }),
             ],
         ];

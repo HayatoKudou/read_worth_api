@@ -11,7 +11,7 @@ CREATE TABLE `plans`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE `clients`
+CREATE TABLE `workspaces`
 (
     `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
     `plan_id`    bigint unsigned NOT NULL,
@@ -19,8 +19,8 @@ CREATE TABLE `clients`
     `created_at` timestamp       NULL DEFAULT NULL,
     `updated_at` timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE KEY `clients_name_unique` (`name`),
-    CONSTRAINT `clients_fk1` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`)
+    UNIQUE index (`name`),
+    CONSTRAINT `workspaces_fk1` FOREIGN KEY (`plan_id`) REFERENCES `plans` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -41,36 +41,36 @@ CREATE TABLE `users`
 
 CREATE TABLE `belongings`
 (
-    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`    bigint unsigned NOT NULL,
-    `client_id`  bigint unsigned NOT NULL,
-    `role_id`    bigint unsigned NOT NULL,
-    `created_at` timestamp       NULL DEFAULT NULL,
-    `updated_at` timestamp       NULL DEFAULT NULL,
+    `id`           bigint unsigned NOT NULL AUTO_INCREMENT,
+    `user_id`      bigint unsigned NOT NULL,
+    `workspace_id` bigint unsigned NOT NULL,
+    `role_id`      bigint unsigned NOT NULL,
+    `created_at`   timestamp       NULL DEFAULT NULL,
+    `updated_at`   timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX (user_id, client_id),
+    UNIQUE INDEX (user_id, workspace_id),
     CONSTRAINT `belongings_fk1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`),
-    CONSTRAINT `belongings_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+    CONSTRAINT `belongings_fk2` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`),
     CONSTRAINT `belongings_fk3` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `book_category`
 (
-    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
-    `client_id`  bigint unsigned NOT NULL,
-    `name`       varchar(255)    NOT NULL,
-    `created_at` timestamp       NULL DEFAULT NULL,
-    `updated_at` timestamp       NULL DEFAULT NULL,
+    `id`           bigint unsigned NOT NULL AUTO_INCREMENT,
+    `workspace_id` bigint unsigned NOT NULL,
+    `name`         varchar(255)    NOT NULL,
+    `created_at`   timestamp       NULL DEFAULT NULL,
+    `updated_at`   timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    CONSTRAINT `book_category_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+    CONSTRAINT `book_category_fk1` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `books`
 (
     `id`               bigint unsigned NOT NULL AUTO_INCREMENT,
-    `client_id`        bigint unsigned NOT NULL,
+    `workspace_id`     bigint unsigned NOT NULL,
     `book_category_id` bigint unsigned NOT NULL,
     `status`           smallint        NOT NULL,
     `title`            varchar(255)    NOT NULL,
@@ -82,7 +82,7 @@ CREATE TABLE `books`
     PRIMARY KEY (`id`),
     KEY `books_book_category_id_foreign` (`book_category_id`),
     CONSTRAINT `books_fk1` FOREIGN KEY (`book_category_id`) REFERENCES `book_category` (`id`),
-    CONSTRAINT `books_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`)
+    CONSTRAINT `books_fk2` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
@@ -102,19 +102,19 @@ CREATE TABLE `book_histories`
 
 CREATE TABLE `book_purchase_applies`
 (
-    `id`         bigint unsigned NOT NULL AUTO_INCREMENT,
-    `user_id`    bigint unsigned NOT NULL,
-    `client_id`  bigint unsigned NOT NULL,
-    `book_id`    bigint unsigned NOT NULL,
-    `reason`     text            NOT NULL,
-    `price`      int             NOT NULL,
-    `step`       smallint        NOT NULL DEFAULT '1',
-    `location`   varchar(255)             DEFAULT NULL,
-    `created_at` timestamp       NULL     DEFAULT NULL,
-    `updated_at` timestamp       NULL     DEFAULT NULL,
+    `id`           bigint unsigned NOT NULL AUTO_INCREMENT,
+    `user_id`      bigint unsigned NOT NULL,
+    `workspace_id` bigint unsigned NOT NULL,
+    `book_id`      bigint unsigned NOT NULL,
+    `reason`       text            NOT NULL,
+    `price`        int             NOT NULL,
+    `step`         smallint        NOT NULL DEFAULT '1',
+    `location`     varchar(255)             DEFAULT NULL,
+    `created_at`   timestamp       NULL     DEFAULT NULL,
+    `updated_at`   timestamp       NULL     DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `book_purchase_applies_fk1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
-    CONSTRAINT `book_purchase_applies_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+    CONSTRAINT `book_purchase_applies_fk2` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`),
     CONSTRAINT `book_purchase_applies_fk3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
@@ -124,7 +124,7 @@ CREATE TABLE `book_rental_applies`
 (
     `id`                   bigint unsigned NOT NULL AUTO_INCREMENT,
     `user_id`              bigint unsigned NOT NULL,
-    `client_id`            bigint unsigned NOT NULL,
+    `workspace_id`         bigint unsigned NOT NULL,
     `book_id`              bigint unsigned NOT NULL,
     `reason`               text            NOT NULL COMMENT '申請理由',
     `rental_date`          date            NOT NULL COMMENT '貸出日',
@@ -134,7 +134,7 @@ CREATE TABLE `book_rental_applies`
     `updated_at`           timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT `book_rental_applies_fk1` FOREIGN KEY (`book_id`) REFERENCES `books` (`id`),
-    CONSTRAINT `book_rental_applies_fk2` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+    CONSTRAINT `book_rental_applies_fk2` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`),
     CONSTRAINT `book_rental_applies_fk3` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
@@ -157,29 +157,29 @@ CREATE TABLE `book_reviews`
 
 CREATE TABLE `roles`
 (
-    `id`                 bigint unsigned NOT NULL AUTO_INCREMENT,
-    `is_account_manager` tinyint(1)      NOT NULL DEFAULT '0',
-    `is_book_manager`    tinyint(1)      NOT NULL DEFAULT '0',
-    `is_client_manager`  tinyint(1)      NOT NULL DEFAULT '0',
-    `created_at`         timestamp       NULL     DEFAULT NULL,
-    `updated_at`         timestamp       NULL     DEFAULT NULL,
+    `id`                   bigint unsigned NOT NULL AUTO_INCREMENT,
+    `is_account_manager`   tinyint(1)      NOT NULL DEFAULT '0',
+    `is_book_manager`      tinyint(1)      NOT NULL DEFAULT '0',
+    `is_workspace_manager` tinyint(1)      NOT NULL DEFAULT '0',
+    `created_at`           timestamp       NULL     DEFAULT NULL,
+    `updated_at`           timestamp       NULL     DEFAULT NULL,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
 CREATE TABLE `slack_credentials`
 (
-    `id`           bigint unsigned NOT NULL AUTO_INCREMENT,
-    `client_id`    bigint unsigned NOT NULL,
-    `connected_user_id`      bigint unsigned NOT NULL,
-    `access_token` varchar(255)    NULL DEFAULT NULL,
-    `channel_id`   varchar(255)    NULL DEFAULT NULL,
-    `channel_name` varchar(255)    NULL DEFAULT NULL,
-    `created_at`   timestamp       NULL DEFAULT NULL,
-    `updated_at`   timestamp       NULL DEFAULT NULL,
+    `id`                bigint unsigned NOT NULL AUTO_INCREMENT,
+    `workspace_id`      bigint unsigned NOT NULL,
+    `connected_user_id` bigint unsigned NOT NULL,
+    `access_token`      varchar(255)    NULL DEFAULT NULL,
+    `channel_id`        varchar(255)    NULL DEFAULT NULL,
+    `channel_name`      varchar(255)    NULL DEFAULT NULL,
+    `created_at`        timestamp       NULL DEFAULT NULL,
+    `updated_at`        timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
-    UNIQUE INDEX (client_id),
-    CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`client_id`) REFERENCES `clients` (`id`),
+    UNIQUE INDEX (workspace_id),
+    CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`),
     CONSTRAINT `slack_credentials_fk2` FOREIGN KEY (`connected_user_id`) REFERENCES `users` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;

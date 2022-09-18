@@ -10,10 +10,10 @@ class UpdateRequest extends FormRequest
 {
     public function rules()
     {
-        $clientId = $this->route()->parameter('clientId');
+        $workspaceId = $this->route()->parameter('clientId');
         return [
             'name' => [
-                Rule::unique('clients')->ignore($clientId),
+                Rule::unique('clients')->ignore($workspaceId),
                 'string',
                 'max:255',
             ],
