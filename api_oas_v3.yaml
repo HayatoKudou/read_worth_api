@@ -110,6 +110,31 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/UserCreateValidateErrorResponse"
+    delete:
+      summary: ユーザー削除
+      parameters:
+        - in: path
+          name: workspaceId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserDeleteRequest"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定されたワークスペースにユーザーがいない場合"
+        "422":
+          description: "バリデーションエラー"
   /api/{workspaceId}/workspace:
     get:
       summary: ワークスペース情報
@@ -516,6 +541,15 @@ components:
           items:
             type: string
             example: [ "ロールは必ず指定してください。" ]
+    UserDeleteRequest:
+      properties:
+        userIds:
+          type: array
+          example: [ 1, 2 ]
+          items:
+            type: integer
+      required:
+        - userIds
     WorkspaceResponse:
       required:
         - id

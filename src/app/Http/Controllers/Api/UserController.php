@@ -6,10 +6,7 @@ use App\Models\Role;
 use App\Models\User;
 use App\Models\Belonging;
 use App\Models\Workspace;
-use App\Models\BookReview;
 use Illuminate\Support\Str;
-use App\Models\BookRentalApply;
-use App\Models\BookPurchaseApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -138,12 +135,16 @@ class UserController extends Controller
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
             DB::transaction(function () use ($request): void {
-                $request->collect('user_ids')->each(function ($userId): void {
-                    BookPurchaseApply::where('user_id', $userId)->delete();
-                    BookRentalApply::where('user_id', $userId)->delete();
-                    BookReview::where('user_id', $userId)->delete();
-                    Role::where('user_id', $userId)->delete();
-                    User::find($userId)?->delete();
+                $request->collect('userIds')->each(function ($userId): void {
+                    $user = User::find($userId);
+                    $user->bookPurchaseApply()->delete();
+                    $user->bookRentalApply()->delete();
+                    $user->bookReview()->delete();
+                    $user->belongings->each(function ($belonging): void {
+                        $belonging->delete();
+                        $belonging->role()->delete();
+                    });
+                    $user->delete();
                 });
             });
             return response()->json([]);

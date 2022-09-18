@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -17,6 +19,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property null|string $api_token
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\Belonging[]|\Illuminate\Database\Eloquent\Collection $belongings
+ * @property null|int $belongings_count
+ * @property null|\App\Models\BookPurchaseApply $bookPurchaseApply
+ * @property null|\App\Models\BookRentalApply $bookRentalApply
+ * @property null|\App\Models\BookReview $bookReview
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property null|int $tokens_count
  * @property \App\Models\Workspace[]|\Illuminate\Database\Eloquent\Collection $workspaces
@@ -54,5 +61,25 @@ class User extends Authenticate
             Role::class,
             'belongings',
         )->where('workspace_id', $workspaceId)->first();
+    }
+
+    public function bookPurchaseApply(): HasOne
+    {
+        return $this->hasOne(BookPurchaseApply::class);
+    }
+
+    public function bookRentalApply(): HasOne
+    {
+        return $this->hasOne(BookRentalApply::class);
+    }
+
+    public function bookReview(): HasOne
+    {
+        return $this->hasOne(BookReview::class);
+    }
+
+    public function belongings(): HasMany
+    {
+        return $this->hasMany(Belonging::class);
     }
 }

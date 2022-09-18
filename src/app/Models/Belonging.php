@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticate;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Belonging.
@@ -15,6 +16,7 @@ use Illuminate\Foundation\Auth\User as Authenticate;
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property null|\App\Models\Workspace $client
+ * @property null|\App\Models\Role $role
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newQuery()
@@ -34,5 +36,10 @@ class Belonging extends Authenticate
     public function client(): HasOne
     {
         return $this->hasOne(Workspace::class);
+    }
+
+    public function role(): BelongsTo
+    {
+        return $this->belongsTo(Role::class);
     }
 }
