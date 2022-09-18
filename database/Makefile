@@ -1,9 +1,9 @@
 SQLDEF_VERSION = v0.12.7
 
 # ubuntu: linux_arm64.tar.gz
-setup: SQLDEF_PLATFORM=darwin_amd64
+setup: SQLDEF_PLATFORM=darwin_amd64.zip
 setup:
-	curl -sSfL https://github.com/k0kubun/sqldef/releases/download/$(SQLDEF_VERSION)/mysqldef_$(SQLDEF_PLATFORM).zip -o mysqldef.zip
+	curl -sSfL https://github.com/k0kubun/sqldef/releases/download/$(SQLDEF_VERSION)/mysqldef_$(SQLDEF_PLATFORM) -o mysqldef.zip
 	unzip mysqldef.zip -d ./bin
 	rm mysqldef.zip
 
