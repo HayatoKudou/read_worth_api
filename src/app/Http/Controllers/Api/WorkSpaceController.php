@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\BookCategory;
 use App\Models\Plan;
 use App\Models\Role;
 use App\Models\Belonging;
@@ -70,6 +71,10 @@ class WorkSpaceController extends Controller
             $workspace = Workspace::create([
                 'plan_id' => $plan->id,
                 'name' => $validated['name'],
+            ]);
+            BookCategory::create([
+                'workspace_id' => $workspace->id,
+                'name' => 'ALL',
             ]);
             $role = Role::create([
                 'is_account_manager' => 1,
