@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\BookCategory.
@@ -13,6 +14,8 @@ use Illuminate\Database\Eloquent\Builder;
  * @property string $name
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
+ * @property \App\Models\Book[]|\Illuminate\Database\Eloquent\Collection $books
+ * @property null|int $books_count
  *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
@@ -33,5 +36,10 @@ class BookCategory extends Model
     public function scopeOrganization(Builder $query, string $workspaceId): Builder
     {
         return $query->where('workspace_id', $workspaceId);
+    }
+
+    public function books(): HasMany
+    {
+        return $this->hasMany(Book::class);
     }
 }

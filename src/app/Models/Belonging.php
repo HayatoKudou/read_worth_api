@@ -16,7 +16,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property null|\App\Models\Workspace $client
- * @property null|\App\Models\Role $role
+ * @property \App\Models\Role $role
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newQuery()

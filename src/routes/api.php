@@ -29,6 +29,7 @@ Route::group(['prefix' => '{workspaceId}', 'middleware' => ['auth:api']], functi
     Route::delete('/book', [BookController::class, 'delete']);
     Route::post('/book/csvBulk', [BookController::class, 'csvBulkCreate']);
     Route::post('/bookCategory', [BookCategoryController::class, 'create']);
+    Route::delete('/bookCategory', [BookCategoryController::class, 'delete']);
     Route::get('/bookPurchaseApplies', [BookPurchaseApplyController::class, 'list']);
     Route::post('/bookPurchaseApply', [BookPurchaseApplyController::class, 'create']);
     Route::post('/{bookId}/purchase/accept', [BookPurchaseApplyController::class, 'accept']);
