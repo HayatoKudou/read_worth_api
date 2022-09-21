@@ -100,18 +100,17 @@ class Book extends Model
         return $query->where('workspace_id', $workspaceId);
     }
 
-    public static function storeImage(string $imageBinary): string
+    public static function storeImage(string $imageBinary, string $workspaceId): string
     {
-        $user = User::find(Auth::id());
+        $user = Auth::user();
         @[, $file_data] = explode(';', $imageBinary);
         @[, $file_data] = explode(',', $imageBinary);
-//        $imagePath = '/public/' . $user->workspace_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
-        $imagePath = '/' . $user->workspace_id . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
+        $imagePath = $workspaceId . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
         Storage::put($imagePath, base64_decode($file_data, true));
         return $imagePath;
     }
 
-    public static function fetchAmazonImage(string $url): string
+    public static function fetchAmazonImage(string $url, string $workspaceId): string
     {
         $dpStart = mb_strpos($url, 'dp/') + 3;
         $dp = mb_substr($url, $dpStart, 10);
@@ -120,6 +119,6 @@ class Book extends Model
         $response = Http::get($endpoint);
         $body = $response->getBody()->getContents();
         $img = ('data:image/jpeg;base64,' . base64_encode($body));
-        return self::storeImage($img);
+        return self::storeImage($img, $workspaceId);
     }
 }

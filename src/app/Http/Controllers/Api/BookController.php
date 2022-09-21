@@ -80,7 +80,7 @@ class BookController extends Controller
                     'description' => $request->get('description'),
                     'url' => $request->get('url'),
                 ]);
-                $book->update(['image_path' => $request->get('image') ? $book->storeImage($request->get('image')) : null]);
+                $book->update(['image_path' => $request->get('image') ? $book->storeImage($request->get('image'), $workspaceId) : null]);
                 BookHistory::create([
                     'book_id' => $book->id,
                     'user_id' => Auth::id(),
@@ -104,7 +104,8 @@ class BookController extends Controller
             if ($book->image_path) {
                 \Storage::delete($book->image_path);
             }
-            $imagePath = $request->get('image') ? $book->storeImage($request->get('image')) : null;
+            $imagePath = $request->get('image') ? $book->storeImage($request->get('image'), $workspaceId) : null;
+            \Log::debug($imagePath);
 
             DB::transaction(function () use ($workspaceId, $bookCategory, $book, $request, $imagePath): void {
                 if ($book->status != $request->get('status')) {
@@ -197,7 +198,7 @@ class BookController extends Controller
                     }
                     $book = Book::where('title', $csvData['タイトル'])->first();
                     $bookExists = Book::where('title', $csvData['タイトル'])->exists();
-                    $imagePath = $csvData['URL'] ? Book::fetchAmazonImage(urldecode($csvData['URL'])) : null;
+                    $imagePath = $csvData['URL'] ? Book::fetchAmazonImage(urldecode($csvData['URL']), $workspaceId) : null;
 
                     if ($bookExists) {
                         $book->update([

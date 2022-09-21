@@ -5,13 +5,13 @@ namespace App\Http\Controllers\Api;
 use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\User;
+use GuzzleHttp\Client;
 use App\Models\Workspace;
 use App\Models\BookHistory;
 use App\Models\BookCategory;
 use App\Slack\SlackApiClient;
 use App\Models\SlackCredential;
 use App\Models\BookPurchaseApply;
-use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -69,7 +69,7 @@ class BookPurchaseApplyController extends Controller
 
         DB::transaction(function () use ($user, $request, $workspaceId): void {
             $book = new Book();
-            $imagePath = $book->storeImage($request->get('image'));
+            $imagePath = $book->storeImage($request->get('image'), $workspaceId);
             $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
 
             $book = Book::create([
