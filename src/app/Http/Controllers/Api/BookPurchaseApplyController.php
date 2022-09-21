@@ -11,6 +11,7 @@ use App\Models\BookCategory;
 use App\Slack\SlackApiClient;
 use App\Models\SlackCredential;
 use App\Models\BookPurchaseApply;
+use GuzzleHttp\Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
@@ -101,7 +102,7 @@ class BookPurchaseApplyController extends Controller
             $slackCredential = SlackCredential::where('workspace_id', $workspaceId)->first();
 
             if ($slackCredential) {
-                $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
+                $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
                 $slackClient->postMessage($slackCredential->channel_id, $title, $message);
             }
             return response()->json([], 201);
@@ -201,7 +202,7 @@ class BookPurchaseApplyController extends Controller
                         'slack' => 'Slack連携がされていません。',
                     ]], 500);
                 }
-                $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), $slackCredential->access_token);
+                $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
                 // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
                 $slackClient->postMessage($slackCredential->channel_id, $request->get('title'), $request->get('message'));
             });

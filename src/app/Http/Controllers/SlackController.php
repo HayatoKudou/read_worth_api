@@ -32,7 +32,7 @@ class SlackController extends Controller
                 'Content-Type' => 'application/x-www-form-urlencoded',
             ],
             'form_params' => [
-                'workspace_id' => \Config::get('slack.clientId'),
+                'client_id' => \Config::get('slack.clientId'),
                 'client_secret' => \Config::get('slack.clientSecret'),
                 'code' => $request->get('code'),
                 'grant_type' => 'authorization_code',
