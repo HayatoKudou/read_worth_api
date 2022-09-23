@@ -4,25 +4,21 @@ namespace App\Http\Requests\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateRequest extends FormRequest
+class MeUpdateRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'id' => 'required',
             'name' => 'required|string|max:255',
             'email' => 'required|string|max:255|email',
-            'roles' => 'array',
         ];
     }
 
     public function attributes(): array
     {
         return [
-            'id' => 'ユーザーID',
             'name' => '名前',
             'email' => 'メールアドレス',
-            'roles' => 'ロール',
         ];
     }
 }

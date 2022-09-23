@@ -28,6 +28,35 @@ paths:
           description: "apiトークンが無効の場合"
         "403":
           description: "指定されたワークスペースにユーザーがいない場合"
+    put:
+      summary: プロフィール更新
+      parameters:
+        - in: path
+          name: workspaceId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MeUpdateRequest"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "他ユーザーのプロフィールを更新しようとした場合"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MeUpdateValidateErrorResponse"
   /api/{workspaceId}/users:
     get:
       summary: ワークスペースに所属しているユーザー情報
@@ -477,6 +506,30 @@ components:
               name:
                 type: string
                 example: "テテマーチ"
+    MeUpdateRequest:
+      properties:
+        name:
+          type: string
+          example: "工藤"
+        email:
+          type: string
+          example: "tetetest@gmail.com"
+      required:
+        - name
+        - email
+    MeUpdateValidateErrorResponse:
+      type: object
+      properties:
+        name:
+          type: array
+          items:
+            type: string
+            example: [ "名前は必ず指定してください。" ]
+        email:
+          type: array
+          items:
+            type: string
+            example: [ "メールアドレスは必ず指定してください。" ]
     UsersListResponse:
       required:
         - users

@@ -70,6 +70,8 @@ class BookController extends Controller
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isBookManager', $workspace);
+
             DB::transaction(function () use ($workspaceId, $request): void {
                 $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
                 $book = Book::create([
@@ -98,6 +100,7 @@ class BookController extends Controller
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isBookManager', $workspace);
             $book = Book::find($request->get('id'));
             $bookCategory = BookCategory::where('name', $request->get('category'))->first();
 
@@ -105,7 +108,6 @@ class BookController extends Controller
                 \Storage::delete($book->image_path);
             }
             $imagePath = $request->get('image') ? $book->storeImage($request->get('image'), $workspaceId) : null;
-            \Log::debug($imagePath);
 
             DB::transaction(function () use ($workspaceId, $bookCategory, $book, $request, $imagePath): void {
                 if ($book->status != $request->get('status')) {
@@ -148,6 +150,7 @@ class BookController extends Controller
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isBookManager', $workspace);
             DB::transaction(function () use ($request): void {
                 $request->collect('book_ids')->each(function ($bookId): void {
                     BookPurchaseApply::where('book_id', $bookId)->delete();
@@ -189,6 +192,7 @@ class BookController extends Controller
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isBookManager', $workspace);
             return DB::transaction(function () use ($request, $workspaceId): JsonResponse {
                 foreach ($request->get('books') as $csvData) {
                     $bookCategory = BookCategory::where('name', $csvData['カテゴリ'])->first();

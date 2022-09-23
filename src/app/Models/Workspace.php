@@ -47,6 +47,14 @@ class Workspace extends Authenticate
         );
     }
 
+    public function roles(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            Role::class,
+            'belongings',
+        );
+    }
+
     public function books(): HasMany
     {
         return $this->hasMany(Book::class);

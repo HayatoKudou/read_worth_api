@@ -54,8 +54,9 @@ class WorkSpaceController extends Controller
     public function update(string $workspaceId, UpdateRequest $request): JsonResponse
     {
         try {
-            $validated = $request->validated();
             $workspace = Workspace::find($workspaceId);
+            $this->authorize('isWorkspaceManager', $workspace);
+            $validated = $request->validated();
             $workspace->update(['name' => $validated['name']]);
             return response()->json([], 201);
         } catch (AuthorizationException $e) {

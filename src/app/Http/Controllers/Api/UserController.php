@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\DeleteRequest;
 use App\Http\Requests\User\UpdateRequest;
+use App\Http\Requests\User\MeUpdateRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 
 class UserController extends Controller
@@ -73,6 +74,7 @@ class UserController extends Controller
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isAccountManager', $workspace);
             $validated = $request->validated();
             return DB::transaction(function () use ($validated, $workspace): JsonResponse {
                 $user = User::firstOrCreate([
@@ -107,12 +109,9 @@ class UserController extends Controller
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isAccountManager', $workspace);
             return DB::transaction(function () use ($request, $workspaceId): JsonResponse {
                 $user = User::find($request->get('id'));
-
-                if (!$user) {
-                    return response()->json(['errors' => '一致するユーザーが見つかりません'], 500);
-                }
                 $user->update([
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
@@ -129,11 +128,31 @@ class UserController extends Controller
         }
     }
 
+    public function meUpdate(string $workspaceId, MeUpdateRequest $request): JsonResponse
+    {
+        try {
+            $workspace = Workspace::find($workspaceId);
+            $this->authorize('affiliation', $workspace);
+            $this->authorize('isAccountManager', $workspace);
+            return DB::transaction(function () use ($request): JsonResponse {
+                $user = Auth::user();
+                $user->update([
+                    'name' => $request->get('name'),
+                    'email' => $request->get('email'),
+                ]);
+                return response()->json();
+            });
+        } catch (AuthorizationException $e) {
+            return response()->json([], 403);
+        }
+    }
+
     public function delete(string $workspaceId, DeleteRequest $request): JsonResponse
     {
         try {
             $workspace = Workspace::find($workspaceId);
             $this->authorize('affiliation', $workspace);
+            $this->authorize('isAccountManager', $workspace);
             DB::transaction(function () use ($request): void {
                 $request->collect('userIds')->each(function ($userId): void {
                     $user = User::find($userId);

@@ -15,6 +15,7 @@ Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
 Route::group(['prefix' => '{workspaceId}', 'middleware' => ['auth:api']], function (): void {
     Route::get('/me', [UserController::class, 'me']);
+    Route::put('/me', [UserController::class, 'meUpdate']);
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
     Route::get('/users', [UserController::class, 'list']);
