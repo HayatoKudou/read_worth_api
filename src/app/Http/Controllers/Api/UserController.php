@@ -132,10 +132,14 @@ class UserController extends Controller
     {
         try {
             $workspace = Workspace::find($workspaceId);
+            $user = Auth::user();
             $this->authorize('affiliation', $workspace);
-            $this->authorize('isAccountManager', $workspace);
-            return DB::transaction(function () use ($request): JsonResponse {
-                $user = Auth::user();
+
+            if($user->email !== $request->get('email')){
+                return response()->json([], 403);
+            }
+
+            return DB::transaction(function () use ($user, $request): JsonResponse {
                 $user->update([
                     'name' => $request->get('name'),
                     'email' => $request->get('email'),
