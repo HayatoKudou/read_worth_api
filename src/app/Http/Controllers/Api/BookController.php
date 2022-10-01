@@ -47,6 +47,7 @@ class BookController extends Controller
                     'rentalApplicant' => $book->rentalApply ? [
                         'id' => $book->rentalApply->user->id,
                         'name' => $book->rentalApply->user->name,
+                        'expectedReturnDate' => $book->rentalApply->expected_return_date
                     ] : null,
                     'reviews' => collect($book->reviews)?->map(fn (BookReview $bookReview) => [
                         'rate' => $bookReview->rate,

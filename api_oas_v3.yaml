@@ -5,6 +5,23 @@ info:
 servers:
   - url: "http://localhost:8000/"
 paths:
+  /api/feedBack/send:
+    post:
+      summary: フィードバック送信
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/feedBackSendRequest"
+      responses:
+        "200":
+          description: "OK"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/feedBackSendValidateErrorResponse"
   /api/{workspaceId}/me:
     get:
       summary: 自分の情報
@@ -454,6 +471,21 @@ components:
       type: http
       scheme: bear
   schemas:
+    feedBackSendRequest:
+      properties:
+        message:
+          type: string
+          example: "Good!!"
+      required:
+        - message
+    feedBackSendValidateErrorResponse:
+      type: object
+      properties:
+        message:
+          type: array
+          items:
+            type: string
+            example: [ "メッセージは必ず指定してください。" ]
     MeResponse:
       type: object
       required:
@@ -802,6 +834,9 @@ components:
                   name:
                     type: string
                     example: "たかし君"
+                  expectedReturnDate:
+                    type: string
+                    example: "2022-10-08"
               reviews:
                 type: array
                 items:
