@@ -40,7 +40,7 @@ class BookController extends Controller
                     'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
                     'url' => $book->url,
                     'createdAt' => Carbon::parse($book->created_at)->format('Y/m/d'),
-                    'purchaseApplicantName' => [
+                    'purchaseApplicant' => [
                         'id' => $book->purchaseApply?->user->id,
                         'name' => $book->purchaseApply?->user->name,
                     ],
