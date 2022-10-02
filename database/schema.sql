@@ -171,7 +171,6 @@ CREATE TABLE `slack_credentials`
 (
     `id`                bigint unsigned NOT NULL AUTO_INCREMENT,
     `workspace_id`      bigint unsigned NOT NULL,
-    `connected_user_id` bigint unsigned NOT NULL,
     `access_token`      varchar(255)    NULL DEFAULT NULL,
     `channel_id`        varchar(255)    NULL DEFAULT NULL,
     `channel_name`      varchar(255)    NULL DEFAULT NULL,
@@ -179,7 +178,22 @@ CREATE TABLE `slack_credentials`
     `updated_at`        timestamp       NULL DEFAULT NULL,
     PRIMARY KEY (`id`),
     UNIQUE INDEX (workspace_id),
-    CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`),
-    CONSTRAINT `slack_credentials_fk2` FOREIGN KEY (`connected_user_id`) REFERENCES `users` (`id`)
+    CONSTRAINT `slack_credentials_fk1` FOREIGN KEY (`workspace_id`) REFERENCES `workspaces` (`id`)
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
+
+CREATE TABLE `caches`
+(
+    `key`        VARCHAR(255) NOT NULL,
+    `value`      MEDIUMTEXT   NOT NULL,
+    `expiration` INT          NOT NULL,
+    PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `cache_locks`
+(
+    `key`        VARCHAR(255) NOT NULL,
+    `owner`      VARCHAR(255) NOT NULL,
+    `expiration` INT          NOT NULL,
+    PRIMARY KEY (`key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
