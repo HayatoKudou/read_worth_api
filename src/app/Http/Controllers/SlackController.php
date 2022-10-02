@@ -56,12 +56,13 @@ class SlackController extends Controller
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        if(!\Cache::has($user->id)){
+        $cacheKey = 'slack_connect_'.$user->id;
+        if(!\Cache::has($cacheKey)){
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
 
         SlackCredential::updateOrCreate([
-            'workspace_id' => \Cache::get($user->id)
+            'workspace_id' => \Cache::get($cacheKey)
         ], [
             'access_token' => $accessToken,
             'channel_name' => $body['incoming_webhook']['channel'],
