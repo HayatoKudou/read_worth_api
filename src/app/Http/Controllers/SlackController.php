@@ -68,6 +68,7 @@ class SlackController extends Controller
             'channel_name' => $body['incoming_webhook']['channel'],
             'channel_id' => $body['incoming_webhook']['channel_id'],
         ]);
+        \Cache::forget($cacheKey);
         return view('slack_authed')->with('message', 'Slack連携が完了しました。');
     }
 }

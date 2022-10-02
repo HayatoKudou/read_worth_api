@@ -182,7 +182,7 @@ CREATE TABLE `slack_credentials`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4;
 
-CREATE TABLE `caches`
+CREATE TABLE `cache`
 (
     `key`        VARCHAR(255) NOT NULL,
     `value`      MEDIUMTEXT   NOT NULL,
