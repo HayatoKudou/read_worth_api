@@ -14,7 +14,7 @@ class SlackController extends Controller
 {
     public function connect(string $workspaceId): JsonResponse
     {
-        \Cache::put('slack_connect_'.\Auth::id(), $workspaceId);
+        \Cache::put('slack_connect_' . \Auth::id(), $workspaceId);
         return response()->json();
     }
 
@@ -52,17 +52,19 @@ class SlackController extends Controller
         $userInfo = $slackClient->userInfo($userId);
 
         $user = User::where('email', $userInfo['user']['profile']['email'])->first();
+
         if (!$user) {
             return view('slack_authed')->with('message', "Slackに登録しているメールアドレスと一致するユーザーが見つかりませんでした。\nSlackアカウントのメールアドレスと一致しているかご確認ください。");
         }
 
-        $cacheKey = 'slack_connect_'.$user->id;
-        if(!\Cache::has($cacheKey)){
+        $cacheKey = 'slack_connect_' . $user->id;
+
+        if (!\Cache::has($cacheKey)) {
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
 
         SlackCredential::updateOrCreate([
-            'workspace_id' => \Cache::get($cacheKey)
+            'workspace_id' => \Cache::get($cacheKey),
         ], [
             'access_token' => $accessToken,
             'channel_name' => $body['incoming_webhook']['channel'],

@@ -9,7 +9,7 @@ Route::get('/', function () {
 });
 
 Route::group(['prefix' => '/api/slack'], function (): void {
-    Route::get('/{clientId}/connect', [SlackController::class, 'connect']);
+    Route::get('/{workspaceId}/connect', [SlackController::class, 'connect']);
     Route::get('/callback', [SlackController::class, 'callback']);
 });
 

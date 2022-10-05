@@ -135,7 +135,7 @@ class UserController extends Controller
             $user = Auth::user();
             $this->authorize('affiliation', $workspace);
 
-            if($user->email !== $request->get('email')){
+            if ($user->email !== $request->get('email')) {
                 return response()->json([], 403);
             }
 
