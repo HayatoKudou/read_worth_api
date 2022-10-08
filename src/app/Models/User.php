@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
@@ -44,6 +45,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class User extends Authenticate
 {
     use HasApiTokens;
+    use HasFactory;
 
     protected $guarded = [];
 
