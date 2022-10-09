@@ -2,13 +2,17 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
-class UserRepository
+use ReadWorth\Infrastructure\EloquentModel\User;
+
+class UserRepository implements IUserRepository
 {
-    public function store(): void
+    public function getByEmail(string $email): User|null
     {
+        return User::where('email', $email)->first();
     }
 
-    public function getByEmail(): void
+    public function updateGoogleAccessToken(User $user, string $token): void
     {
+        $user->update(['google_access_token' => $token]);
     }
 }

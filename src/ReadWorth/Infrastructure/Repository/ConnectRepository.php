@@ -1,43 +1,21 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace ReadWorth\Infrastructure\Repository;
 
 use Illuminate\Support\Str;
 use ReadWorth\Domain\GoogleUser;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\RedirectResponse;
-use Laravel\Socialite\Facades\Socialite;
 use ReadWorth\Infrastructure\EloquentModel\Plan;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
-use App\Http\Response\Auth\CallbackGoogleAuthResponse;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
-class AuthController
+class ConnectRepository implements IConnectRepository
 {
-    public function generateGoogleAuthUrl(): JsonResponse
+    public function store(GoogleUser $googleUser): User
     {
-        $connectUrl = Socialite::driver('google')->stateless()->redirect()->getTargetUrl();
-        return response()->json(['connectUrl' => $connectUrl]);
-    }
-
-    public function callbackGoogleAuth(): RedirectResponse
-    {
-        $googleUser = Socialite::driver('google')->stateless()->user();
-        $googleUserDomain = new GoogleUser(
-            name: $googleUser->getName(),
-            email: $googleUser->getEmail(),
-        );
-        $user = User::where('email', $googleUser->getEmail())->first();
-
-        if ($user) {
-            $user->update(['google_access_token' => $googleUser->token]);
-            return CallbackGoogleAuthResponse::make($user);
-        }
-
         return DB::transaction(function () use ($googleUser) {
             $plan = Plan::where('name', 'free')->first();
             $workspace = Workspace::create([
@@ -51,7 +29,7 @@ class AuthController
             $user = User::create([
                 'email' => $googleUser->getEmail(),
                 'name' => $googleUser->getName(),
-                'google_access_token' => $googleUser->token,
+                'google_access_token' => $googleUser->getToken(),
                 'api_token' => Str::random(60),
             ]);
             $role = Role::create([
@@ -64,7 +42,7 @@ class AuthController
                 'workspace_id' => $workspace->id,
                 'role_id' => $role->id,
             ]);
-            return CallbackGoogleAuthResponse::make($user);
+            return $user;
         });
     }
 }
