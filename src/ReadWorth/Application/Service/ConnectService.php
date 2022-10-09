@@ -3,9 +3,9 @@
 namespace ReadWorth\Application\Service;
 
 use ReadWorth\Domain\GoogleUser;
+use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Infrastructure\Repository\IUserRepository;
 use ReadWorth\Infrastructure\Repository\IConnectRepository;
-use ReadWorth\Infrastructure\EloquentModel\User;
 
 class ConnectService
 {
