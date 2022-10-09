@@ -12,7 +12,7 @@ class AuthServiceProvider extends ServiceProvider
      * @var array<class-string, class-string>
      */
     protected $policies = [
-         'ReadWorth\Infrastructure\EloquentModel\Workspace' => 'App\Policies\WorkspacePolicy',
+         'ReadWorth\Infrastructure\EloquentModel\Workspace' => 'ReadWorth\Application\Policies\WorkspacePolicy',
     ];
 
     /**

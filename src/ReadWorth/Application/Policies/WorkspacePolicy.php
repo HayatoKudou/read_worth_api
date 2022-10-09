@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Policies;
+namespace ReadWorth\Application\Policies;
 
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;

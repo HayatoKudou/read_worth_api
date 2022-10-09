@@ -3,20 +3,21 @@
 namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\JsonResponse;
-use ReadWorth\Domain\BookCategory;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookCategory\CreateRequest;
 use App\Http\Requests\BookCategory\DeleteRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Application\Service\BookCategoryService;
+use ReadWorth\Domain\BookCategory as BookCategoryDomain;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookCategoryController extends Controller
 {
     public function create(string $workspaceId, CreateRequest $request, BookCategoryService $service): JsonResponse
     {
         $validated = $request->validated();
-        $bookCategory = new BookCategory(
+        $bookCategory = new BookCategoryDomain(
             workspaceId: $workspaceId,
             name: $validated['name']
         );
