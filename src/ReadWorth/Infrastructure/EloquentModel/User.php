@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
@@ -11,7 +10,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\User.
+ * ReadWorth\Infrastructure\EloquentModel\User.
  *
  * @property int $id
  * @property string $name
@@ -20,26 +19,16 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property null|string $api_token
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Belonging[]|\Illuminate\Database\Eloquent\Collection $belongings
- * @property null|int $belongings_count
- * @property null|\App\Models\BookPurchaseApply $bookPurchaseApply
- * @property null|\App\Models\BookRentalApply $bookRentalApply
- * @property null|\App\Models\BookReview $bookReview
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\Belonging[] $belongings
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply $bookPurchaseApply
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply $bookRentalApply
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\BookReview $bookReview
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
- * @property null|int $tokens_count
- * @property \App\Models\Workspace[]|\Illuminate\Database\Eloquent\Collection $workspaces
- * @property null|int $workspaces_count
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\Workspace[] $workspaces
  *
- * @method static Builder|User newModelQuery()
- * @method static Builder|User newQuery()
- * @method static Builder|User query()
- * @method static Builder|User whereApiToken($value)
- * @method static Builder|User whereCreatedAt($value)
- * @method static Builder|User whereEmail($value)
- * @method static Builder|User whereGoogleAccessToken($value)
- * @method static Builder|User whereId($value)
- * @method static Builder|User whereName($value)
- * @method static Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
  * @mixin \Eloquent
  */
 class User extends Authenticate

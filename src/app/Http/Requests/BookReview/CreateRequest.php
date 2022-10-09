@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\BookReview;
 
-use App\Models\BookReview;
 use Illuminate\Foundation\Http\FormRequest;
+use ReadWorth\Infrastructure\EloquentModel\BookReview;
 
 class CreateRequest extends FormRequest
 {

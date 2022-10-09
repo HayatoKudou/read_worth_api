@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Plan;
 use Illuminate\Database\Seeder;
+use ReadWorth\Infrastructure\EloquentModel\Plan;
 
 class PlanSeeder extends Seeder
 {

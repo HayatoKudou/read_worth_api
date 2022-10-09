@@ -2,8 +2,8 @@
 
 namespace App\Http\Requests\BookRentalApply;
 
-use App\Models\BookRentalApply;
 use Illuminate\Foundation\Http\FormRequest;
+use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
 
 class CreateRequest extends FormRequest
 {

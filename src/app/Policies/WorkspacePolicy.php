@@ -2,10 +2,10 @@
 
 namespace App\Policies;
 
-use App\Models\user;
-use App\Models\Workspace;
 use Illuminate\Auth\Access\Response;
 use Illuminate\Auth\Access\HandlesAuthorization;
+use ReadWorth\Infrastructure\EloquentModel\user;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
 class WorkspacePolicy
 {

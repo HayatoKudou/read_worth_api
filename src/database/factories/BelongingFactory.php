@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\Role;
+use ReadWorth\Infrastructure\EloquentModel\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
 class BelongingFactory extends Factory
 {

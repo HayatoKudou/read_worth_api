@@ -2,8 +2,8 @@
 
 namespace App\Http\Response\Auth;
 
-use App\Models\User;
 use Illuminate\Http\RedirectResponse;
+use ReadWorth\Infrastructure\EloquentModel\User;
 
 class CallbackGoogleAuthResponse
 {

@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\Plan;
+use ReadWorth\Infrastructure\EloquentModel\Plan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class ClientFactory extends Factory

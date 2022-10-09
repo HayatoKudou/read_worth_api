@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Role.
+ * ReadWorth\Infrastructure\EloquentModel\Role.
  *
  * @property int $id
  * @property int $is_account_manager
@@ -16,17 +16,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $is_workspace_manager
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\User $user
+ * @property \ReadWorth\Infrastructure\EloquentModel\User $user
  *
  * @method static Builder|Role newModelQuery()
  * @method static Builder|Role newQuery()
  * @method static Builder|Role query()
- * @method static Builder|Role whereCreatedAt($value)
- * @method static Builder|Role whereId($value)
- * @method static Builder|Role whereIsAccountManager($value)
- * @method static Builder|Role whereIsBookManager($value)
- * @method static Builder|Role whereIsWorkspaceManager($value)
- * @method static Builder|Role whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Role extends Model

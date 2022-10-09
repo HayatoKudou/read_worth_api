@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Workspace;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
 class BookCategoryFactory extends Factory
 {

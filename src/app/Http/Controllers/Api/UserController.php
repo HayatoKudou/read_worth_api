@@ -2,10 +2,6 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Belonging;
-use App\Models\Workspace;
 use Illuminate\Support\Str;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +11,11 @@ use App\Http\Requests\User\CreateRequest;
 use App\Http\Requests\User\DeleteRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Requests\User\MeUpdateRequest;
+use ReadWorth\Infrastructure\EloquentModel\Role;
+use ReadWorth\Infrastructure\EloquentModel\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Infrastructure\EloquentModel\Belonging;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
 class UserController extends Controller
 {

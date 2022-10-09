@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\Book.
+ * ReadWorth\Infrastructure\EloquentModel\Book.
  *
  * @property int $id
  * @property int $workspace_id
@@ -25,31 +25,18 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property null|string $url
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\BookCategory $category
- * @property null|\App\Models\Workspace $client
- * @property \App\Models\BookHistory[]|\Illuminate\Database\Eloquent\Collection $histories
- * @property null|int $histories_count
- * @property null|\App\Models\BookPurchaseApply $purchaseApply
- * @property null|\App\Models\BookRentalApply $rentalApply
- * @property \App\Models\BookRentalApply[]|\Illuminate\Database\Eloquent\Collection $rentalHistories
- * @property null|int $rental_histories_count
- * @property \App\Models\BookReview[]|\Illuminate\Database\Eloquent\Collection $reviews
- * @property null|int $reviews_count
+ * @property \ReadWorth\Infrastructure\EloquentModel\BookCategory $category
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\Workspace $client
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookHistory[] $histories
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply $purchaseApply
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply $rentalApply
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply[] $rentalHistories
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookReview[] $reviews
  *
  * @method static Builder|Book newModelQuery()
  * @method static Builder|Book newQuery()
  * @method static Builder|Book organization(string $workspaceId)
  * @method static Builder|Book query()
- * @method static Builder|Book whereBookCategoryId($value)
- * @method static Builder|Book whereCreatedAt($value)
- * @method static Builder|Book whereDescription($value)
- * @method static Builder|Book whereId($value)
- * @method static Builder|Book whereImagePath($value)
- * @method static Builder|Book whereStatus($value)
- * @method static Builder|Book whereTitle($value)
- * @method static Builder|Book whereUpdatedAt($value)
- * @method static Builder|Book whereUrl($value)
- * @method static Builder|Book whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class Book extends Model

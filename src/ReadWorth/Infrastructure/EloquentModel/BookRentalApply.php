@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
- * App\Models\BookRentalApply.
+ * ReadWorth\Infrastructure\EloquentModel\BookRentalApply.
  *
  * @property int $id
  * @property int $user_id
@@ -19,22 +19,12 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property null|string $return_date 返却日
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\User $user
+ * @property \ReadWorth\Infrastructure\EloquentModel\User $user
  *
  * @method static Builder|BookRentalApply newModelQuery()
  * @method static Builder|BookRentalApply newQuery()
  * @method static Builder|BookRentalApply organization(string $workspaceId)
  * @method static Builder|BookRentalApply query()
- * @method static Builder|BookRentalApply whereBookId($value)
- * @method static Builder|BookRentalApply whereCreatedAt($value)
- * @method static Builder|BookRentalApply whereExpectedReturnDate($value)
- * @method static Builder|BookRentalApply whereId($value)
- * @method static Builder|BookRentalApply whereReason($value)
- * @method static Builder|BookRentalApply whereRentalDate($value)
- * @method static Builder|BookRentalApply whereReturnDate($value)
- * @method static Builder|BookRentalApply whereUpdatedAt($value)
- * @method static Builder|BookRentalApply whereUserId($value)
- * @method static Builder|BookRentalApply whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class BookRentalApply extends Model

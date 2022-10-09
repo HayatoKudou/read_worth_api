@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Workspace;
-use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\BookCategory\CreateRequest;
 use App\Http\Requests\BookCategory\DeleteRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookCategoryController extends Controller
 {

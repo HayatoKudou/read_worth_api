@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Book;
 use Illuminate\Database\Seeder;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 
 class DatabaseSeeder extends Seeder
 {

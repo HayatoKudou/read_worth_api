@@ -1,31 +1,25 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
- * App\Models\BookCategory.
+ * ReadWorth\Infrastructure\EloquentModel\BookCategory.
  *
  * @property int $id
  * @property int $workspace_id
  * @property string $name
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Book[]|\Illuminate\Database\Eloquent\Collection $books
- * @property null|int $books_count
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\Book[] $books
  *
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory organization(string $workspaceId)
  * @method static Builder|BookCategory query()
- * @method static Builder|BookCategory whereCreatedAt($value)
- * @method static Builder|BookCategory whereId($value)
- * @method static Builder|BookCategory whereName($value)
- * @method static Builder|BookCategory whereUpdatedAt($value)
- * @method static Builder|BookCategory whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class BookCategory extends Model

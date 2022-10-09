@@ -2,18 +2,19 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Plan;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Belonging;
-use App\Models\Workspace;
 use Illuminate\Support\Str;
-use App\Models\BookCategory;
+use ReadWorth\Domain\GoogleUser;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
+use ReadWorth\Infrastructure\EloquentModel\Plan;
+use ReadWorth\Infrastructure\EloquentModel\Role;
+use ReadWorth\Infrastructure\EloquentModel\User;
+use ReadWorth\Infrastructure\EloquentModel\Belonging;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use App\Http\Response\Auth\CallbackGoogleAuthResponse;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class AuthController
 {
@@ -26,6 +27,10 @@ class AuthController
     public function callbackGoogleAuth(): RedirectResponse
     {
         $googleUser = Socialite::driver('google')->stateless()->user();
+        $googleUserDomain = new GoogleUser(
+            name: $googleUser->getName(),
+            email: $googleUser->getEmail(),
+        );
         $user = User::where('email', $googleUser->getEmail())->first();
 
         if ($user) {

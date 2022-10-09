@@ -5,6 +5,16 @@ info:
 servers:
   - url: "http://localhost:8000/"
 paths:
+  /connect/google:
+    get:
+      summary: Google連携
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/connectGoogleResponse"
   /api/feedBack/send:
     post:
       summary: フィードバック送信
@@ -471,6 +481,14 @@ components:
       type: http
       scheme: bear
   schemas:
+    connectGoogleResponse:
+      type: object
+      required:
+        - connectUrl
+      properties:
+        connectUrl:
+          type: string
+          example: "https://google-sample"
     feedBackSendRequest:
       properties:
         message:

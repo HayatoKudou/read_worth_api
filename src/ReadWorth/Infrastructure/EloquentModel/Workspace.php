@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Collection;
@@ -12,28 +12,22 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 /**
- * App\Models\Workspace.
+ * ReadWorth\Infrastructure\EloquentModel\Workspace.
  *
  * @property int $id
  * @property int $plan_id
  * @property string $name
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property \App\Models\Book[]|Collection $books
- * @property null|int $books_count
- * @property \App\Models\Plan $plan
- * @property null|\App\Models\SlackCredential $slackCredential
- * @property \App\Models\User[]|Collection $users
- * @property null|int $users_count
+ * @property Collection|\ReadWorth\Infrastructure\EloquentModel\Book[] $books
+ * @property \ReadWorth\Infrastructure\EloquentModel\Plan $plan
+ * @property Collection|\ReadWorth\Infrastructure\EloquentModel\Role[] $roles
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\SlackCredential $slackCredential
+ * @property Collection|\ReadWorth\Infrastructure\EloquentModel\User[] $users
  *
  * @method static Builder|Workspace newModelQuery()
  * @method static Builder|Workspace newQuery()
  * @method static Builder|Workspace query()
- * @method static Builder|Workspace whereCreatedAt($value)
- * @method static Builder|Workspace whereId($value)
- * @method static Builder|Workspace whereName($value)
- * @method static Builder|Workspace wherePlanId($value)
- * @method static Builder|Workspace whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Workspace extends Authenticate

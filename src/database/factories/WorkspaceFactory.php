@@ -2,8 +2,8 @@
 
 namespace Database\Factories;
 
-use App\Models\Plan;
 use Illuminate\Support\Str;
+use ReadWorth\Infrastructure\EloquentModel\Plan;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class WorkspaceFactory extends Factory

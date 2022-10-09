@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Book;
-use App\Models\Workspace;
-use App\Models\BookCategory;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookFactory extends Factory
 {

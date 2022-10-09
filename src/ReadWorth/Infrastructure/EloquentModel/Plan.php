@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Support\Carbon;
 use Illuminate\Database\Eloquent\Builder;
@@ -10,7 +10,7 @@ use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Plan.
+ * ReadWorth\Infrastructure\EloquentModel\Plan.
  *
  * @property int $id
  * @property string $name プラン名
@@ -19,20 +19,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $max_books 書籍上限数
  * @property null|Carbon $created_at
  * @property null|Carbon $updated_at
- * @property \App\Models\User[]|Collection $users
- * @property null|int $users_count
+ * @property Collection|\ReadWorth\Infrastructure\EloquentModel\User[] $users
  *
- * @method static \Database\Factories\PlanFactory factory(...$parameters)
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()
- * @method static Builder|Plan whereCreatedAt($value)
- * @method static Builder|Plan whereId($value)
- * @method static Builder|Plan whereMaxBooks($value)
- * @method static Builder|Plan whereMaxMembers($value)
- * @method static Builder|Plan whereName($value)
- * @method static Builder|Plan wherePrice($value)
- * @method static Builder|Plan whereUpdatedAt($value)
  * @mixin \Eloquent
  */
 class Plan extends Authenticate

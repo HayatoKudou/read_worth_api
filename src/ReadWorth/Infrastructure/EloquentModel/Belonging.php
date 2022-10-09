@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticate;
@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
- * App\Models\Belonging.
+ * ReadWorth\Infrastructure\EloquentModel\Belonging.
  *
  * @property int $id
  * @property int $user_id
@@ -16,18 +16,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property int $role_id
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
- * @property null|\App\Models\Workspace $client
- * @property \App\Models\Role $role
+ * @property null|\ReadWorth\Infrastructure\EloquentModel\Workspace $client
+ * @property \ReadWorth\Infrastructure\EloquentModel\Role $role
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging query()
- * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereRoleId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereUserId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Belonging whereWorkspaceId($value)
  * @mixin \Eloquent
  */
 class Belonging extends Authenticate
