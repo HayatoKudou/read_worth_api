@@ -3,16 +3,16 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use App\Models\Book;
-use App\Models\User;
-use App\Models\Workspace;
-use App\Models\BookRentalApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BookReview\CreateRequest;
+use ReadWorth\Infrastructure\EloquentModel\Book;
+use ReadWorth\Infrastructure\EloquentModel\User;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
 
 class BookReviewController extends Controller
 {

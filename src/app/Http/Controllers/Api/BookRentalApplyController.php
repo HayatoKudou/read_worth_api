@@ -3,15 +3,15 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use App\Models\Book;
-use App\Models\Workspace;
-use App\Models\BookHistory;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookRentalApply\CreateRequest;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 
 class BookRentalApplyController extends Controller
 {

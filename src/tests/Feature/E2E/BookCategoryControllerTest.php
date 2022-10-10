@@ -3,10 +3,10 @@
 namespace Tests\Feature\E2E;
 
 use Tests\TestCase;
-use App\Models\Role;
-use App\Models\User;
-use App\Models\Belonging;
-use App\Models\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\Role;
+use ReadWorth\Infrastructure\EloquentModel\User;
+use ReadWorth\Infrastructure\EloquentModel\Belonging;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
 class BookCategoryControllerTest extends TestCase
 {

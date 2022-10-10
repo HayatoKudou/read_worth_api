@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use App\Models\Book;
-use App\Models\Workspace;
-use App\Models\BookHistory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 
 class BookHistoryController extends Controller
 {

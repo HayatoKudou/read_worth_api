@@ -2,17 +2,17 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Models\Plan;
-use App\Models\Role;
-use App\Models\Belonging;
-use App\Models\Workspace;
-use App\Models\BookCategory;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Workspace\CreateRequest;
 use App\Http\Requests\Workspace\UpdateRequest;
+use ReadWorth\Infrastructure\EloquentModel\Plan;
+use ReadWorth\Infrastructure\EloquentModel\Role;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Infrastructure\EloquentModel\Belonging;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class WorkSpaceController extends Controller
 {

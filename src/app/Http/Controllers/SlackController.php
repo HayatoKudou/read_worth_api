@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
 use App\Slack\SlackApiClient;
-use App\Models\SlackCredential;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
+use ReadWorth\Infrastructure\EloquentModel\User;
+use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 
 class SlackController extends Controller
 {

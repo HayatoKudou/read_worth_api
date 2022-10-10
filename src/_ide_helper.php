@@ -2054,7 +2054,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Get the currently authenticated user.
          *
-         * @return null|\App\Models\User
+         * @return null|\ReadWorth\Infrastructure\EloquentModel\User
          * @static
          */
         public static function user()
@@ -2106,7 +2106,7 @@ namespace Illuminate\Support\Facades {
         /**
          * Determine if the current user is authenticated. If not, throw an exception.
          *
-         * @return \App\Models\User
+         * @return \ReadWorth\Infrastructure\EloquentModel\User
          *
          * @throws \Illuminate\Auth\AuthenticationException
          * @static

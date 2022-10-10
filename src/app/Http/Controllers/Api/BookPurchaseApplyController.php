@@ -3,24 +3,24 @@
 namespace App\Http\Controllers\Api;
 
 use Carbon\Carbon;
-use App\Models\Book;
-use App\Models\User;
 use GuzzleHttp\Client;
-use App\Models\Workspace;
-use App\Models\BookHistory;
-use App\Models\BookCategory;
 use App\Slack\SlackApiClient;
-use App\Models\SlackCredential;
-use App\Models\BookPurchaseApply;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use ReadWorth\Infrastructure\EloquentModel\Book;
+use ReadWorth\Infrastructure\EloquentModel\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
+use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use App\Http\Requests\BookPurchaseApply\CreateRequest;
+use ReadWorth\Infrastructure\EloquentModel\BookHistory;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 use App\Http\Requests\BookPurchaseApply\NotificationRequest;
+use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookPurchaseApplyController extends Controller
 {
