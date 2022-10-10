@@ -7,6 +7,7 @@ use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookCategoryControllerTest extends TestCase
 {
@@ -42,6 +43,10 @@ class BookCategoryControllerTest extends TestCase
     /** @test */
     public function 書籍カテゴリの削除ができること(): void
     {
+        BookCategory::factory()->create([
+            'workspace_id' => $this->workspace->id,
+            'name' => 'マネジメント',
+        ]);
         $response = $this->json('DELETE', '/api/' . $this->workspace->id . '/bookCategory', [
             'name' => 'マネジメント',
         ], [

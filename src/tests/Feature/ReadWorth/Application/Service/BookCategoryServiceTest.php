@@ -53,4 +53,28 @@ class BookCategoryServiceTest extends TestCase
         $service = new BookCategoryService($workspaceRepository, $bookCategoryRepository);
         $service->create($bookCategory);
     }
+
+    /** @test */
+    public function 書籍カテゴリの削除ができること(): void
+    {
+        \Auth::setUser($this->user);
+        $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
+            ->shouldReceive('findById')
+            ->once()
+            ->andReturn($this->workspace)
+            ->getMock();
+
+        $bookCategoryRepository = \Mockery::mock(BookCategoryRepository::class)
+            ->shouldReceive('delete')
+            ->once()
+            ->getMock();
+
+        $bookCategory = new BookCategory(
+            workspaceId: $this->workspace->id,
+            name: 'IT'
+        );
+
+        $service = new BookCategoryService($workspaceRepository, $bookCategoryRepository);
+        $service->delete($bookCategory);
+    }
 }
