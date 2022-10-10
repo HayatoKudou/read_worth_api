@@ -2,6 +2,7 @@
 
 namespace ReadWorth\Infrastructure\EloquentModel;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Testing\Fluent\Concerns\Has;
 
 /**
  * ReadWorth\Infrastructure\EloquentModel\Book.
@@ -46,6 +48,8 @@ class Book extends Model
     public const STATUS_APPLYING = 3;
 
     protected $guarded = [];
+
+    use HasFactory;
 
     public function client(): BelongsTo
     {
