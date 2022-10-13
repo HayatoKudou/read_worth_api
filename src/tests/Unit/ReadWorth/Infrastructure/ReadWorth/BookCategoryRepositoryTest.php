@@ -5,6 +5,7 @@ namespace Tests\Unit\S4T\Infrastructure\Repository;
 use Tests\TestCase;
 use ReadWorth\Domain\BookCategory;
 use ReadWorth\Infrastructure\EloquentModel;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
 
 class BookCategoryRepositoryTest extends TestCase
@@ -28,7 +29,7 @@ class BookCategoryRepositoryTest extends TestCase
     /** @test */
     public function 書籍カテゴリを削除できること(): void
     {
-        $allBookCategory =  EloquentModel\BookCategory::factory()->create([
+        $allBookCategory = EloquentModel\BookCategory::firstOrCreate([
             'workspace_id' => 1,
             'name' => 'ALL',
         ]);
@@ -38,9 +39,10 @@ class BookCategoryRepositoryTest extends TestCase
             'name' => 'aaaaaa',
         ]);
 
-//        EloquentModel\Book::factory()->create([
-//            'book_category_id' => $bookCategory->id
-//        ]);
+        $book = EloquentModel\Book::factory()->create([
+            'workspace_id' => 1,
+            'book_category_id' => $bookCategory->id,
+        ]);
 
         $bookCategoryDomain = new BookCategory(
             workspaceId: 1,
@@ -51,10 +53,8 @@ class BookCategoryRepositoryTest extends TestCase
         $repository->delete($bookCategoryDomain);
 
         $bookCategory = EloquentModel\BookCategory::where('workspace_id', 1)->where('name', 'aaaaaa')->first();
-        $this->assertNull($bookCategory, "書籍カテゴリが削除されていること");
-
-        // TODO: カテゴリがALLになること
-//        $book = EloquentModel\Book::query()->latest()->first();
-//        $this->assertSame($allBookCategory->id, $book->book_category_id);
+        $this->assertNull($bookCategory, '書籍カテゴリが削除されていること');
+        $book = Book::find($book->id);
+        $this->assertSame($allBookCategory->id, $book->book_category_id);
     }
 }

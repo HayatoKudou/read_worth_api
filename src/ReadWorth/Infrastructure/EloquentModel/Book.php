@@ -2,7 +2,6 @@
 
 namespace ReadWorth\Infrastructure\EloquentModel;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
@@ -12,7 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Testing\Fluent\Concerns\Has;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * ReadWorth\Infrastructure\EloquentModel\Book.
@@ -43,13 +42,12 @@ use Illuminate\Testing\Fluent\Concerns\Has;
  */
 class Book extends Model
 {
+    use HasFactory;
     public const STATUS_CAN_LEND = 1;
     public const STATUS_CAN_NOT_LEND = 2;
     public const STATUS_APPLYING = 3;
 
     protected $guarded = [];
-
-    use HasFactory;
 
     public function client(): BelongsTo
     {

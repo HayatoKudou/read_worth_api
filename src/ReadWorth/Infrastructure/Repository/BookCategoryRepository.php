@@ -21,6 +21,8 @@ class BookCategoryRepository implements IBookCategoryRepository
             $bookCategoryRepo = BookCategory::where('workspace_id', $bookCategory->getWorkspaceId())->where('name', $bookCategory->getName())->firstOrFail();
             $bookCategoryRepo->books->each(function ($book) use ($bookCategory): void {
                 $all = BookCategory::where('workspace_id', $bookCategory->getWorkspaceId())->where('name', 'ALL')->firstOrFail();
+                \Log::debug($book);
+
                 $book->update(['book_category_id' => $all->id]);
             });
             $bookCategoryRepo->delete();
