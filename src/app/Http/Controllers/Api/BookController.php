@@ -74,7 +74,7 @@ class BookController extends Controller
             $this->authorize('isBookManager', $workspace);
 
             DB::transaction(function () use ($workspaceId, $request): void {
-                $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
+                $bookCategory = BookCategory::where('name', $request->get('category'))->firstOrFail();
                 $book = Book::create([
                     'workspace_id' => $workspaceId,
                     'book_category_id' => $bookCategory->id,
@@ -105,6 +105,9 @@ class BookController extends Controller
             $book = Book::find($request->get('id'));
             $bookCategory = BookCategory::where('name', $request->get('category'))->first();
 
+            if(!$book){
+                abort(401);
+            }
             if ($book->image_path) {
                 \Storage::delete($book->image_path);
             }

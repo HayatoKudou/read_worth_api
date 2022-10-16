@@ -9,6 +9,7 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'category' => 'required|string',
             'title' => 'required|string|max:255',
         ];
     }
@@ -16,6 +17,7 @@ class CreateRequest extends FormRequest
     public function attributes(): array
     {
         return [
+            'category' => 'カテゴリ',
             'title' => 'タイトル',
         ];
     }

@@ -9,7 +9,7 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'bookCategoryName' => 'required|string',
+            'category' => 'required|string',
             'title' => 'required|string',
             'reason' => 'required|string',
             'price' => 'required',
@@ -21,7 +21,7 @@ class CreateRequest extends FormRequest
     public function attributes(): array
     {
         return [
-            'bookCategoryName' => 'カテゴリ名',
+            'category' => 'カテゴリ名',
             'title' => 'タイトル',
             'reason' => '申請理由',
             'price' => '価格',

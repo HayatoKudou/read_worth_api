@@ -70,7 +70,7 @@ class BookPurchaseApplyController extends Controller
         DB::transaction(function () use ($user, $request, $workspaceId): void {
             $book = new Book();
             $imagePath = $book->storeImage($request->get('image'), $workspaceId);
-            $bookCategory = BookCategory::where('name', $request->get('bookCategoryName'))->firstOrFail();
+            $bookCategory = BookCategory::where('name', $request->get('category'))->firstOrFail();
 
             $book = Book::create([
                 'workspace_id' => $workspaceId,
