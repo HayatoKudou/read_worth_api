@@ -21,6 +21,21 @@ class BookCategoryService
     {
         $workspace = $this->workspaceRepository->findById($bookCategory->getWorkspaceId());
         $this->authorize('affiliation', $workspace);
+        $this->authorize('isBookManager', $workspace);
         $this->bookCategoryRepository->store($bookCategory);
+    }
+
+    public function delete(BookCategory $bookCategory): void
+    {
+        $workspace = $this->workspaceRepository->findById($bookCategory->getWorkspaceId());
+        $this->authorize('affiliation', $workspace);
+        $this->authorize('isBookManager', $workspace);
+
+        // ALLカテゴリは削除させない
+        if ('ALL' === $bookCategory->getName()) {
+            abort(422);
+        }
+
+        $this->bookCategoryRepository->delete($bookCategory);
     }
 }

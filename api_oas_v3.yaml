@@ -319,6 +319,33 @@ paths:
         "403":
           description: "指定されたワークスペースにユーザーがいない場合"
   /api/{workspaceId}/book:
+    post:
+      summary: 書籍追加
+      parameters:
+        - in: path
+          name: workspaceId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookCreateRequest"
+      responses:
+        "200":
+          description: "OK"
+        "403":
+          description: "指定されたワークスペースにユーザーがいない場合"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookCreateValidateErrorResponse"
     put:
       summary: 書籍更新
       parameters:
@@ -348,6 +375,35 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/BookUpdateValidateErrorResponse"
+    delete:
+      summary: 書籍削除
+      parameters:
+        - in: path
+          name: workspaceId
+          schema:
+            type: integer
+          required: true
+          example: 1
+      security:
+        - Bearer: [ ]
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BookDeleteRequest"
+      responses:
+        "200":
+          description: "OK"
+        "401":
+          description: "apiトークンが無効の場合"
+        "403":
+          description: "指定されたワークスペースにユーザーがいない場合"
+        "422":
+          description: "バリデーションエラー"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/BookDeleteValidateErrorResponse"
   /api/{workspaceId}/bookCategory:
     post:
       summary: 書籍カテゴリ追加
@@ -503,7 +559,7 @@ components:
           type: array
           items:
             type: string
-            example: [ "メッセージは必ず指定してください。" ]
+            example: "メッセージは必ず指定してください。"
     MeResponse:
       type: object
       required:
@@ -574,12 +630,12 @@ components:
           type: array
           items:
             type: string
-            example: [ "名前は必ず指定してください。" ]
+            example: "名前は必ず指定してください。"
         email:
           type: array
           items:
             type: string
-            example: [ "メールアドレスは必ず指定してください。" ]
+            example: "メールアドレスは必ず指定してください。"
     UsersListResponse:
       required:
         - users
@@ -652,22 +708,22 @@ components:
           type: array
           items:
             type: string
-            example: [ "ユーザーIDは必ず指定してください。" ]
+            example: "ユーザーIDは必ず指定してください。"
         name:
           type: array
           items:
             type: string
-            example: [ "名前は必ず指定してください。" ]
+            example: "名前は必ず指定してください。"
         email:
           type: array
           items:
             type: string
-            example: [ "メールアドレスは必ず指定してください。" ]
+            example: "メールアドレスは必ず指定してください。"
         roles:
           type: array
           items:
             type: string
-            example: [ "ロールは必ず指定してください。" ]
+            example: "ロールは必ず指定してください。"
     UserCreateRequest:
       properties:
         name:
@@ -692,17 +748,17 @@ components:
           type: array
           items:
             type: string
-            example: [ "名前は必ず指定してください。" ]
+            example: "名前は必ず指定してください。"
         email:
           type: array
           items:
             type: string
-            example: [ "メールアドレスは必ず指定してください。" ]
+            example: "メールアドレスは必ず指定してください。"
         roles:
           type: array
           items:
             type: string
-            example: [ "ロールは必ず指定してください。" ]
+            example: "ロールは必ず指定してください。"
     UserDeleteRequest:
       properties:
         userIds:
@@ -746,12 +802,12 @@ components:
           type: array
           items:
             type: string
-            example: [ "ワークスペース名は必ず指定してください。" ]
+            example: "ワークスペース名は必ず指定してください。"
         plan:
           type: array
           items:
             type: string
-            example: [ "プランは必ず指定してください。" ]
+            example: "プランは必ず指定してください。"
     WorkspaceCreateRequest:
       properties:
         name:
@@ -766,7 +822,7 @@ components:
           type: array
           items:
             type: string
-            example: [ "名前は必ず指定してください。" ]
+            example: "名前は必ず指定してください。"
     WorkspacesResponse:
       type: array
       items:
@@ -890,6 +946,41 @@ components:
               name:
                 type: string
                 example: "ALL"
+    BookCreateRequest:
+      required:
+        - title
+        - category
+      type: object
+      properties:
+        category:
+          type: string
+          example: "IT"
+        title:
+          type: string
+          example: "すごい本"
+        description:
+          type: string
+          example: "すごいことが書かれている本"
+        url:
+          type: string
+          example: "https://www.amazon.co.jp/%E5%9B%B3%E8%A7%A3%E5%85%A5%E9%96%80TCP-IP-%E4%BB%95%E7%B5%84%E3%81%BF%E3%83%BB%E5%8B%95%E4%BD%9C%E3%81%8C%E8%A6%8B%E3%81%A6%E3%82%8F%E3%81%8B%E3%82%8B-%E3%81%BF%E3%82%84%E3%81%9F-%E3%81%B2%E3%82%8D%E3%81%97-ebook/dp/B08MVXPW3V/?_encoding=UTF8&pd_rd_w=kn3Dc&content-id=amzn1.sym.5ce033f0-5b81-46ec-8910-385cc2abff14&pf_rd_p=5ce033f0-5b81-46ec-8910-385cc2abff14&pf_rd_r=GCPSA19TPVMWPJE6SWFH&pd_rd_wg=iJsgP&pd_rd_r=b1e2ee66-4532-4e71-b3db-921d26b5c9f7&ref_=pd_gw_ci_mcx_mr_hp_d"
+        image:
+          type: string
+          nullable: true
+          example: "gvdsngvaongaflafafeao"
+    BookCreateValidateErrorResponse:
+      type: object
+      properties:
+        category:
+          type: array
+          items:
+            type: string
+            example: "カテゴリは必ず指定してください。"
+        title:
+          type: array
+          items:
+            type: string
+            example: "タイトルは必ず指定してください。"
     BookUpdateRequest:
       required:
         - id
@@ -929,27 +1020,42 @@ components:
           type: array
           items:
             type: string
-            example: [ "IDは必ず指定してください。" ]
+            example: "IDは必ず指定してください。"
         category:
           type: array
           items:
             type: string
-            example: [ "カテゴリは必ず指定してください。" ]
+            example: "カテゴリは必ず指定してください。"
         status:
           type: array
           items:
             type: string
-            example: [ "ステータスは必ず指定してください。" ]
+            example: "ステータスは必ず指定してください。"
         title:
           type: array
           items:
             type: string
-            example: [ "タイトルは、255文字以下で指定してください。" ]
+            example: "タイトルは、255文字以下で指定してください。"
         description:
           type: array
           items:
             type: string
-            example: [ "本の説明は、255文字以下で指定してください。" ]
+            example: "本の説明は、255文字以下で指定してください。"
+    BookDeleteRequest:
+      required:
+        - bookIds
+      type: array
+      items:
+        type: integer
+        example: 1
+    BookDeleteValidateErrorResponse:
+      type: object
+      properties:
+        bookIds:
+          type: array
+          items:
+            type: string
+            example: "書籍IDは必ず指定してください。"
     BookCategoryCreateRequest:
       required:
         - name
@@ -965,7 +1071,7 @@ components:
           type: array
           items:
             type: string
-            example: [ "カテゴリ名は必ず指定してください。" ]
+            example: "カテゴリ名は必ず指定してください。"
     BookCategoryDeleteRequest:
       required:
         - name
@@ -981,7 +1087,7 @@ components:
           type: array
           items:
             type: string
-            example: [ "カテゴリ名は必ず指定してください。" ]
+            example: "カテゴリ名は必ず指定してください。"
     bookPurchaseAppliesListResponse:
       required:
         - slackCredentialExists

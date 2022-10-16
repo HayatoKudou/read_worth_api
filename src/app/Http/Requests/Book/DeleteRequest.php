@@ -9,7 +9,14 @@ class DeleteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'book_ids' => 'required',
+            'bookIds' => 'required|array',
+        ];
+    }
+
+    public function attributes(): array
+    {
+        return [
+            'bookIds' => '書籍ID',
         ];
     }
 }

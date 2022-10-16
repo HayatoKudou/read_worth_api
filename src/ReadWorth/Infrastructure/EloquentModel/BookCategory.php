@@ -5,6 +5,7 @@ namespace ReadWorth\Infrastructure\EloquentModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * ReadWorth\Infrastructure\EloquentModel\BookCategory.
@@ -24,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  */
 class BookCategory extends Model
 {
+    use HasFactory;
     protected $guarded = [];
     protected $table = 'book_category';
 

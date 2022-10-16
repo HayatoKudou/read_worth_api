@@ -14,7 +14,7 @@ class BookCategoryFactory extends Factory
     {
         return [
             'workspace_id' => Workspace::factory()->make()->id,
-            'name' => 1,
+            'name' => 'IT',
         ];
     }
 }

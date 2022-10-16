@@ -11,6 +11,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * ReadWorth\Infrastructure\EloquentModel\Book.
@@ -41,6 +42,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class Book extends Model
 {
+    use HasFactory;
     public const STATUS_CAN_LEND = 1;
     public const STATUS_CAN_NOT_LEND = 2;
     public const STATUS_APPLYING = 3;
