@@ -2,13 +2,12 @@
 
 namespace Tests\Feature\E2E;
 
-use ReadWorth\Infrastructure\EloquentModel\Book;
 use Tests\TestCase;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
-use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookControllerTest extends TestCase
 {
@@ -55,7 +54,7 @@ class BookControllerTest extends TestCase
     public function 書籍削除ができること(): void
     {
         $response = $this->json('DELETE', '/api/' . $this->workspace->id . '/book', [
-            'book_ids' => [1]
+            'bookIds' => [1],
         ], [
             'Authorization' => 'Bearer aaaaaaa',
         ]);
@@ -66,7 +65,7 @@ class BookControllerTest extends TestCase
     public function 書籍編集ができること(): void
     {
         $book = Book::factory()->create([
-            'workspace_id' => $this->workspace
+            'workspace_id' => $this->workspace,
         ]);
         $response = $this->json('PUT', '/api/' . $this->workspace->id . '/book', [
             'id' => $book->id,

@@ -105,9 +105,10 @@ class BookController extends Controller
             $book = Book::find($request->get('id'));
             $bookCategory = BookCategory::where('name', $request->get('category'))->first();
 
-            if(!$book){
+            if (!$book) {
                 abort(401);
             }
+
             if ($book->image_path) {
                 \Storage::delete($book->image_path);
             }
@@ -156,7 +157,7 @@ class BookController extends Controller
             $this->authorize('affiliation', $workspace);
             $this->authorize('isBookManager', $workspace);
             DB::transaction(function () use ($request): void {
-                $request->collect('book_ids')->each(function ($bookId): void {
+                $request->collect('bookIds')->each(function ($bookId): void {
                     BookPurchaseApply::where('book_id', $bookId)->delete();
                     BookRentalApply::where('book_id', $bookId)->delete();
                     BookReview::where('book_id', $bookId)->delete();

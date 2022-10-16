@@ -1043,7 +1043,7 @@ components:
             example: "本の説明は、255文字以下で指定してください。"
     BookDeleteRequest:
       required:
-        - book_ids
+        - bookIds
       type: array
       items:
         type: integer
@@ -1051,7 +1051,7 @@ components:
     BookDeleteValidateErrorResponse:
       type: object
       properties:
-        book_ids:
+        bookIds:
           type: array
           items:
             type: string
