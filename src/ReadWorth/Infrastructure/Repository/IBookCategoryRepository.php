@@ -2,11 +2,14 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
-use ReadWorth\Domain\BookCategory;
+use ReadWorth\Domain;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 interface IBookCategoryRepository
 {
-    public function store(BookCategory $bookCategory): void;
+    public function store(Domain\BookCategory $bookCategory): void;
 
-    public function delete(BookCategory $bookCategory): void;
+    public function delete(Domain\BookCategory $bookCategory): void;
+
+    public function findByWorkspaceIdAndName(int $workspaceId, string $name): BookCategory;
 }

@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Book\CreateRequest;
 use App\Http\Requests\Book\DeleteRequest;
 use App\Http\Requests\Book\UpdateRequest;
+use ReadWorth\Application\Service\BookService;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
@@ -23,6 +24,10 @@ use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookController extends Controller
 {
+    public function __construct(private readonly BookService $service)
+    {
+    }
+
     public function list(string $workspaceId): JsonResponse
     {
         try {
@@ -66,34 +71,10 @@ class BookController extends Controller
         }
     }
 
-    public function create(string $workspaceId, CreateRequest $request): JsonResponse
+    public function create(CreateRequest $request): JsonResponse
     {
-        try {
-            $workspace = Workspace::find($workspaceId);
-            $this->authorize('affiliation', $workspace);
-            $this->authorize('isBookManager', $workspace);
-
-            DB::transaction(function () use ($workspaceId, $request): void {
-                $bookCategory = BookCategory::where('name', $request->get('category'))->firstOrFail();
-                $book = Book::create([
-                    'workspace_id' => $workspaceId,
-                    'book_category_id' => $bookCategory->id,
-                    'status' => Book::STATUS_CAN_LEND,
-                    'title' => $request->get('title'),
-                    'description' => $request->get('description'),
-                    'url' => $request->get('url'),
-                ]);
-                $book->update(['image_path' => $request->get('image') ? $book->storeImage($request->get('image'), $workspaceId) : null]);
-                BookHistory::create([
-                    'book_id' => $book->id,
-                    'user_id' => Auth::id(),
-                    'action' => 'create book',
-                ]);
-            });
-            return response()->json([], 201);
-        } catch (AuthorizationException $e) {
-            return response()->json([], 403);
-        }
+        $this->service->create($request);
+        return response()->json([], 201);
     }
 
     public function update(string $workspaceId, UpdateRequest $request): JsonResponse

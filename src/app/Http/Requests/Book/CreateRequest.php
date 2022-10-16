@@ -11,6 +11,9 @@ class CreateRequest extends FormRequest
         return [
             'category' => 'required|string',
             'title' => 'required|string|max:255',
+            'description' => '',
+            'image' => '',
+            'url' => '',
         ];
     }
 

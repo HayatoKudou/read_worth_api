@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use ReadWorth\Infrastructure\Repository\BookRepository;
 use ReadWorth\Infrastructure\Repository\UserRepository;
+use ReadWorth\Infrastructure\Repository\IBookRepository;
 use ReadWorth\Infrastructure\Repository\IUserRepository;
 use ReadWorth\Infrastructure\Repository\ConnectRepository;
 use ReadWorth\Infrastructure\Repository\IConnectRepository;
@@ -18,6 +20,7 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->app->bind(IConnectRepository::class, ConnectRepository::class);
         $this->app->bind(IUserRepository::class, UserRepository::class);
+        $this->app->bind(IBookRepository::class, BookRepository::class);
         $this->app->bind(IBookCategoryRepository::class, BookCategoryRepository::class);
         $this->app->bind(IWorkspaceRepository::class, WorkspaceRepository::class);
     }

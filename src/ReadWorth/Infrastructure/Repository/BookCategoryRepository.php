@@ -18,7 +18,7 @@ class BookCategoryRepository implements IBookCategoryRepository
     public function delete(Domain\BookCategory $bookCategory): void
     {
         \DB::transaction(function () use ($bookCategory): void {
-            $bookCategoryRepo = BookCategory::where('workspace_id', $bookCategory->getWorkspaceId())->where('name', $bookCategory->getName())->firstOrFail();
+            $bookCategoryRepo = $this->findByWorkspaceIdAndName($bookCategory->getWorkspaceId(), $bookCategory->getName());
             $bookCategoryRepo->books->each(function ($book) use ($bookCategory): void {
                 $all = BookCategory::where('workspace_id', $bookCategory->getWorkspaceId())->where('name', 'ALL')->firstOrFail();
                 \Log::debug($book);
@@ -27,5 +27,10 @@ class BookCategoryRepository implements IBookCategoryRepository
             });
             $bookCategoryRepo->delete();
         });
+    }
+
+    public function findByWorkspaceIdAndName(int $workspaceId, string $name): BookCategory
+    {
+        return BookCategory::where('workspace_id', $workspaceId)->where('name', $name)->firstOrFail();
     }
 }

@@ -11,25 +11,29 @@ use ReadWorth\Domain\BookCategory as BookCategoryDomain;
 
 class BookCategoryController extends Controller
 {
-    public function create(string $workspaceId, CreateRequest $request, BookCategoryService $service): JsonResponse
+    public function __construct(private readonly BookCategoryService $service)
+    {
+    }
+
+    public function create(string $workspaceId, CreateRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $bookCategory = new BookCategoryDomain(
             workspaceId: $workspaceId,
             name: $validated['name']
         );
-        $service->create($bookCategory);
+        $this->service->create($bookCategory);
         return response()->json([], 201);
     }
 
-    public function delete(string $workspaceId, DeleteRequest $request, BookCategoryService $service): JsonResponse
+    public function delete(string $workspaceId, DeleteRequest $request): JsonResponse
     {
         $validated = $request->validated();
         $bookCategory = new BookCategoryDomain(
             workspaceId: $workspaceId,
             name: $validated['name']
         );
-        $service->delete($bookCategory);
+        $this->service->delete($bookCategory);
         return response()->json();
     }
 }

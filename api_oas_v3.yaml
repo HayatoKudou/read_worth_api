@@ -1044,10 +1044,12 @@ components:
     BookDeleteRequest:
       required:
         - bookIds
-      type: array
-      items:
-        type: integer
-        example: 1
+      properties:
+        bookIds:
+          type: array
+          items:
+            type: integer
+            example: 1
     BookDeleteValidateErrorResponse:
       type: object
       properties:
