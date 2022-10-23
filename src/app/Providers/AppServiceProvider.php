@@ -2,17 +2,17 @@
 
 namespace App\Providers;
 
+use ReadWorth\Domain\IBookRepository;
+use ReadWorth\Domain\IUserRepository;
 use Illuminate\Support\ServiceProvider;
+use ReadWorth\Domain\IConnectRepository;
+use ReadWorth\Domain\IWorkspaceRepository;
+use ReadWorth\Domain\IBookCategoryRepository;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use ReadWorth\Infrastructure\Repository\UserRepository;
-use ReadWorth\Infrastructure\Repository\IBookRepository;
-use ReadWorth\Infrastructure\Repository\IUserRepository;
 use ReadWorth\Infrastructure\Repository\ConnectRepository;
-use ReadWorth\Infrastructure\Repository\IConnectRepository;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
-use ReadWorth\Infrastructure\Repository\IWorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
-use ReadWorth\Infrastructure\Repository\IBookCategoryRepository;
 
 class AppServiceProvider extends ServiceProvider
 {

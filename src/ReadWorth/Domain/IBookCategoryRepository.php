@@ -1,8 +1,7 @@
 <?php
 
-namespace ReadWorth\Infrastructure\Repository;
+namespace ReadWorth\Domain;
 
-use ReadWorth\Domain\Entities;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 interface IBookCategoryRepository
@@ -12,4 +11,6 @@ interface IBookCategoryRepository
     public function delete(Entities\Workspace $workspace, Entities\BookCategory $bookCategory): void;
 
     public function findByWorkspaceIdAndName(int $workspaceId, string $name): BookCategory;
+
+    public function latestId(): int;
 }

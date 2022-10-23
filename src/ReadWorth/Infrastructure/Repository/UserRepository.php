@@ -2,6 +2,7 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
+use ReadWorth\Domain\IUserRepository;
 use ReadWorth\Infrastructure\EloquentModel\User;
 
 class UserRepository implements IUserRepository

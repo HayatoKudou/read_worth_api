@@ -1,8 +1,8 @@
 <?php
 
-namespace ReadWorth\Infrastructure\Repository;
+namespace ReadWorth\Domain;
 
-use ReadWorth\Domain\GoogleUser;
+use ReadWorth\Domain\Entities\GoogleUser;
 use ReadWorth\Infrastructure\EloquentModel\User;
 
 interface IConnectRepository

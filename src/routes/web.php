@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SlackController;
-use App\Http\Controllers\Api\ConnectController;
+use ReadWorth\UI\Http\Controllers\ConnectController;
 
 Route::get('/', function () {
     return response()->json('勇者よ立ち去れ、ここには何もない');

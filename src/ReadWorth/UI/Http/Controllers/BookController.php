@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace ReadWorth\UI\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -9,23 +9,24 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use App\Http\Requests\Book\CreateRequest;
 use App\Http\Requests\Book\DeleteRequest;
 use App\Http\Requests\Book\UpdateRequest;
-use ReadWorth\Application\Service\BookService;
+use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookReview;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\UI\Http\Requests\BookCategory\CreateRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookController extends Controller
 {
-    public function __construct(private readonly BookService $service)
-    {
+    public function __construct(
+        private readonly CreateBook $createBookUseCase
+    ) {
     }
 
     public function list(string $workspaceId): JsonResponse
@@ -73,7 +74,7 @@ class BookController extends Controller
 
     public function create(CreateRequest $request): JsonResponse
     {
-        $this->service->create($request);
+        $this->createBookUseCase->create($request);
         return response()->json([], 201);
     }
 

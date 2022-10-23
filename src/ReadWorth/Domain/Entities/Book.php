@@ -1,15 +1,15 @@
 <?php
 
-namespace ReadWorth\Domain;
+namespace ReadWorth\Domain\Entities;
 
 class Book
 {
     public function __construct(
-        private string $status,
-        private string $title,
-        private string|null $description,
-        private string|null $imagePath,
-        private string|null $url,
+        private readonly string $status,
+        private readonly string $title,
+        private readonly string|null $description,
+        private readonly string|null $imagePath,
+        private readonly string|null $url,
     ) {
     }
 

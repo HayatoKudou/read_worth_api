@@ -2,6 +2,7 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
+use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
 class WorkspaceRepository implements IWorkspaceRepository

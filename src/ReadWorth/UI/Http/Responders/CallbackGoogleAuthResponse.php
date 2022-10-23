@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Response\Auth;
+namespace ReadWorth\UI\Http\Responders;
 
 use Illuminate\Http\RedirectResponse;
 use ReadWorth\Infrastructure\EloquentModel\User;

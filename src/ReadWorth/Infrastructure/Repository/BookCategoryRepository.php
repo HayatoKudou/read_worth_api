@@ -3,6 +3,7 @@
 namespace ReadWorth\Infrastructure\Repository;
 
 use ReadWorth\Domain\Entities;
+use ReadWorth\Domain\IBookCategoryRepository;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookCategoryRepository implements IBookCategoryRepository
@@ -30,5 +31,10 @@ class BookCategoryRepository implements IBookCategoryRepository
     public function findByWorkspaceIdAndName(int $workspaceId, string $name): BookCategory
     {
         return BookCategory::where('workspace_id', $workspaceId)->where('name', $name)->firstOrFail();
+    }
+
+    public function latestId(): int
+    {
+        return BookCategory::latest()->id;
     }
 }

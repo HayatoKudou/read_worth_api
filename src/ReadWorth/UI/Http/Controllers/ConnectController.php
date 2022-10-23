@@ -1,16 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace ReadWorth\UI\Http\Controllers;
 
-use ReadWorth\Domain\GoogleUser;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
-use ReadWorth\Application\Service\ConnectService;
-use App\Http\Response\Auth\CallbackGoogleAuthResponse;
+use ReadWorth\Application\UseCase\ConnectGoogle;
+use ReadWorth\Domain\Entities\GoogleUser;
+use ReadWorth\UI\Http\Responders\CallbackGoogleAuthResponse;
 
-class ConnectController extends Controller
+class ConnectController
 {
     public function generateGoogleAuthUrl(): JsonResponse
     {
@@ -18,7 +17,7 @@ class ConnectController extends Controller
         return response()->json(['connectUrl' => $connectUrl]);
     }
 
-    public function callbackGoogleAuth(ConnectService $service): RedirectResponse
+    public function callbackGoogleAuth(ConnectGoogle $useCase): RedirectResponse
     {
         $connectUser = Socialite::driver('google')->stateless()->user();
         $googleUser = new GoogleUser(
@@ -26,7 +25,7 @@ class ConnectController extends Controller
             email: $connectUser->getEmail(),
             token: $connectUser->token,
         );
-        $user = $service->callbackGoogleAuth($googleUser);
+        $user = $useCase->callbackGoogleAuth($googleUser);
 
         return CallbackGoogleAuthResponse::make($user);
     }

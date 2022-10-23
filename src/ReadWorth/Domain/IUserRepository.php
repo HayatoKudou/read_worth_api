@@ -1,6 +1,6 @@
 <?php
 
-namespace ReadWorth\Infrastructure\Repository;
+namespace ReadWorth\Domain;
 
 use ReadWorth\Infrastructure\EloquentModel\User;
 

@@ -3,8 +3,9 @@
 namespace ReadWorth\Infrastructure\Repository;
 
 use Illuminate\Support\Str;
-use ReadWorth\Domain\GoogleUser;
+use ReadWorth\Domain\Entities\GoogleUser;
 use Illuminate\Support\Facades\DB;
+use ReadWorth\Domain\IConnectRepository;
 use ReadWorth\Infrastructure\EloquentModel\Plan;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;

@@ -1,6 +1,6 @@
 <?php
 
-namespace ReadWorth\Domain;
+namespace ReadWorth\Domain\Entities;
 
 class GoogleUser
 {

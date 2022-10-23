@@ -1,13 +1,13 @@
 <?php
 
-namespace ReadWorth\Application\Service;
+namespace ReadWorth\Application\UseCase;
 
-use ReadWorth\Domain\GoogleUser;
+use ReadWorth\Domain\Entities\GoogleUser;
+use ReadWorth\Domain\IUserRepository;
+use ReadWorth\Domain\IConnectRepository;
 use ReadWorth\Infrastructure\EloquentModel\User;
-use ReadWorth\Infrastructure\Repository\IUserRepository;
-use ReadWorth\Infrastructure\Repository\IConnectRepository;
 
-class ConnectService
+class ConnectGoogle
 {
     public function __construct(
         private readonly IUserRepository $userRepository,

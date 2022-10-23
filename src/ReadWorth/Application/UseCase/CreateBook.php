@@ -2,24 +2,31 @@
 
 namespace ReadWorth\Application\UseCase;
 
+use ReadWorth\Domain\Entities\Book;
+use ReadWorth\Domain\IBookRepository;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\IBookCategoryRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ReadWorth\UI\Http\Requests\BookCategory\DeleteRequest;
+use ReadWorth\UI\Http\Requests\BookCategory\CreateRequest;
 
-class DeleteBookCategory
+class CreateBook
 {
     use AuthorizesRequests;
+
+    public const STATUS_CAN_LEND = 1;
+    public const STATUS_CAN_NOT_LEND = 2;
+    public const STATUS_APPLYING = 3;
 
     public function __construct(
         private readonly IWorkspaceRepository $workspaceRepository,
         private readonly IBookCategoryRepository $bookCategoryRepository,
+        private readonly IBookRepository $bookRepository,
     ) {
     }
 
-    public function delete(DeleteRequest $request): void
+    public function create(CreateRequest $request): void
     {
         $workspaceId = $request->route('workspaceId');
         $workspace = $this->workspaceRepository->findById($workspaceId);
@@ -30,11 +37,14 @@ class DeleteBookCategory
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
         $bookCategory = new BookCategory(name: $validated['name']);
 
-        // ALLカテゴリは削除させない
-        if ('ALL' === $bookCategory->getName()) {
-            abort(422);
-        }
+        $book = new Book(
+            status: self::STATUS_CAN_LEND,
+            title: $validated['title'],
+            description: $validated['description'],
+            imagePath: $validated['image'] ? $this->storeImage($validated['image'], $workspaceId) : null,
+            url: $validated['url']
+        );
 
-        $this->bookCategoryRepository->delete($workspace, $bookCategory);
+        $this->bookRepository->store($workspace, $book, $bookCategory);
     }
 }

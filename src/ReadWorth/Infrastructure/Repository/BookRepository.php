@@ -2,9 +2,10 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
-use ReadWorth\Domain;
+use ReadWorth\Domain\Entities;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use ReadWorth\Domain\IBookRepository;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
@@ -12,17 +13,17 @@ use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookRepository implements IBookRepository
 {
-    public function store(Domain\Workspace $workspace, Domain\Book $book, Domain\BookCategory $bookCategory): void
+    public function store(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory): void
     {
-        $workspace = Workspace::where('name', $workspace->getName())->firstOrFail();
-        DB::transaction(function () use ($book, $bookCategory, $workspace): void {
-            $bookCategory = BookCategory::where('workspace_id', $workspace->id)
-                ->where('name', $bookCategory->getName())
-                ->firstOrFail();
+        $workspaceRepo = Workspace::where('name', $workspace->getName())->firstOrFail();
+        $bookCategoryRepo = BookCategory::where('workspace_id', $workspaceRepo->id)
+            ->where('name', $bookCategory->getName())
+            ->firstOrFail();
 
+        DB::transaction(function () use ($book, $bookCategoryRepo, $workspaceRepo): void {
             $book = Book::create([
-                'workspace_id' => $workspace->id,
-                'book_category_id' => $bookCategory->id,
+                'workspace_id' => $workspaceRepo->id,
+                'book_category_id' => $bookCategoryRepo->id,
                 'status' => $book->getStatus(),
                 'title' => $book->getTitle(),
                 'description' => $book->getDescription(),
@@ -37,7 +38,7 @@ class BookRepository implements IBookRepository
         });
     }
 
-    public function update(Domain\Workspace $workspace, Domain\Book $book, Domain\BookCategory $bookCategory): void
+    public function update(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory): void
     {
     }
 
