@@ -2,27 +2,25 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
-use ReadWorth\Domain;
+use ReadWorth\Domain\Entities;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BookCategoryRepository implements IBookCategoryRepository
 {
-    public function store(Domain\BookCategory $bookCategory): void
+    public function store(Entities\Workspace $workspace, Entities\BookCategory $bookCategory): void
     {
         BookCategory::create([
-            'workspace_id' => $bookCategory->getWorkspaceId(),
+            'workspace_id' => $workspace->getId(),
             'name' => $bookCategory->getName(),
         ]);
     }
 
-    public function delete(Domain\BookCategory $bookCategory): void
+    public function delete(Entities\Workspace $workspace, Entities\BookCategory $bookCategory): void
     {
-        \DB::transaction(function () use ($bookCategory): void {
-            $bookCategoryRepo = $this->findByWorkspaceIdAndName($bookCategory->getWorkspaceId(), $bookCategory->getName());
-            $bookCategoryRepo->books->each(function ($book) use ($bookCategory): void {
-                $all = BookCategory::where('workspace_id', $bookCategory->getWorkspaceId())->where('name', 'ALL')->firstOrFail();
-                \Log::debug($book);
-
+        \DB::transaction(function () use ($bookCategory, $workspace): void {
+            $bookCategoryRepo = $this->findByWorkspaceIdAndName($workspace->getId(), $bookCategory->getName());
+            $bookCategoryRepo->books->each(function ($book) use ($workspace): void {
+                $all = BookCategory::where('workspace_id', $workspace->getId())->where('name', 'ALL')->firstOrFail();
                 $book->update(['book_category_id' => $all->id]);
             });
             $bookCategoryRepo->delete();

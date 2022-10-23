@@ -1,11 +1,11 @@
 <?php
 
-namespace ReadWorth\Domain;
+namespace ReadWorth\Domain\ValueObjects;
 
-class BookCategory
+class WorkspaceName
 {
     public function __construct(
-        private string $name
+        private readonly string $name,
     ) {
     }
 

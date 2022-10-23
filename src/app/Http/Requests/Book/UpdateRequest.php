@@ -14,6 +14,8 @@ class UpdateRequest extends FormRequest
             'description' => 'max:255',
             'category' => 'required|string',
             'status' => 'required',
+            'image' => '',
+            'url' => '',
         ];
     }
 
