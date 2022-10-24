@@ -8,12 +8,12 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use App\Http\Requests\Book\DeleteRequest;
-use App\Http\Requests\Book\UpdateRequest;
 use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Application\UseCase\FetchBooks;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\UI\Http\Requests\CreateBookRequest;
+use ReadWorth\UI\Http\Requests\DeleteBookRequest;
+use ReadWorth\UI\Http\Requests\UpdateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookReview;
@@ -41,7 +41,7 @@ class BookController extends Controller
         return response()->json([], 201);
     }
 
-    public function update(string $workspaceId, UpdateRequest $request): JsonResponse
+    public function update(string $workspaceId, UpdateBookRequest $request): JsonResponse
     {
         try {
             $workspace = Workspace::find($workspaceId);
@@ -95,7 +95,7 @@ class BookController extends Controller
         }
     }
 
-    public function delete(string $workspaceId, DeleteRequest $request): JsonResponse
+    public function delete(string $workspaceId, DeleteBookRequest $request): JsonResponse
     {
         try {
             $workspace = Workspace::find($workspaceId);
