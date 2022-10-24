@@ -7,7 +7,7 @@ use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\IBookCategoryRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ReadWorth\UI\Http\Requests\BookCategory\DeleteRequest;
+use ReadWorth\UI\Http\Requests\DeleteBookCategoryRequest;
 
 class DeleteBookCategory
 {
@@ -19,7 +19,7 @@ class DeleteBookCategory
     ) {
     }
 
-    public function delete(DeleteRequest $request): void
+    public function delete(DeleteBookCategoryRequest $request): void
     {
         $workspaceId = $request->route('workspaceId');
         $workspace = $this->workspaceRepository->findById($workspaceId);

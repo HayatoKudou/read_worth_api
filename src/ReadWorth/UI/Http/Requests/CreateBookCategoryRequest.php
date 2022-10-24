@@ -1,12 +1,12 @@
 <?php
 
-namespace ReadWorth\UI\Http\Requests\BookCategory;
+namespace ReadWorth\UI\Http\Requests;
 
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class CreateBookCategoryRequest extends FormRequest
 {
     public function rules(Request $request): array
     {

@@ -32,9 +32,4 @@ class BookCategoryRepository implements IBookCategoryRepository
     {
         return BookCategory::where('workspace_id', $workspaceId)->where('name', $name)->firstOrFail();
     }
-
-    public function latestId(): int
-    {
-        return BookCategory::latest()->id;
-    }
 }

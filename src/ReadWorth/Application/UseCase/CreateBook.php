@@ -8,8 +8,8 @@ use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\IBookCategoryRepository;
+use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ReadWorth\UI\Http\Requests\BookCategory\CreateRequest;
 
 class CreateBook
 {
@@ -23,10 +23,11 @@ class CreateBook
         private readonly IWorkspaceRepository $workspaceRepository,
         private readonly IBookCategoryRepository $bookCategoryRepository,
         private readonly IBookRepository $bookRepository,
+        private readonly StoreBookImage $storeBookImage,
     ) {
     }
 
-    public function create(CreateRequest $request): void
+    public function create(CreateBookRequest $request): void
     {
         $workspaceId = $request->route('workspaceId');
         $workspace = $this->workspaceRepository->findById($workspaceId);
@@ -35,13 +36,13 @@ class CreateBook
         $validated = $request->validated();
 
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
-        $bookCategory = new BookCategory(name: $validated['name']);
+        $bookCategory = new BookCategory(name: $validated['category']);
 
         $book = new Book(
             status: self::STATUS_CAN_LEND,
             title: $validated['title'],
             description: $validated['description'],
-            imagePath: $validated['image'] ? $this->storeImage($validated['image'], $workspaceId) : null,
+            imagePath: $validated['image'] ? $this->storeBookImage->store($validated['image'], $workspaceId) : null,
             url: $validated['url']
         );
 

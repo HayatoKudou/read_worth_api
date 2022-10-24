@@ -8,71 +8,34 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\Book\DeleteRequest;
 use App\Http\Requests\Book\UpdateRequest;
 use ReadWorth\Application\UseCase\CreateBook;
+use ReadWorth\Application\UseCase\FetchBooks;
 use ReadWorth\Infrastructure\EloquentModel\Book;
+use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookReview;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
-use ReadWorth\UI\Http\Requests\BookCategory\CreateRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookController extends Controller
 {
     public function __construct(
+        private readonly FetchBooks $fetchBooksUseCase,
         private readonly CreateBook $createBookUseCase
     ) {
     }
 
     public function list(string $workspaceId): JsonResponse
     {
-        try {
-            $workspace = Workspace::find($workspaceId);
-            $this->authorize('affiliation', $workspace);
-            $books = Book::organization($workspaceId)->with('purchaseApply')->get();
-            $bookCategories = BookCategory::organization($workspaceId)->get();
-            return response()->json([
-                'books' => $books->map(fn (Book $book) => [
-                    'id' => $book->id,
-                    'status' => $book->status,
-                    'category' => $book->category->name,
-                    'title' => $book->title,
-                    'description' => $book->description,
-                    'image' => $book->image_path ? base64_encode(Storage::get($book->image_path)) : null,
-                    'url' => $book->url,
-                    'createdAt' => Carbon::parse($book->created_at)->format('Y/m/d'),
-                    'purchaseApplicant' => [
-                        'id' => $book->purchaseApply?->user->id,
-                        'name' => $book->purchaseApply?->user->name,
-                    ],
-                    'rentalApplicant' => $book->rentalApply ? [
-                        'id' => $book->rentalApply->user->id,
-                        'name' => $book->rentalApply->user->name,
-                        'expectedReturnDate' => $book->rentalApply->expected_return_date,
-                    ] : null,
-                    'reviews' => collect($book->reviews)?->map(fn (BookReview $bookReview) => [
-                        'rate' => $bookReview->rate,
-                        'review' => $bookReview->review,
-                        'reviewedAt' => Carbon::parse($bookReview->created_at)->format('Y年m月d日 H時i分'),
-                        'reviewer' => $bookReview->user->name,
-                    ]),
-                    'rentalCount' => $book->rentalHistories->count(),
-                ]),
-                'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
-                    'name' => $bookCategory->name,
-                ]),
-            ]);
-        } catch (AuthorizationException $e) {
-            return response()->json([], 403);
-        }
+        return response()->json($this->fetchBooksUseCase->fetch($workspaceId));
     }
 
-    public function create(CreateRequest $request): JsonResponse
+    public function create(CreateBookRequest $request): JsonResponse
     {
         $this->createBookUseCase->create($request);
         return response()->json([], 201);

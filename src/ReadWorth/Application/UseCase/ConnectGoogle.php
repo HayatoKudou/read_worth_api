@@ -2,9 +2,9 @@
 
 namespace ReadWorth\Application\UseCase;
 
-use ReadWorth\Domain\Entities\GoogleUser;
 use ReadWorth\Domain\IUserRepository;
 use ReadWorth\Domain\IConnectRepository;
+use ReadWorth\Domain\Entities\GoogleUser;
 use ReadWorth\Infrastructure\EloquentModel\User;
 
 class ConnectGoogle

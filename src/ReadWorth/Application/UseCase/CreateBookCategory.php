@@ -7,7 +7,7 @@ use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\IBookCategoryRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ReadWorth\UI\Http\Requests\BookCategory\CreateRequest;
+use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 
 class CreateBookCategory
 {
@@ -19,7 +19,7 @@ class CreateBookCategory
     ) {
     }
 
-    public function create(CreateRequest $request): void
+    public function create(CreateBookCategoryRequest $request): void
     {
         $workspaceId = $request->route('workspaceId');
         $workspace = $this->workspaceRepository->findById($workspaceId);

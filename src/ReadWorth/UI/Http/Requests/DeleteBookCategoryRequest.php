@@ -1,10 +1,10 @@
 <?php
 
-namespace ReadWorth\UI\Http\Requests\BookCategory;
+namespace ReadWorth\UI\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class DeleteRequest extends FormRequest
+class DeleteBookCategoryRequest extends FormRequest
 {
     public function rules(): array
     {
