@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Storage;
 
 class StoreBookImage
 {
-    public static function store(string $imageBinary, string $workspaceId): string
+    public function store(string $imageBinary, string $workspaceId): string
     {
         $user = Auth::user();
         @[, $file_data] = explode(';', $imageBinary);

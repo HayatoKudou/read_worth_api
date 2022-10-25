@@ -8,16 +8,13 @@ use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\IBookCategoryRepository;
+use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class CreateBook
 {
     use AuthorizesRequests;
-
-    public const STATUS_CAN_LEND = 1;
-    public const STATUS_CAN_NOT_LEND = 2;
-    public const STATUS_APPLYING = 3;
 
     public function __construct(
         private readonly IWorkspaceRepository $workspaceRepository,
@@ -37,9 +34,9 @@ class CreateBook
 
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
         $bookCategory = new BookCategory(name: $validated['category']);
-
         $book = new Book(
-            status: self::STATUS_CAN_LEND,
+            id: time(),
+            status: BookStatus::STATUS_CAN_LEND,
             title: $validated['title'],
             description: $validated['description'],
             imagePath: $validated['image'] ? $this->storeBookImage->store($validated['image'], $workspaceId) : null,

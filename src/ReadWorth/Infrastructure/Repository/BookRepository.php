@@ -38,8 +38,31 @@ class BookRepository implements IBookRepository
         });
     }
 
-    public function update(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory): void
+    public function update(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory, Entities\BookHistory|null $bookHistory): void
     {
+        $bookRepo = $this->findById($book->getId());
+        $bookCategoryRepo = BookCategory::where('workspace_id', $workspace->getId())
+            ->where('name', $bookCategory->getName())
+            ->firstOrFail();
+
+        DB::transaction(function () use ($book, $bookRepo, $bookHistory, $workspace, $bookCategoryRepo): void {
+            if ($bookHistory) {
+                BookHistory::create([
+                    'book_id' => $book->getId(),
+                    'user_id' => Auth::id(),
+                    'action' => $bookHistory->getAction(),
+                ]);
+            }
+            $bookRepo->update([
+                'workspace_id' => $workspace->getId(),
+                'book_category_id' => $bookCategoryRepo->id,
+                'status' => $book->getStatus(),
+                'title' => $book->getTitle(),
+                'description' => $book->getDescription(),
+                'image_path' => $book->getImagePath(),
+                'url' => $book->getUrl(),
+            ]);
+        });
     }
 
     public function findById(int $bookId): Book

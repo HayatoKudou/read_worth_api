@@ -8,7 +8,7 @@ interface IBookRepository
 {
     public function store(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory): void;
 
-    public function update(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory): void;
+    public function update(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory, Entities\BookHistory|null $bookHistory): void;
 
     public function findById(int $bookId): Book;
 }

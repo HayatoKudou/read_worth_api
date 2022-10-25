@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Application\UseCase\FetchBooks;
+use ReadWorth\Application\UseCase\UpdateBook;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use ReadWorth\UI\Http\Requests\DeleteBookRequest;
@@ -26,7 +27,8 @@ class BookController extends Controller
 {
     public function __construct(
         private readonly FetchBooks $fetchBooksUseCase,
-        private readonly CreateBook $createBookUseCase
+        private readonly CreateBook $createBookUseCase,
+        private readonly UpdateBook $updateBookUseCase,
     ) {
     }
 
@@ -41,58 +43,11 @@ class BookController extends Controller
         return response()->json([], 201);
     }
 
-    public function update(string $workspaceId, UpdateBookRequest $request): JsonResponse
+    public function update(UpdateBookRequest $request): JsonResponse
     {
-        try {
-            $workspace = Workspace::find($workspaceId);
-            $this->authorize('affiliation', $workspace);
-            $this->authorize('isBookManager', $workspace);
-            $book = Book::find($request->get('id'));
-            $bookCategory = BookCategory::where('name', $request->get('category'))->first();
+        $this->updateBookUseCase->update($request);
 
-            if (!$book) {
-                abort(401);
-            }
-
-            if ($book->image_path) {
-                \Storage::delete($book->image_path);
-            }
-            $imagePath = $request->get('image') ? $book->storeImage($request->get('image'), $workspaceId) : null;
-
-            DB::transaction(function () use ($workspaceId, $bookCategory, $book, $request, $imagePath): void {
-                if ($book->status != $request->get('status')) {
-                    $action = 'other';
-                    // 申請中 ⇨ 登録
-                    if (Book::STATUS_APPLYING === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
-                        $action = 'create book';
-                    // 貸出中 ⇨ 貸出可能
-                    } elseif (Book::STATUS_CAN_NOT_LEND === $book->status && Book::STATUS_CAN_LEND === $request->get('status')) {
-                        $action = 'return book';
-                    // 貸出可能 ⇨ 貸出中
-                    } elseif (Book::STATUS_CAN_LEND === $book->status && Book::STATUS_CAN_NOT_LEND === $request->get('status')) {
-                        $action = 'lend book';
-                    }
-                    BookHistory::create([
-                        'book_id' => $book->id,
-                        'user_id' => Auth::id(),
-                        'action' => $action,
-                    ]);
-                }
-                $book->update([
-                    'workspace_id' => $workspaceId,
-                    'book_category_id' => $bookCategory->id,
-                    'status' => $request->get('status'),
-                    'title' => $request->get('title'),
-                    'description' => $request->get('description'),
-                    'image_path' => $imagePath,
-                    'url' => $request->get('url'),
-                ]);
-            });
-
-            return response()->json();
-        } catch (AuthorizationException $e) {
-            return response()->json([], 403);
-        }
+        return response()->json();
     }
 
     public function delete(string $workspaceId, DeleteBookRequest $request): JsonResponse

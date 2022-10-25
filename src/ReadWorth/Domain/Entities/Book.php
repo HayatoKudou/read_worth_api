@@ -5,12 +5,18 @@ namespace ReadWorth\Domain\Entities;
 class Book
 {
     public function __construct(
+        private readonly int $id,
         private readonly string $status,
         private readonly string $title,
         private readonly string|null $description,
         private readonly string|null $imagePath,
         private readonly string|null $url,
     ) {
+    }
+
+    public function getId(): int
+    {
+        return $this->id;
     }
 
     public function getStatus(): string
