@@ -7,7 +7,6 @@ use ReadWorth\Domain\IBookRepository;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
-use ReadWorth\Domain\IBookCategoryRepository;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -18,7 +17,6 @@ class CreateBook
 
     public function __construct(
         private readonly IWorkspaceRepository $workspaceRepository,
-        private readonly IBookCategoryRepository $bookCategoryRepository,
         private readonly IBookRepository $bookRepository,
         private readonly StoreBookImage $storeBookImage,
     ) {
