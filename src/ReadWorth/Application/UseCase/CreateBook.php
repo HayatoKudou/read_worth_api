@@ -31,8 +31,8 @@ class CreateBook
         $validated = $request->validated();
 
         // TODO: どうにかしたい
-        $bookId = time().\Auth::id();
-        $bookCategoryId = time().\Auth::id();
+        $bookId = time() . \Auth::id();
+        $bookCategoryId = time() . \Auth::id();
 
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
         $bookCategory = new BookCategory(id: $bookCategoryId, name: $validated['category']);

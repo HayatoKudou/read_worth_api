@@ -2,18 +2,17 @@
 
 namespace Tests\Feature\ReadWorth\Application\UseCase;
 
+use Tests\TestCase;
 use ReadWorth\Application\UseCase\CreateBook;
-use ReadWorth\Application\UseCase\StoreBookImage;
-use ReadWorth\Infrastructure\EloquentModel\Belonging;
-use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
+use ReadWorth\Application\UseCase\StoreBookImage;
+use ReadWorth\UI\Http\Requests\CreateBookRequest;
+use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\Repository\BookRepository;
-use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
+use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
-use ReadWorth\UI\Http\Requests\CreateBookRequest;
-use Tests\TestCase;
 
 class CreateBookTest extends TestCase
 {
@@ -28,7 +27,7 @@ class CreateBookTest extends TestCase
         $this->workspace = Workspace::factory()->create();
         BookCategory::factory()->create([
             'workspace_id' => $this->workspace->id,
-            'name' => 'マネジメント'
+            'name' => 'マネジメント',
         ]);
 
         $this->canUser = User::factory()->create();
@@ -49,7 +48,7 @@ class CreateBookTest extends TestCase
     }
 
     /** @test */
-    public function 書籍登録ができること()
+    public function 書籍登録ができること(): void
     {
         \Auth::setUser($this->canUser);
 

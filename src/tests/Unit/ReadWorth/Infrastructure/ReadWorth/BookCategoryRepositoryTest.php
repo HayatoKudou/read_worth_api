@@ -15,7 +15,7 @@ class BookCategoryRepositoryTest extends TestCase
     public function 書籍カテゴリを登録できること(): void
     {
         $workspace = EloquentModel\Workspace::factory()->create(['name' => 'tete']);
-        $workspaceDomain = new Workspace(id: $workspace->id,name: 'tete');
+        $workspaceDomain = new Workspace(id: $workspace->id, name: 'tete');
         $bookCategoryDomain = new BookCategory(id: time(), name: 'IT');
 
         $repository = new BookCategoryRepository();

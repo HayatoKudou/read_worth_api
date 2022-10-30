@@ -1,35 +1,35 @@
 <?php
 
- namespace Tests\Feature\ReadWorth\Scenario;
+namespace Tests\Feature\ReadWorth\Scenario;
 
- use ReadWorth\Infrastructure\EloquentModel\Belonging;
+ use Tests\TestCase;
  use ReadWorth\Infrastructure\EloquentModel\Role;
  use ReadWorth\Infrastructure\EloquentModel\User;
+ use ReadWorth\Infrastructure\EloquentModel\Belonging;
  use ReadWorth\Infrastructure\EloquentModel\Workspace;
  use ReadWorth\Infrastructure\EloquentModel\BookCategory;
- use Tests\TestCase;
 
  class BookControllerTest extends TestCase
  {
      private Workspace $workspace;
 
-    protected function setUp(): void
-    {
-        parent::setUp();
+     protected function setUp(): void
+     {
+         parent::setUp();
 
-        $this->workspace = Workspace::factory()->create();
-        $user = User::factory()->create(['api_token' => 'aaaaaaa']);
-        $role = Role::factory()->create();
-        BookCategory::factory()->create([
+         $this->workspace = Workspace::factory()->create();
+         $user = User::factory()->create(['api_token' => 'aaaaaaa']);
+         $role = Role::factory()->create();
+         BookCategory::factory()->create([
             'workspace_id' => $this->workspace->id,
-            'name' => 'マネジメント']
-        );
-        Belonging::factory()->create([
+            'name' => 'マネジメント', ]
+         );
+         Belonging::factory()->create([
             'user_id' => $user->id,
             'workspace_id' => $this->workspace->id,
             'role_id' => $role->id,
         ]);
-    }
+     }
 
      /** @test */
      public function 書籍登録できること(): void
@@ -43,6 +43,6 @@
         ], [
             'Authorization' => 'Bearer aaaaaaa',
         ]);
-        $response->assertStatus(201);
+         $response->assertStatus(201);
      }
  }
