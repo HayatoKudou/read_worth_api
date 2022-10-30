@@ -18,7 +18,7 @@ class BookRepository implements IBookRepository
         $workspaceRepo = Workspace::where('name', $workspace->getName())->firstOrFail();
         $bookCategoryRepo = BookCategory::where('workspace_id', $workspaceRepo->id)
             ->where('name', $bookCategory->getName())
-            ->firstOrFail();
+            ->first();
 
         DB::transaction(function () use ($book, $bookCategoryRepo, $workspaceRepo): void {
             $book = Book::create([

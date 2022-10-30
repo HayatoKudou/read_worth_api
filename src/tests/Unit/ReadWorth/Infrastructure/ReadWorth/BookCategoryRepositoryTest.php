@@ -3,8 +3,8 @@
 namespace Tests\Unit\S4T\Infrastructure\Repository;
 
 use Tests\TestCase;
-use ReadWorth\Domain\Workspace;
-use ReadWorth\Domain\BookCategory;
+use ReadWorth\Domain\Entities\Workspace;
+use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Infrastructure\EloquentModel;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
@@ -15,8 +15,8 @@ class BookCategoryRepositoryTest extends TestCase
     public function 書籍カテゴリを登録できること(): void
     {
         $workspace = EloquentModel\Workspace::factory()->create(['name' => 'tete']);
-        $workspaceDomain = new Workspace(name: 'tete');
-        $bookCategoryDomain = new BookCategory(name: 'IT');
+        $workspaceDomain = new Workspace(id: $workspace->id,name: 'tete');
+        $bookCategoryDomain = new BookCategory(id: time(), name: 'IT');
 
         $repository = new BookCategoryRepository();
         $repository->store($workspaceDomain, $bookCategoryDomain);
@@ -29,23 +29,24 @@ class BookCategoryRepositoryTest extends TestCase
     /** @test */
     public function 書籍カテゴリを削除できること(): void
     {
+        $workspaceId = 1;
         $allBookCategory = EloquentModel\BookCategory::firstOrCreate([
-            'workspace_id' => 1,
+            'workspace_id' => $workspaceId,
             'name' => 'ALL',
         ]);
 
         $bookCategory = EloquentModel\BookCategory::factory()->create([
-            'workspace_id' => 1,
+            'workspace_id' => $workspaceId,
             'name' => 'aaaaaa',
         ]);
 
         $book = EloquentModel\Book::factory()->create([
-            'workspace_id' => 1,
+            'workspace_id' => $workspaceId,
             'book_category_id' => $bookCategory->id,
         ]);
 
-        $workspaceDomain = new Workspace(name: 'tete');
-        $bookCategoryDomain = new BookCategory(name: 'aaaaaa');
+        $workspaceDomain = new Workspace(id: $workspaceId, name: 'tete');
+        $bookCategoryDomain = new BookCategory(id: $bookCategory->id, name: 'aaaaaa');
 
         $repository = new BookCategoryRepository();
         $repository->delete($workspaceDomain, $bookCategoryDomain);

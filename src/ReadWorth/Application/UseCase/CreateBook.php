@@ -32,10 +32,14 @@ class CreateBook
         $this->authorize('isBookManager', $workspace);
         $validated = $request->validated();
 
+        // TODO: どうにかしたい
+        $bookId = time().\Auth::id();
+        $bookCategoryId = time().\Auth::id();
+
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
-        $bookCategory = new BookCategory(name: $validated['category']);
+        $bookCategory = new BookCategory(id: $bookCategoryId, name: $validated['category']);
         $book = new Book(
-            id: time(),
+            id: $bookId,
             status: BookStatus::STATUS_CAN_LEND,
             title: $validated['title'],
             description: $validated['description'],
