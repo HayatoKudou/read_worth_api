@@ -3,19 +3,18 @@
 namespace Tests\Feature\ReadWorth\Application\UseCase;
 
 use Tests\TestCase;
-use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
-use ReadWorth\Application\UseCase\StoreBookImage;
-use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Application\UseCase\CreateBookCategory;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
-use ReadWorth\Infrastructure\Repository\BookRepository;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
+use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
 
-class CreateBookTest extends TestCase
+class CreateBookCategoryTest extends TestCase
 {
     private Workspace $workspace;
     private User $canUser;
@@ -42,29 +41,21 @@ class CreateBookTest extends TestCase
         Belonging::factory()->create([
             'user_id' => $this->canNotUser->id,
             'workspace_id' => $this->workspace->id,
-            'role_id' => Role::factory()->create([
-                'is_book_manager' => 0,
-            ])->id,
+            'role_id' => Role::factory()->create(['is_book_manager' => 0])->id,
         ]);
     }
 
     /** @test */
-    public function 書籍登録ができること(): void
+    public function 書籍カテゴリ登録ができること(): void
     {
         \Auth::setUser($this->canUser);
 
-        $requestMock = \Mockery::mock(CreateBookRequest::class)
+        $requestMock = \Mockery::mock(CreateBookCategoryRequest::class)
             ->shouldReceive('route')
             ->andReturn($this->workspace->id)
             ->once()
             ->shouldReceive('validated')
-            ->andReturn([
-                'category' => 'マネジメント',
-                'title' => 'すごすご本',
-                'description' => 'やばい',
-                'image' => '',
-                'url' => '',
-            ])
+            ->andReturn(['name' => 'マネジメント'])
             ->once()
             ->getMock();
 
@@ -74,14 +65,12 @@ class CreateBookTest extends TestCase
             ->andReturn($this->workspace)
             ->getMock();
 
-        $bookRepository = \Mockery::mock(BookRepository::class)
+        $bookCategoryRepository = \Mockery::mock(BookCategoryRepository::class)
             ->shouldReceive('store')
             ->once()
             ->getMock();
 
-        $storeBookImageMock = \Mockery::mock(StoreBookImage::class);
-
-        $useCase = new CreateBook($workspaceRepository, $bookRepository, $storeBookImageMock);
+        $useCase = new CreateBookCategory($workspaceRepository, $bookCategoryRepository);
         $useCase->create($requestMock);
     }
 
@@ -90,7 +79,7 @@ class CreateBookTest extends TestCase
     {
         \Auth::setUser($this->canNotUser);
 
-        $requestMock = \Mockery::mock(CreateBookRequest::class)
+        $requestMock = \Mockery::mock(CreateBookCategoryRequest::class)
             ->shouldReceive('route')
             ->andReturn($this->workspace->id)
             ->once()
@@ -102,12 +91,11 @@ class CreateBookTest extends TestCase
             ->andReturn($this->workspace)
             ->getMock();
 
-        $bookRepository = \Mockery::mock(BookRepository::class);
-        $storeBookImageMock = \Mockery::mock(StoreBookImage::class);
+        $bookCategoryRepository = \Mockery::mock(BookCategoryRepository::class);
 
         $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('ユーザは書籍管理権限がありません');
-        $useCase = new CreateBook($workspaceRepository, $bookRepository, $storeBookImageMock);
+        $useCase = new CreateBookCategory($workspaceRepository, $bookCategoryRepository);
         $useCase->create($requestMock);
     }
 }

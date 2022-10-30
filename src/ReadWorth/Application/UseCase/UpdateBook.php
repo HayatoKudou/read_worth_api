@@ -19,8 +19,8 @@ class UpdateBook
     public function __construct(
         private readonly IWorkspaceRepository $workspaceRepository,
         private readonly IBookRepository $bookRepository,
-        private readonly DeleteBookImage $deleteBookImage,
         private readonly StoreBookImage $storeBookImage,
+        private readonly DeleteBookImage $deleteBookImage,
         private readonly BookService $bookService,
     ) {
     }
@@ -36,7 +36,7 @@ class UpdateBook
         $this->deleteBookImage->delete($validated['id']);
 
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
-        $bookCategory = new BookCategory(name: $validated['category']);
+        $bookCategory = new BookCategory(id: $validated['id'], name: $validated['category']);
         $book = new Book(
             id: $validated['id'],
             status: $validated['status'],

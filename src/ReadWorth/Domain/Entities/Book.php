@@ -6,7 +6,7 @@ class Book
 {
     public function __construct(
         private readonly int $id,
-        private readonly string $status,
+        private readonly int $status,
         private readonly string $title,
         private readonly string|null $description,
         private readonly string|null $imagePath,

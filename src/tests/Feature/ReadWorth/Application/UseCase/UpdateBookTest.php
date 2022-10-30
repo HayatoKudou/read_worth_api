@@ -3,19 +3,23 @@
 namespace Tests\Feature\ReadWorth\Application\UseCase;
 
 use Tests\TestCase;
-use ReadWorth\Application\UseCase\CreateBook;
+use ReadWorth\Domain\Services\BookService;
+use ReadWorth\Application\UseCase\UpdateBook;
+use ReadWorth\Domain\ValueObjects\BookStatus;
+use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Application\UseCase\StoreBookImage;
-use ReadWorth\UI\Http\Requests\CreateBookRequest;
+use ReadWorth\UI\Http\Requests\UpdateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Application\UseCase\DeleteBookImage;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 
-class CreateBookTest extends TestCase
+class UpdateBookTest extends TestCase
 {
     private Workspace $workspace;
     private User $canUser;
@@ -49,19 +53,24 @@ class CreateBookTest extends TestCase
     }
 
     /** @test */
-    public function 書籍登録ができること(): void
+    public function 書籍更新ができること(): void
     {
         \Auth::setUser($this->canUser);
 
-        $requestMock = \Mockery::mock(CreateBookRequest::class)
+        $book = Book::factory()->create(['workspace_id' => $this->workspace->id, 'title' => 'こけこっこ']);
+        assert($book instanceof Book);
+
+        $requestMock = \Mockery::mock(UpdateBookRequest::class)
             ->shouldReceive('route')
             ->andReturn($this->workspace->id)
             ->once()
             ->shouldReceive('validated')
             ->andReturn([
+                'id' => $book->id,
                 'category' => 'マネジメント',
                 'title' => 'すごすご本',
                 'description' => 'やばい',
+                'status' => BookStatus::STATUS_CAN_NOT_LEND,
                 'image' => '',
                 'url' => '',
             ])
@@ -75,14 +84,22 @@ class CreateBookTest extends TestCase
             ->getMock();
 
         $bookRepository = \Mockery::mock(BookRepository::class)
-            ->shouldReceive('store')
+            ->shouldReceive('update')
             ->once()
             ->getMock();
 
         $storeBookImageMock = \Mockery::mock(StoreBookImage::class);
+        $deleteBookImageMock = \Mockery::mock(DeleteBookImage::class)
+            ->shouldReceive('delete')
+            ->once()
+            ->getMock();
+        $bookServiceMock = \Mockery::mock(BookService::class)
+            ->shouldReceive('updateAction')
+            ->once()
+            ->getMock();
 
-        $useCase = new CreateBook($workspaceRepository, $bookRepository, $storeBookImageMock);
-        $useCase->create($requestMock);
+        $useCase = new UpdateBook($workspaceRepository, $bookRepository, $storeBookImageMock, $deleteBookImageMock, $bookServiceMock);
+        $useCase->update($requestMock);
     }
 
     /** @test */
@@ -90,7 +107,7 @@ class CreateBookTest extends TestCase
     {
         \Auth::setUser($this->canNotUser);
 
-        $requestMock = \Mockery::mock(CreateBookRequest::class)
+        $requestMock = \Mockery::mock(UpdateBookRequest::class)
             ->shouldReceive('route')
             ->andReturn($this->workspace->id)
             ->once()
@@ -104,10 +121,13 @@ class CreateBookTest extends TestCase
 
         $bookRepository = \Mockery::mock(BookRepository::class);
         $storeBookImageMock = \Mockery::mock(StoreBookImage::class);
+        $deleteBookImageMock = \Mockery::mock(DeleteBookImage::class);
+        $bookServiceMock = \Mockery::mock(BookService::class);
 
         $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('ユーザは書籍管理権限がありません');
-        $useCase = new CreateBook($workspaceRepository, $bookRepository, $storeBookImageMock);
-        $useCase->create($requestMock);
+
+        $useCase = new UpdateBook($workspaceRepository, $bookRepository, $storeBookImageMock, $deleteBookImageMock, $bookServiceMock);
+        $useCase->update($requestMock);
     }
 }

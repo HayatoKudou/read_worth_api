@@ -27,8 +27,10 @@ class CreateBookCategory
         $this->authorize('isBookManager', $workspace);
         $validated = $request->validated();
 
+        $bookCategoryId = time() . \Auth::id();
+
         $workspace = new Workspace(id: $workspaceId, name: $workspace->name);
-        $bookCategory = new BookCategory(name: $validated['name']);
+        $bookCategory = new BookCategory(id: $bookCategoryId, name: $validated['name']);
 
         $this->bookCategoryRepository->store($workspace, $bookCategory);
     }

@@ -13,7 +13,7 @@ class UpdateBookRequest extends FormRequest
             'title' => 'required|string|max:255',
             'description' => 'max:255',
             'category' => 'required|string',
-            'status' => 'required',
+            'status' => 'required|int',
             'image' => '',
             'url' => '',
         ];
