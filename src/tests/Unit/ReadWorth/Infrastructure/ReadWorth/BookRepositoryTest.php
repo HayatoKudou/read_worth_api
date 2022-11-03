@@ -9,10 +9,10 @@ use ReadWorth\Infrastructure\EloquentModel;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
 
-class BookCategoryRepositoryTest extends TestCase
+class BookRepositoryTest extends TestCase
 {
     /** @test */
-    public function 書籍カテゴリを登録できること(): void
+    public function 書籍を登録できること(): void
     {
         $workspace = EloquentModel\Workspace::factory()->create(['name' => 'tete']);
         assert($workspace instanceof EloquentModel\Workspace);

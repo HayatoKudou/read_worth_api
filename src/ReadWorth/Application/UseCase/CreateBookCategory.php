@@ -3,19 +3,19 @@
 namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Workspace;
-use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Entities\BookCategory;
-use ReadWorth\Domain\IBookCategoryRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
+use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
+use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
 
 class CreateBookCategory
 {
     use AuthorizesRequests;
 
     public function __construct(
-        private readonly IWorkspaceRepository $workspaceRepository,
-        private readonly IBookCategoryRepository $bookCategoryRepository,
+        private readonly WorkspaceRepository $workspaceRepository,
+        private readonly BookCategoryRepository $bookCategoryRepository,
     ) {
     }
 

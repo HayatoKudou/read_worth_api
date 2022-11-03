@@ -4,7 +4,6 @@ namespace ReadWorth\Infrastructure\Repository;
 
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
-use ReadWorth\Domain\IConnectRepository;
 use ReadWorth\Domain\Entities\GoogleUser;
 use ReadWorth\Infrastructure\EloquentModel\Plan;
 use ReadWorth\Infrastructure\EloquentModel\Role;
@@ -13,7 +12,7 @@ use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
-class ConnectRepository implements IConnectRepository
+class ConnectRepository
 {
     public function store(GoogleUser $googleUser): User
     {

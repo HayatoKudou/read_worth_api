@@ -2,16 +2,16 @@
 
 namespace ReadWorth\Application\UseCase;
 
-use ReadWorth\Domain\IWorkspaceRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use ReadWorth\Infrastructure\QueryService\BooksQueryService;
+use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 
 class FetchBooks
 {
     use AuthorizesRequests;
 
     public function __construct(
-        private readonly IWorkspaceRepository $workspaceRepository,
+        private readonly WorkspaceRepository $workspaceRepository,
         private readonly BooksQueryService $booksQueryService
     ) {
     }

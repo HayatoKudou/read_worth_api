@@ -5,13 +5,12 @@ namespace ReadWorth\Infrastructure\Repository;
 use ReadWorth\Domain\Entities;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use ReadWorth\Domain\IBookRepository;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
-class BookRepository implements IBookRepository
+class BookRepository
 {
     public function store(Entities\Workspace $workspace, Entities\Book $book, Entities\BookCategory $bookCategory): void
     {

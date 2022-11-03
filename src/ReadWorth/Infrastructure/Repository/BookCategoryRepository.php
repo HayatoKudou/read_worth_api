@@ -3,10 +3,9 @@
 namespace ReadWorth\Infrastructure\Repository;
 
 use ReadWorth\Domain\Entities;
-use ReadWorth\Domain\IBookCategoryRepository;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
-class BookCategoryRepository implements IBookCategoryRepository
+class BookCategoryRepository
 {
     public function store(Entities\Workspace $workspace, Entities\BookCategory $bookCategory): void
     {

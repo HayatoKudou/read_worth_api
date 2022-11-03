@@ -7,8 +7,8 @@ use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Application\UseCase\StoreBookImage;
-use ReadWorth\UI\Http\Requests\CreateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\UI\Http\Resources\CreateBookResource;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\Repository\BookRepository;
@@ -53,21 +53,6 @@ class CreateBookTest extends TestCase
     {
         \Auth::setUser($this->canUser);
 
-        $requestMock = \Mockery::mock(CreateBookRequest::class)
-            ->shouldReceive('route')
-            ->andReturn($this->workspace->id)
-            ->once()
-            ->shouldReceive('validated')
-            ->andReturn([
-                'category' => 'マネジメント',
-                'title' => 'すごすご本',
-                'description' => 'やばい',
-                'image' => '',
-                'url' => '',
-            ])
-            ->once()
-            ->getMock();
-
         $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
             ->shouldReceive('findById')
             ->once()
@@ -82,19 +67,20 @@ class CreateBookTest extends TestCase
         $storeBookImageMock = \Mockery::mock(StoreBookImage::class);
 
         $useCase = new CreateBook($workspaceRepository, $bookRepository, $storeBookImageMock);
-        $useCase->create($requestMock);
+        $useCase->create(new CreateBookResource(
+            workspaceId: $this->workspace->id,
+            category: 'マネジメント',
+            title: 'すごい本',
+            description: 'すごい本',
+            image: null,
+            url: null,
+        ));
     }
 
     /** @test */
     public function 書籍管理権限がない場合書籍カテゴリの登録ができないこと(): void
     {
         \Auth::setUser($this->canNotUser);
-
-        $requestMock = \Mockery::mock(CreateBookRequest::class)
-            ->shouldReceive('route')
-            ->andReturn($this->workspace->id)
-            ->once()
-            ->getMock();
 
         $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
             ->shouldReceive('findById')
@@ -108,6 +94,13 @@ class CreateBookTest extends TestCase
         $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('ユーザは書籍管理権限がありません');
         $useCase = new CreateBook($workspaceRepository, $bookRepository, $storeBookImageMock);
-        $useCase->create($requestMock);
+        $useCase->create(new CreateBookResource(
+            workspaceId: $this->workspace->id,
+            category: 'マネジメント',
+            title: 'すごい本',
+            description: 'すごい本',
+            image: null,
+            url: null,
+        ));
     }
 }

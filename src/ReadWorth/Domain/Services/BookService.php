@@ -2,12 +2,12 @@
 
 namespace ReadWorth\Domain\Services;
 
-use ReadWorth\Domain\IBookRepository;
 use ReadWorth\Domain\ValueObjects\BookStatus;
+use ReadWorth\Infrastructure\Repository\BookRepository;
 
 class BookService
 {
-    public function __construct(private readonly IBookRepository $bookRepository)
+    public function __construct(private readonly BookRepository $bookRepository)
     {
     }
 

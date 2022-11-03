@@ -3,22 +3,22 @@
 namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Book;
-use ReadWorth\Domain\IBookRepository;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Entities\BookHistory;
-use ReadWorth\Domain\IWorkspaceRepository;
 use ReadWorth\Domain\Services\BookService;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\UI\Http\Requests\UpdateBookRequest;
+use ReadWorth\Infrastructure\Repository\BookRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 
 class UpdateBook
 {
     use AuthorizesRequests;
 
     public function __construct(
-        private readonly IWorkspaceRepository $workspaceRepository,
-        private readonly IBookRepository $bookRepository,
+        private readonly WorkspaceRepository $workspaceRepository,
+        private readonly BookRepository $bookRepository,
         private readonly StoreBookImage $storeBookImage,
         private readonly DeleteBookImage $deleteBookImage,
         private readonly BookService $bookService,

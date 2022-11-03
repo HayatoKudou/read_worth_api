@@ -2,16 +2,16 @@
 
 namespace ReadWorth\Application\UseCase;
 
-use ReadWorth\Domain\IUserRepository;
-use ReadWorth\Domain\IConnectRepository;
 use ReadWorth\Domain\Entities\GoogleUser;
 use ReadWorth\Infrastructure\EloquentModel\User;
+use ReadWorth\Infrastructure\Repository\UserRepository;
+use ReadWorth\Infrastructure\Repository\ConnectRepository;
 
 class ConnectGoogle
 {
     public function __construct(
-        private readonly IUserRepository $userRepository,
-        private readonly IConnectRepository $connectRepository,
+        private readonly UserRepository $userRepository,
+        private readonly ConnectRepository $connectRepository,
     ) {
     }
 

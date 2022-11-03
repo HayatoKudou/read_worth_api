@@ -2,11 +2,11 @@
 
 namespace ReadWorth\Application\UseCase;
 
-use ReadWorth\Domain\IBookRepository;
+use ReadWorth\Infrastructure\Repository\BookRepository;
 
 class DeleteBookImage
 {
-    public function __construct(private readonly IBookRepository $bookRepository)
+    public function __construct(private readonly BookRepository $bookRepository)
     {
     }
 

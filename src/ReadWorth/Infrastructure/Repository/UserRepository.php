@@ -2,10 +2,9 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
-use ReadWorth\Domain\IUserRepository;
 use ReadWorth\Infrastructure\EloquentModel\User;
 
-class UserRepository implements IUserRepository
+class UserRepository
 {
     public function getByEmail(string $email): User|null
     {
