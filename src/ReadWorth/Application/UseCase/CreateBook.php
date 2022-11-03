@@ -5,6 +5,8 @@ namespace ReadWorth\Application\UseCase;
 use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Entities\BookCategory;
+use ReadWorth\Domain\ValueObjects\BookCategoryId;
+use ReadWorth\Domain\ValueObjects\BookId;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
 use ReadWorth\Infrastructure\Repository\BookRepository;
@@ -28,14 +30,13 @@ class CreateBook
         $this->authorize('affiliation', $workspace);
         $this->authorize('isBookManager', $workspace);
 
-        // TODO: どうにかしたい
-        $bookId = time() . \Auth::id();
-        $bookCategoryId = time() . \Auth::id();
+        $bookId = new BookId();
+        $bookCategoryId = new BookCategoryId();
 
         $workspace = new Workspace(id: $createBookResource->getWorkspaceId(), name: $workspace->name);
-        $bookCategory = new BookCategory(id: $bookCategoryId, name: $createBookResource->getCategory());
+        $bookCategory = new BookCategory(id: $bookCategoryId->getBookCategoryId(), name: $createBookResource->getCategory());
         $book = new Book(
-            id: $bookId,
+            id: $bookId->getBookId(),
             status: BookStatus::STATUS_CAN_LEND,
             title: $createBookResource->getTitle(),
             description: $createBookResource->getDescription(),
