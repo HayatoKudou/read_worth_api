@@ -4,8 +4,8 @@ namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Entities\BookCategory;
-use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use ReadWorth\Domain\ValueObjects\BookCategoryId;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;

@@ -3,11 +3,12 @@
 namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Book;
+use ReadWorth\Domain\Entities\User;
 use ReadWorth\Domain\Entities\Workspace;
-use ReadWorth\Domain\Entities\BookCategory;
-use ReadWorth\Domain\ValueObjects\BookCategoryId;
 use ReadWorth\Domain\ValueObjects\BookId;
+use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\ValueObjects\BookStatus;
+use ReadWorth\Domain\ValueObjects\BookCategoryId;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -43,7 +44,9 @@ class CreateBook
             imagePath: $createBookResource->getImage() ? $this->storeBookImage->store($createBookResource->getImage(), $createBookResource->getWorkspaceId()) : null,
             url: $createBookResource->getUrl()
         );
+        $auth = \Auth::user();
+        $user = new User(id: $auth->id, name: $auth->name, email: $auth->email);
 
-        $this->bookRepository->store($workspace, $book, $bookCategory);
+        $this->bookRepository->store($workspace, $book, $bookCategory, $user);
     }
 }

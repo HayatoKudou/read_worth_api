@@ -3,6 +3,7 @@
 namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Book;
+use ReadWorth\Domain\Entities\User;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Entities\BookHistory;
 use ReadWorth\Domain\Services\BookService;
@@ -45,10 +46,12 @@ class UpdateBook
             imagePath: $validated['image'] ? $this->storeBookImage->store($validated['image'], $workspaceId) : null,
             url: $validated['url']
         );
+        $auth = \Auth::user();
+        $user = new User(id: $auth->id, name: $auth->name, email: $auth->email);
 
         $action = $this->bookService->updateAction($validated['id'], $validated['status']);
         $bookHistory = $action ? new BookHistory(action: $action) : null;
 
-        $this->bookRepository->update($workspace, $book, $bookCategory, $bookHistory);
+        $this->bookRepository->update($workspace, $book, $bookCategory, $bookHistory, $user);
     }
 }

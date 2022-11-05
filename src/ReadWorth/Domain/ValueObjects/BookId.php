@@ -8,7 +8,9 @@ class BookId
 
     public function __construct(int $bookId = null)
     {
-        if(!$bookId) $bookId = time() + \Auth::id();
+        if (!$bookId) {
+            $bookId = time() + \Auth::id();
+        }
         $this->bookId = $bookId;
     }
 
