@@ -14,8 +14,8 @@ class BookFactory extends Factory
     public function definition()
     {
         return [
-            'workspace_id' => Workspace::factory()->make()->id,
-            'book_category_id' => BookCategory::factory()->make()->id,
+            'workspace_id' => Workspace::factory()->create()->id,
+            'book_category_id' => BookCategory::factory()->create()->id,
             'status' => Book::STATUS_CAN_LEND,
             'title' => $this->faker->sentence(2),
             'description' => $this->faker->realText(50),

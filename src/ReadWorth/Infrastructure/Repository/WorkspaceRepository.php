@@ -4,7 +4,7 @@ namespace ReadWorth\Infrastructure\Repository;
 
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 
-class WorkspaceRepository implements IWorkspaceRepository
+class WorkspaceRepository
 {
     public function findById(int $id): Workspace|null
     {

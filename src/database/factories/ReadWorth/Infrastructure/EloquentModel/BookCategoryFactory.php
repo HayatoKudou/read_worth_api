@@ -13,7 +13,7 @@ class BookCategoryFactory extends Factory
     public function definition()
     {
         return [
-            'workspace_id' => Workspace::factory()->make()->id,
+            'workspace_id' => Workspace::factory()->create()->id,
             'name' => 'IT',
         ];
     }
