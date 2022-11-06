@@ -9,6 +9,7 @@ use ReadWorth\Application\UseCase\DeleteBookCategory;
 use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 use ReadWorth\UI\Http\Requests\DeleteBookCategoryRequest;
 use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
+use ReadWorth\UI\Http\Resources\DeleteBookCategoryResource;
 
 class BookCategoryController extends Controller
 {
@@ -30,7 +31,11 @@ class BookCategoryController extends Controller
 
     public function delete(DeleteBookCategoryRequest $request): JsonResponse
     {
-        $this->deleteBookCategoryUseCase->delete($request);
+        $validated = $request->validated();
+        $this->deleteBookCategoryUseCase->delete(new DeleteBookCategoryResource(
+            workspaceId: $request->route('workspaceId'),
+            name: $validated['name']
+        ));
         return response()->json();
     }
 }
