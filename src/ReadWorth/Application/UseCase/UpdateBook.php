@@ -4,8 +4,8 @@ namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\User;
-use ReadWorth\Domain\Entities\BookHistory;
 use ReadWorth\Domain\Entities\Workspace;
+use ReadWorth\Domain\Entities\BookHistory;
 use ReadWorth\Domain\Services\BookService;
 use ReadWorth\UI\Http\Resources\UpdateBookResource;
 use ReadWorth\Infrastructure\Repository\BookRepository;
@@ -38,8 +38,8 @@ class UpdateBook
             id: $resource->getId(),
             category: $resource->getCategory(),
             status: $resource->getStatus(),
-            title: $resource->getId(),
-            description: $resource->getId(),
+            title: $resource->getTitle(),
+            description: $resource->getDescription(),
             imagePath: $resource->getImage() ? $this->storeBookImage->store($resource->getImage(), $resource->getWorkspaceId()) : null,
             url: $resource->getUrl(),
         );

@@ -45,7 +45,7 @@ class BookController extends Controller
         $this->createBookUseCase->create(new CreateBookResource(
             workspaceId: $request->route('workspaceId'),
             category: $validated['category'],
-            title: $validated['category'],
+            title: $validated['title'],
             description: $validated['description'],
             image: $validated['image'],
             url: $validated['url']
@@ -61,7 +61,7 @@ class BookController extends Controller
             workspaceId: $request->route('workspaceId'),
             category: $validated['category'],
             status: $validated['status'],
-            title: $validated['category'],
+            title: $validated['title'],
             description: $validated['description'],
             image: $validated['image'],
             url: $validated['url']

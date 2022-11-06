@@ -8,7 +8,6 @@ use ReadWorth\Domain\Entities\User;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\ValueObjects\BookId;
 use ReadWorth\Domain\Entities\BookHistory;
-use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Infrastructure\EloquentModel;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\Repository\BookRepository;

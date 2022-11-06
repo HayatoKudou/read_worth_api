@@ -7,7 +7,6 @@ use ReadWorth\Domain\Entities\User;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\ValueObjects\BookId;
 use ReadWorth\Domain\ValueObjects\BookStatus;
-use ReadWorth\Domain\ValueObjects\BookCategoryId;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
