@@ -8,7 +8,6 @@ use ReadWorth\Domain\Entities\User;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\ValueObjects\BookId;
 use ReadWorth\Domain\Entities\BookHistory;
-use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Infrastructure\EloquentModel;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\Repository\BookRepository;
@@ -36,17 +35,17 @@ class BookRepositoryTest extends TestCase
         $workspaceDomain = new Workspace(id: $this->workspace->id, name: 'tete');
         $bookDomain = new Book(
             id: $bookId->getBookId(),
+            category: $this->bookCategory->name,
             status: BookStatus::STATUS_CAN_LEND,
             title: 'ジョブズの秘密',
             description: '',
             imagePath: null,
             url: null
         );
-        $bookCategoryDomain = new BookCategory(id: $this->bookCategory->id, name: $this->bookCategory->name);
         $userDomain = new User(id: 1, name: 'Hayato', email: 'kudoh115@gmail.com');
 
         $repository = new BookRepository();
-        $repository->store($workspaceDomain, $bookDomain, $bookCategoryDomain, $userDomain);
+        $repository->store($workspaceDomain, $bookDomain, $userDomain);
 
         $book = EloquentModel\Book::query()->latest()->first();
         $bookHistory = EloquentModel\BookHistory::query()->latest()->first();
@@ -63,18 +62,18 @@ class BookRepositoryTest extends TestCase
         $workspaceDomain = new Workspace(id: $this->workspace->id, name: 'tete');
         $bookDomain = new Book(
             id: $book->id,
+            category: $this->bookCategory->name,
             status: $book->status,
             title: 'ジョブズの秘密',
             description: $book->description,
             imagePath: $book->image_path,
             url: $book->url
         );
-        $bookCategoryDomain = new BookCategory(id: $this->bookCategory->id, name: $this->bookCategory->name);
         $bookHistoryDomain = new BookHistory(action: 'return book');
         $userDomain = new User(id: 1, name: 'Hayato', email: 'kudoh115@gmail.com');
 
         $repository = new BookRepository();
-        $repository->update($workspaceDomain, $bookDomain, $bookCategoryDomain, $bookHistoryDomain, $userDomain);
+        $repository->update($workspaceDomain, $bookDomain, $bookHistoryDomain, $userDomain);
 
         $latestBook = EloquentModel\Book::query()->latest()->first();
         $latestBookHistory = EloquentModel\BookHistory::query()->latest()->first();

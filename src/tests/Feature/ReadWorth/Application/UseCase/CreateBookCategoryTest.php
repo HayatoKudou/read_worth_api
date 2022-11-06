@@ -10,7 +10,7 @@ use ReadWorth\Application\UseCase\CreateBookCategory;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
-use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
+use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
 
@@ -50,15 +50,6 @@ class CreateBookCategoryTest extends TestCase
     {
         \Auth::setUser($this->canUser);
 
-        $requestMock = \Mockery::mock(CreateBookCategoryRequest::class)
-            ->shouldReceive('route')
-            ->andReturn($this->workspace->id)
-            ->once()
-            ->shouldReceive('validated')
-            ->andReturn(['name' => 'マネジメント'])
-            ->once()
-            ->getMock();
-
         $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
             ->shouldReceive('findById')
             ->once()
@@ -71,19 +62,16 @@ class CreateBookCategoryTest extends TestCase
             ->getMock();
 
         $useCase = new CreateBookCategory($workspaceRepository, $bookCategoryRepository);
-        $useCase->create($requestMock);
+        $useCase->create(new CreateBookCategoryResource(
+            workspaceId: $this->workspace->id,
+            name: 'マネジメント',
+        ));
     }
 
     /** @test */
     public function 書籍管理権限がない場合書籍カテゴリの登録ができないこと(): void
     {
         \Auth::setUser($this->canNotUser);
-
-        $requestMock = \Mockery::mock(CreateBookCategoryRequest::class)
-            ->shouldReceive('route')
-            ->andReturn($this->workspace->id)
-            ->once()
-            ->getMock();
 
         $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
             ->shouldReceive('findById')
@@ -96,6 +84,9 @@ class CreateBookCategoryTest extends TestCase
         $this->expectException(AuthorizationException::class);
         $this->expectExceptionMessage('ユーザは書籍管理権限がありません');
         $useCase = new CreateBookCategory($workspaceRepository, $bookCategoryRepository);
-        $useCase->create($requestMock);
+        $useCase->create(new CreateBookCategoryResource(
+            workspaceId: $this->workspace->id,
+            name: 'マネジメント',
+        ));
     }
 }

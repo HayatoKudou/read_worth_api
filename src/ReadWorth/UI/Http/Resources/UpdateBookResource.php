@@ -1,16 +1,17 @@
 <?php
 
-namespace ReadWorth\Domain\Entities;
+namespace ReadWorth\UI\Http\Resources;
 
-class Book
+class UpdateBookResource
 {
     public function __construct(
         private readonly int $id,
+        private readonly int $workspaceId,
         private readonly string $category,
-        private readonly int $status,
+        private readonly string $status,
         private readonly string $title,
         private readonly string|null $description,
-        private readonly string|null $imagePath,
+        private readonly string|null $image,
         private readonly string|null $url,
     ) {
     }
@@ -18,6 +19,11 @@ class Book
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getWorkspaceId(): int
+    {
+        return $this->workspaceId;
     }
 
     public function getCategory(): string
@@ -40,9 +46,9 @@ class Book
         return $this->description;
     }
 
-    public function getImagePath(): string|null
+    public function getImage(): string|null
     {
-        return $this->imagePath;
+        return $this->image;
     }
 
     public function getUrl(): string|null

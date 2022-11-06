@@ -10,9 +10,9 @@ use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use ReadWorth\Application\UseCase\StoreBookImage;
-use ReadWorth\UI\Http\Requests\UpdateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\Application\UseCase\DeleteBookImage;
+use ReadWorth\UI\Http\Resources\UpdateBookResource;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\Repository\BookRepository;
@@ -60,23 +60,6 @@ class UpdateBookTest extends TestCase
         $book = Book::factory()->create(['workspace_id' => $this->workspace->id, 'title' => 'こけこっこ']);
         assert($book instanceof Book);
 
-        $requestMock = \Mockery::mock(UpdateBookRequest::class)
-            ->shouldReceive('route')
-            ->andReturn($this->workspace->id)
-            ->once()
-            ->shouldReceive('validated')
-            ->andReturn([
-                'id' => $book->id,
-                'category' => 'マネジメント',
-                'title' => 'すごすご本',
-                'description' => 'やばい',
-                'status' => BookStatus::STATUS_CAN_NOT_LEND,
-                'image' => '',
-                'url' => '',
-            ])
-            ->once()
-            ->getMock();
-
         $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
             ->shouldReceive('findById')
             ->once()
@@ -99,19 +82,22 @@ class UpdateBookTest extends TestCase
             ->getMock();
 
         $useCase = new UpdateBook($workspaceRepository, $bookRepository, $storeBookImageMock, $deleteBookImageMock, $bookServiceMock);
-        $useCase->update($requestMock);
+        $useCase->update(new UpdateBookResource(
+            id: $book->id,
+            workspaceId: $this->workspace->id,
+            category: 'マネジメント',
+            status: BookStatus::STATUS_CAN_NOT_LEND,
+            title: 'すごすご本',
+            description: 'やばい',
+            image: '',
+            url: '',
+        ));
     }
 
     /** @test */
     public function 書籍管理権限がない場合書籍カテゴリの登録ができないこと(): void
     {
         \Auth::setUser($this->canNotUser);
-
-        $requestMock = \Mockery::mock(UpdateBookRequest::class)
-            ->shouldReceive('route')
-            ->andReturn($this->workspace->id)
-            ->once()
-            ->getMock();
 
         $workspaceRepository = \Mockery::mock(WorkspaceRepository::class)
             ->shouldReceive('findById')
@@ -128,6 +114,15 @@ class UpdateBookTest extends TestCase
         $this->expectExceptionMessage('ユーザは書籍管理権限がありません');
 
         $useCase = new UpdateBook($workspaceRepository, $bookRepository, $storeBookImageMock, $deleteBookImageMock, $bookServiceMock);
-        $useCase->update($requestMock);
+        $useCase->update(new UpdateBookResource(
+            id: 1, // ダミー
+            workspaceId: $this->workspace->id,
+            category: 'マネジメント',
+            status: BookStatus::STATUS_CAN_NOT_LEND,
+            title: 'すごすご本',
+            description: 'やばい',
+            image: '',
+            url: '',
+        ));
     }
 }
