@@ -2,7 +2,6 @@
 
 namespace ReadWorth\UI\Http\Controllers;
 
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
@@ -11,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Application\UseCase\DeleteBook;
 use ReadWorth\Application\UseCase\FetchBooks;
+use ReadWorth\Application\UseCase\ReturnBook;
 use ReadWorth\Application\UseCase\UpdateBook;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\UI\Http\Requests\CreateBookRequest;
@@ -19,11 +19,11 @@ use ReadWorth\UI\Http\Requests\UpdateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
 use ReadWorth\UI\Http\Resources\DeleteBookResource;
+use ReadWorth\UI\Http\Resources\ReturnBookResource;
 use ReadWorth\UI\Http\Resources\UpdateBookResource;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
-use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
 
 class BookController extends Controller
 {
@@ -32,6 +32,7 @@ class BookController extends Controller
         private readonly CreateBook $createBookUseCase,
         private readonly UpdateBook $updateBookUseCase,
         private readonly DeleteBook $deleteBookUseCase,
+        private readonly ReturnBook $returnBookUseCase,
     ) {
     }
 
@@ -80,28 +81,16 @@ class BookController extends Controller
         return response()->json();
     }
 
-    public function return(string $workspaceId, string $bookId): JsonResponse
+    public function return(int $workspaceId, int $bookId): JsonResponse
     {
-        try {
-            $workspace = Workspace::find($workspaceId);
-            $this->authorize('affiliation', $workspace);
-
-            DB::transaction(function () use ($bookId): void {
-                BookRentalApply::where('user_id', Auth::id())->where('book_id', $bookId)->update(['return_date' => Carbon::now()]);
-                Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
-                BookHistory::create([
-                    'book_id' => $bookId,
-                    'user_id' => Auth::id(),
-                    'action' => 'return book',
-                ]);
-            });
-            return response()->json([]);
-        } catch (AuthorizationException $e) {
-            return response()->json([], 403);
-        }
+        $this->returnBookUseCase->return(new ReturnBookResource(
+            workspaceId: $workspaceId,
+            bookId: $bookId
+        ));
+        return response()->json([]);
     }
 
-    public function csvBulkCreate(string $workspaceId, Request $request): JsonResponse
+    public function csvBulkCreate(int $workspaceId, Request $request): JsonResponse
     {
         try {
             $workspace = Workspace::find($workspaceId);
