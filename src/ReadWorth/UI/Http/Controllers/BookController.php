@@ -17,6 +17,7 @@ use ReadWorth\UI\Http\Requests\DeleteBookRequest;
 use ReadWorth\UI\Http\Requests\UpdateBookRequest;
 use Illuminate\Auth\Access\AuthorizationException;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
+use ReadWorth\UI\Http\Resources\UpdateBookResource;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookReview;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
@@ -54,7 +55,17 @@ class BookController extends Controller
 
     public function update(UpdateBookRequest $request): JsonResponse
     {
-        $this->updateBookUseCase->update($request);
+        $validated = $request->validated();
+        $this->updateBookUseCase->update(new UpdateBookResource(
+            id: $validated['id'],
+            workspaceId: $request->route('workspaceId'),
+            category: $validated['category'],
+            status: $validated['status'],
+            title: $validated['category'],
+            description: $validated['description'],
+            image: $validated['image'],
+            url: $validated['url']
+        ));
         return response()->json();
     }
 

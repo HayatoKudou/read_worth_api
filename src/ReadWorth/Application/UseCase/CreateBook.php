@@ -25,24 +25,24 @@ class CreateBook
     ) {
     }
 
-    public function create(CreateBookResource $createBookResource): void
+    public function create(CreateBookResource $resource): void
     {
-        $workspace = $this->workspaceRepository->findById($createBookResource->getWorkspaceId());
+        $workspace = $this->workspaceRepository->findById($resource->getWorkspaceId());
         $this->authorize('affiliation', $workspace);
         $this->authorize('isBookManager', $workspace);
 
         $bookId = new BookId();
         $bookCategoryId = new BookCategoryId();
 
-        $workspace = new Workspace(id: $createBookResource->getWorkspaceId(), name: $workspace->name);
-        $bookCategory = new BookCategory(id: $bookCategoryId->getBookCategoryId(), name: $createBookResource->getCategory());
+        $workspace = new Workspace(id: $resource->getWorkspaceId(), name: $workspace->name);
+        $bookCategory = new BookCategory(id: $bookCategoryId->getBookCategoryId(), name: $resource->getCategory());
         $book = new Book(
             id: $bookId->getBookId(),
             status: BookStatus::STATUS_CAN_LEND,
-            title: $createBookResource->getTitle(),
-            description: $createBookResource->getDescription(),
-            imagePath: $createBookResource->getImage() ? $this->storeBookImage->store($createBookResource->getImage(), $createBookResource->getWorkspaceId()) : null,
-            url: $createBookResource->getUrl()
+            title: $resource->getTitle(),
+            description: $resource->getDescription(),
+            imagePath: $resource->getImage() ? $this->storeBookImage->store($resource->getImage(), $resource->getWorkspaceId()) : null,
+            url: $resource->getUrl()
         );
         $auth = \Auth::user();
         $user = new User(id: $auth->id, name: $auth->name, email: $auth->email);

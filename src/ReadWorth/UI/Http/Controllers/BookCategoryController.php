@@ -8,6 +8,7 @@ use ReadWorth\Application\UseCase\CreateBookCategory;
 use ReadWorth\Application\UseCase\DeleteBookCategory;
 use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 use ReadWorth\UI\Http\Requests\DeleteBookCategoryRequest;
+use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
 
 class BookCategoryController extends Controller
 {
@@ -19,7 +20,11 @@ class BookCategoryController extends Controller
 
     public function create(CreateBookCategoryRequest $request): JsonResponse
     {
-        $this->createBookCategoryUseCase->create($request);
+        $validated = $request->validated();
+        $this->createBookCategoryUseCase->create(new CreateBookCategoryResource(
+            workspaceId: $request->route('workspaceId'),
+            name: $validated['name']
+        ));
         return response()->json([], 201);
     }
 
