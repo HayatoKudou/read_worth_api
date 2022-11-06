@@ -4,10 +4,9 @@ namespace ReadWorth\Application\UseCase;
 
 use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\User;
-use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Entities\BookHistory;
+use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Services\BookService;
-use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\UI\Http\Resources\UpdateBookResource;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
@@ -35,9 +34,9 @@ class UpdateBook
         $this->deleteBookImage->delete($resource->getId());
 
         $workspace = new Workspace(id: $resource->getWorkspaceId(), name: $workspace->name);
-        $bookCategory = new BookCategory(id: $resource->getId(), name: $resource->getCategory());
         $book = new Book(
             id: $resource->getId(),
+            category: $resource->getCategory(),
             status: $resource->getStatus(),
             title: $resource->getId(),
             description: $resource->getId(),
@@ -50,6 +49,6 @@ class UpdateBook
         $action = $this->bookService->updateAction($resource->getId(), $resource->getStatus());
         $bookHistory = $action ? new BookHistory(action: $action) : null;
 
-        $this->bookRepository->update($workspace, $book, $bookCategory, $bookHistory, $user);
+        $this->bookRepository->update($workspace, $book, $bookHistory, $user);
     }
 }

@@ -6,7 +6,6 @@ use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\User;
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\ValueObjects\BookId;
-use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Domain\ValueObjects\BookCategoryId;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
@@ -32,12 +31,11 @@ class CreateBook
         $this->authorize('isBookManager', $workspace);
 
         $bookId = new BookId();
-        $bookCategoryId = new BookCategoryId();
 
         $workspace = new Workspace(id: $resource->getWorkspaceId(), name: $workspace->name);
-        $bookCategory = new BookCategory(id: $bookCategoryId->getBookCategoryId(), name: $resource->getCategory());
         $book = new Book(
             id: $bookId->getBookId(),
+            category: $resource->getCategory(),
             status: BookStatus::STATUS_CAN_LEND,
             title: $resource->getTitle(),
             description: $resource->getDescription(),
@@ -47,6 +45,6 @@ class CreateBook
         $auth = \Auth::user();
         $user = new User(id: $auth->id, name: $auth->name, email: $auth->email);
 
-        $this->bookRepository->store($workspace, $book, $bookCategory, $user);
+        $this->bookRepository->store($workspace, $book, $user);
     }
 }

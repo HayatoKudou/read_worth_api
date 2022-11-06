@@ -6,6 +6,7 @@ class Book
 {
     public function __construct(
         private readonly int $id,
+        private readonly string $category,
         private readonly int $status,
         private readonly string $title,
         private readonly string|null $description,
@@ -17,6 +18,11 @@ class Book
     public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getCategory(): string
+    {
+        return $this->category;
     }
 
     public function getStatus(): string
