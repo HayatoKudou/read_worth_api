@@ -86,10 +86,9 @@ class BookRepository
     public function return(BookId $bookId, Entities\User $user): void
     {
         DB::transaction(function () use ($bookId, $user): void {
-            BookRentalApply::where('user_id', $user->getId())
-                ->where('book_id', $bookId->getBookId())
-                ->update(['return_date' => Carbon::now()]);
-            Book::find($bookId->getBookId())->update(['status' => BookStatus::STATUS_CAN_LEND]);
+            $book = Book::find($bookId->getBookId());
+            $book->rentalApply->update(['return_date' => Carbon::now()]);
+            $book->update(['status' => BookStatus::STATUS_CAN_LEND]);
             BookHistory::create([
                 'book_id' => $bookId->getBookId(),
                 'user_id' => $user->getId(),

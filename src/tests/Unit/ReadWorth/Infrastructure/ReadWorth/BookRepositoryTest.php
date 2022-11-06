@@ -80,4 +80,36 @@ class BookRepositoryTest extends TestCase
         $this->assertSame('ジョブズの秘密', $latestBook->title, 'book.title');
         $this->assertSame('return book', $latestBookHistory->action, 'book_history.action');
     }
+
+    /** @test */
+    public function 書籍を削除できること(): void
+    {
+        $book = EloquentModel\Book::factory()->create();
+        assert($book instanceof EloquentModel\Book);
+
+        $repository = new BookRepository();
+        $repository->delete(collect([new BookId($book->id)]));
+
+        $bookExists = EloquentModel\Book::where('id', $book->id)->exists();
+        $this->assertFalse($bookExists);
+    }
+
+    /** @test */
+    public function 書籍を返却できること(): void
+    {
+        $book = EloquentModel\Book::factory()->create(['status' => BookStatus::STATUS_CAN_NOT_LEND]);
+        EloquentModel\BookRentalApply::factory()->create(['book_id' => $book->id]);
+
+        $bookIdDomain = new BookId($book->id);
+        $userDomain = new User(id: 1, name: 'Hayato', email: 'kudoh115@gmail.com');
+
+        $repository = new BookRepository();
+        $repository->return($bookIdDomain, $userDomain);
+
+        $latestBook = EloquentModel\Book::query()->latest()->first();
+        $latestBookRentalApply = EloquentModel\BookRentalApply::query()->latest()->first();
+
+        $this->assertSame(BookStatus::STATUS_CAN_LEND, $latestBook->status);
+        $this->assertNotNull($latestBookRentalApply->return_date);
+    }
 }
