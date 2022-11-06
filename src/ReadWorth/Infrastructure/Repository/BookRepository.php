@@ -3,10 +3,15 @@
 namespace ReadWorth\Infrastructure\Repository;
 
 use ReadWorth\Domain\Entities;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use ReadWorth\Domain\ValueObjects\BookId;
 use ReadWorth\Infrastructure\EloquentModel\Book;
+use ReadWorth\Infrastructure\EloquentModel\BookReview;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
+use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookRepository
 {
@@ -57,6 +62,22 @@ class BookRepository
                 'image_path' => $book->getImagePath(),
                 'url' => $book->getUrl(),
             ]);
+        });
+    }
+
+    /**
+     * @param Collection<BookId, int> $bookIds
+     */
+    public function delete(Collection $bookIds): void
+    {
+        DB::transaction(function () use ($bookIds): void {
+            $bookIds->each(function (BookId $bookId): void {
+                BookPurchaseApply::where('book_id', $bookId->getBookId())->delete();
+                BookRentalApply::where('book_id', $bookId->getBookId())->delete();
+                BookReview::where('book_id', $bookId->getBookId())->delete();
+                BookHistory::where('book_id', $bookId->getBookId())->delete();
+                Book::find($bookId->getBookId())->delete();
+            });
         });
     }
 
