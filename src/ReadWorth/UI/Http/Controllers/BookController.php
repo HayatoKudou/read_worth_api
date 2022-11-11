@@ -7,9 +7,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use ReadWorth\Application\UseCase\GetBooks;
 use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Application\UseCase\DeleteBook;
-use ReadWorth\Application\UseCase\FetchBooks;
 use ReadWorth\Application\UseCase\ReturnBook;
 use ReadWorth\Application\UseCase\UpdateBook;
 use ReadWorth\Infrastructure\EloquentModel\Book;
@@ -28,7 +28,7 @@ use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 class BookController extends Controller
 {
     public function __construct(
-        private readonly FetchBooks $fetchBooksUseCase,
+        private readonly GetBooks $getBooksUseCase,
         private readonly CreateBook $createBookUseCase,
         private readonly UpdateBook $updateBookUseCase,
         private readonly DeleteBook $deleteBookUseCase,
@@ -38,7 +38,7 @@ class BookController extends Controller
 
     public function list(string $workspaceId): JsonResponse
     {
-        return response()->json($this->fetchBooksUseCase->fetch($workspaceId));
+        return response()->json($this->getBooksUseCase->get($workspaceId));
     }
 
     public function create(CreateBookRequest $request): JsonResponse
