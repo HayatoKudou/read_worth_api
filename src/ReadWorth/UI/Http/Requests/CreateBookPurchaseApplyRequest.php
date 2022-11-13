@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\BookPurchaseApply;
+namespace ReadWorth\UI\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class CreateBookPurchaseApplyRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -15,6 +15,7 @@ class CreateRequest extends FormRequest
             'price' => 'required',
             'description' => '',
             'image' => '',
+            'url' => '',
         ];
     }
 
@@ -27,6 +28,7 @@ class CreateRequest extends FormRequest
             'price' => '価格',
             'description' => '本の説明',
             'image' => '画像',
+            'url' => 'URL',
         ];
     }
 }

@@ -2,11 +2,18 @@
 
 namespace ReadWorth\Infrastructure\Repository;
 
+use Carbon\Carbon;
 use ReadWorth\Domain\Entities;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use ReadWorth\Domain\ValueObjects\BookId;
+use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\EloquentModel\Book;
+use ReadWorth\Infrastructure\EloquentModel\BookReview;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
+use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookRepository
 {
@@ -56,6 +63,36 @@ class BookRepository
                 'description' => $book->getDescription(),
                 'image_path' => $book->getImagePath(),
                 'url' => $book->getUrl(),
+            ]);
+        });
+    }
+
+    /**
+     * @param Collection<BookId, int> $bookIds
+     */
+    public function delete(Collection $bookIds): void
+    {
+        DB::transaction(function () use ($bookIds): void {
+            $bookIds->each(function (BookId $bookId): void {
+                BookPurchaseApply::where('book_id', $bookId->getBookId())->delete();
+                BookRentalApply::where('book_id', $bookId->getBookId())->delete();
+                BookReview::where('book_id', $bookId->getBookId())->delete();
+                BookHistory::where('book_id', $bookId->getBookId())->delete();
+                Book::find($bookId->getBookId())->delete();
+            });
+        });
+    }
+
+    public function return(BookId $bookId, Entities\User $user): void
+    {
+        DB::transaction(function () use ($bookId, $user): void {
+            $book = Book::find($bookId->getBookId());
+            $book->rentalApply->update(['return_date' => Carbon::now()]);
+            $book->update(['status' => BookStatus::STATUS_CAN_LEND]);
+            BookHistory::create([
+                'book_id' => $bookId->getBookId(),
+                'user_id' => $user->getId(),
+                'action' => 'return book',
             ]);
         });
     }

@@ -5,6 +5,7 @@ namespace ReadWorth\Infrastructure\EloquentModel;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 /**
  * ReadWorth\Infrastructure\EloquentModel\BookRentalApply.
@@ -29,6 +30,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class BookRentalApply extends Model
 {
+    use HasFactory;
     protected $guarded = [];
     protected $table = 'book_rental_applies';
 

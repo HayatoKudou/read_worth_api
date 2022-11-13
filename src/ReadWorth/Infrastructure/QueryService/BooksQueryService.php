@@ -10,7 +10,7 @@ use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 
 class BooksQueryService
 {
-    public function fetchBooks($workspaceId): array
+    public function getBooks($workspaceId): array
     {
         $books = Book::organization($workspaceId)->with('purchaseApply')->get();
         $bookCategories = BookCategory::organization($workspaceId)->get();
