@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace ReadWorth\UI\Http\Controllers;
 
 use Carbon\Carbon;
 use GuzzleHttp\Client;
@@ -11,105 +11,70 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use ReadWorth\Infrastructure\EloquentModel\Book;
-use ReadWorth\Infrastructure\EloquentModel\User;
-use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
-use App\Http\Requests\BookPurchaseApply\CreateRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
-use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\Application\UseCase\CreateBookPurchaseApply;
 use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
+use ReadWorth\UI\Http\Requests\CreateBookPurchaseApplyRequest;
+use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
 
 class BookPurchaseApplyController extends Controller
 {
-    public function list(string $workspaceId): JsonResponse
-    {
-        try {
-            $workspace = Workspace::find($workspaceId);
-            $this->authorize('affiliation', $workspace);
-            assert($workspace instanceof Workspace);
-            $bookPurchaseApplies = BookPurchaseApply::where('workspace_id', $workspaceId)->get();
-            return response()->json([
-                'slackCredentialExists' => $workspace->slackCredential()->whereNotNull('access_token')->exists(),
-                'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
-                    'reason' => $bookPurchaseApply->reason,
-                    'price' => $bookPurchaseApply->price,
-                    'step' => $bookPurchaseApply->step,
-                    'location' => $bookPurchaseApply->location,
-                    'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y/m/d'),
-                    'user' => [
-                        'id' => $bookPurchaseApply->user->id,
-                        'name' => $bookPurchaseApply->user->name,
-                        'email' => $bookPurchaseApply->user->email,
-                    ],
-                    'book' => [
-                        'id' => $bookPurchaseApply->book->id,
-                        'status' => $bookPurchaseApply->book->status,
-                        'category' => $bookPurchaseApply->book->category->name,
-                        'title' => $bookPurchaseApply->book->title,
-                        'description' => $bookPurchaseApply->book->description,
-                        'image' => $bookPurchaseApply->book->image_path ? base64_encode(Storage::get($bookPurchaseApply->book->image_path)) : null,
-                        'url' => $bookPurchaseApply->book->url,
-                        'createdAt' => Carbon::parse($bookPurchaseApply->book->created_at)->format('Y年m月d日'),
-                    ],
-                ]),
-            ]);
-        } catch (AuthorizationException $e) {
-            return response()->json([], 403);
-        }
+    public function __construct(
+        private readonly CreateBookPurchaseApply $createBookPurchaseApply,
+    ) {
     }
 
-    public function create(string $workspaceId, CreateRequest $request): JsonResponse
+    public function list(string $workspaceId): JsonResponse
     {
         $workspace = Workspace::find($workspaceId);
         $this->authorize('affiliation', $workspace);
-        $user = User::find(Auth::id());
+        assert($workspace instanceof Workspace);
+        $bookPurchaseApplies = BookPurchaseApply::where('workspace_id', $workspaceId)->get();
+        return response()->json([
+            'slackCredentialExists' => $workspace->slackCredential()->whereNotNull('access_token')->exists(),
+            'bookPurchaseApplies' => $bookPurchaseApplies->map(fn (BookPurchaseApply $bookPurchaseApply) => [
+                'reason' => $bookPurchaseApply->reason,
+                'price' => $bookPurchaseApply->price,
+                'step' => $bookPurchaseApply->step,
+                'location' => $bookPurchaseApply->location,
+                'createdAt' => Carbon::parse($bookPurchaseApply->created_at)->format('Y/m/d'),
+                'user' => [
+                    'id' => $bookPurchaseApply->user->id,
+                    'name' => $bookPurchaseApply->user->name,
+                    'email' => $bookPurchaseApply->user->email,
+                ],
+                'book' => [
+                    'id' => $bookPurchaseApply->book->id,
+                    'status' => $bookPurchaseApply->book->status,
+                    'category' => $bookPurchaseApply->book->category->name,
+                    'title' => $bookPurchaseApply->book->title,
+                    'description' => $bookPurchaseApply->book->description,
+                    'image' => $bookPurchaseApply->book->image_path ? base64_encode(Storage::get($bookPurchaseApply->book->image_path)) : null,
+                    'url' => $bookPurchaseApply->book->url,
+                    'createdAt' => Carbon::parse($bookPurchaseApply->book->created_at)->format('Y年m月d日'),
+                ],
+            ]),
+        ]);
+    }
 
-        DB::transaction(function () use ($user, $request, $workspaceId): void {
-            $book = new Book();
-            $imagePath = $book->storeImage($request->get('image'), $workspaceId);
-            $bookCategory = BookCategory::where('name', $request->get('category'))->firstOrFail();
-
-            $book = Book::create([
-                'workspace_id' => $workspaceId,
-                'book_category_id' => $bookCategory->id,
-                'status' => Book::STATUS_APPLYING,
-                'title' => $request->get('title'),
-                'description' => $request->get('description'),
-                'url' => $request->get('url'),
-                'image_path' => $imagePath,
-            ]);
-            BookPurchaseApply::create([
-                'user_id' => $user->id,
-                'workspace_id' => $workspaceId,
-                'book_id' => $book->id,
-                'reason' => $request->get('reason'),
-                'price' => $request->get('price'),
-                'step' => BookPurchaseApply::NEED_ACCEPT,
-            ]);
-            BookHistory::create([
-                'book_id' => $book->id,
-                'user_id' => Auth::id(),
-                'action' => 'purchase book',
-            ]);
-        });
-
-        try {
-            $title = '書籍購入申請のお知らせ';
-            $message = '【タイトル】' . $request->get('title') . "\n【申請者】" . $user->name;
-            $slackCredential = SlackCredential::where('workspace_id', $workspaceId)->first();
-
-            if ($slackCredential) {
-                $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
-                $slackClient->postMessage($slackCredential->channel_id, $title, $message);
-            }
-            return response()->json([], 201);
-        } catch (\RuntimeException $e) {
-            // 購入申請のSlack通知エラーは無視する
-            return response()->json([], 201);
-        }
+    public function create(CreateBookPurchaseApplyRequest $request): JsonResponse
+    {
+        $validated = $request->validated();
+        $this->createBookPurchaseApply->create(new CreateBookPurchaseApplyResource(
+            workspaceId: $request->route('workspaceId'),
+            category: $validated['category'],
+            title: $validated['title'],
+            reason: $validated['reason'],
+            price: $validated['price'],
+            description: $validated['description'],
+            image: $validated['image'],
+            url: $validated['url'],
+        ));
+        return response()->json([], 201);
     }
 
     public function accept(string $workspaceId, string $bookId): JsonResponse

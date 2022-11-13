@@ -8,8 +8,8 @@ use ReadWorth\UI\Http\Controllers\BookController;
 use App\Http\Controllers\Api\BookReviewController;
 use App\Http\Controllers\Api\BookRentalApplyController;
 use ReadWorth\UI\Http\Controllers\BookHistoryController;
-use App\Http\Controllers\Api\BookPurchaseApplyController;
 use ReadWorth\UI\Http\Controllers\BookCategoryController;
+use ReadWorth\UI\Http\Controllers\BookPurchaseApplyController;
 
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
