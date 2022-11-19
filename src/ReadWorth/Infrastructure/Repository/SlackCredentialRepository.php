@@ -6,7 +6,7 @@ use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 
 class SlackCredentialRepository
 {
-    public function update(int $workspace_id, string $accessToken, string $channelName, int $channelId): void
+    public function update(string $workspace_id, string $accessToken, string $channelName, string $channelId): void
     {
         SlackCredential::updateOrCreate([
             'workspace_id' => $workspace_id,
