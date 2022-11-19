@@ -57,7 +57,7 @@ class CallbackSlack
             return view('slack_authed')->with('message', 'Slack連携中にエラーが発生しました。時間を空け再度お試しください。');
         }
 
-        $this->slackCredentialRepository->update(\Cache::get($cacheKey), $accessToken, $body['incoming_webhook']['channel'], $body['incoming_webhook']['channel_id']);
+        $this->slackCredentialRepository->update((int)\Cache::get($cacheKey), $accessToken, $body['incoming_webhook']['channel'], $body['incoming_webhook']['channel_id']);
         \Cache::forget($cacheKey);
         return view('slack_authed')->with('message', 'Slack連携が完了しました。');
     }
