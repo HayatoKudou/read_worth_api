@@ -153,11 +153,16 @@ class BookPurchaseApplyController extends Controller
     {
         $workspace = Workspace::find($workspaceId);
         $this->authorize('affiliation', $workspace);
+        $validated = $request->validated();
 
         try {
-            DB::transaction(function () use ($workspaceId, $bookId, $request) {
+            DB::transaction(function () use ($workspaceId, $bookId, $validated) {
                 $book = Book::find($bookId);
                 $book->purchaseApply->delete();
+
+                if ($validated['skip']) {
+                    return response()->json([]);
+                }
 
                 // 通知が失敗したらロールバック
                 $slackCredential = SlackCredential::where('workspace_id', $workspaceId)->first();
@@ -169,7 +174,7 @@ class BookPurchaseApplyController extends Controller
                 }
                 $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
                 // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
-                $slackClient->postMessage($slackCredential->channel_id, $request->get('title'), $request->get('message'));
+                $slackClient->postMessage($slackCredential->channel_id, $validated['title'], $validated['message']);
             });
             return response()->json([]);
         } catch (\RuntimeException $e) {

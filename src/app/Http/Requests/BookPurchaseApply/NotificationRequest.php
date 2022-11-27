@@ -11,6 +11,7 @@ class NotificationRequest extends FormRequest
         return [
             'title' => 'required|string',
             'message' => 'required|string',
+            'skip' => 'required',
         ];
     }
 
