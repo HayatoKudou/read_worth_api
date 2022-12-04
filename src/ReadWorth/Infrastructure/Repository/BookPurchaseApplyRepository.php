@@ -7,7 +7,6 @@ use Illuminate\Support\Facades\DB;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
-use ReadWorth\Domain\ValueObjects\BookPurchaseApplySteps;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookPurchaseApplyRepository
@@ -71,6 +70,20 @@ class BookPurchaseApplyRepository
                 'book_id' => $book->getId(),
                 'user_id' => $user->getId(),
                 'action' => 'purchase done',
+            ]);
+        });
+    }
+
+    public function refuse(Entities\Book $book, Entities\User $user, Entities\BookPurchaseApply $bookPurchaseApply): void
+    {
+        DB::transaction(function () use ($book, $user, $bookPurchaseApply): void {
+            Book::find($book->getId())->purchaseApply->update([
+                'step' => $bookPurchaseApply->getStep(),
+            ]);
+            BookHistory::create([
+                'book_id' => $book->getId(),
+                'user_id' => $user->getId(),
+                'action' => 'purchase refused',
             ]);
         });
     }

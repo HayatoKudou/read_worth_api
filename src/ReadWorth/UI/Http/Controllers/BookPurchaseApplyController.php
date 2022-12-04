@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use ReadWorth\Application\UseCase\BookPurchaseApplies\DoneBookPurchaseApply;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
@@ -19,10 +18,12 @@ use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 use ReadWorth\UI\Http\Requests\CreateBookPurchaseApplyRequest;
-use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
 use ReadWorth\UI\Http\Resources\DoneBookPurchaseApplyResource;
+use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\DoneBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\AcceptBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\CreateBookPurchaseApply;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\RefuseBookPurchaseApply;
 
 class BookPurchaseApplyController extends Controller
 {
@@ -30,6 +31,7 @@ class BookPurchaseApplyController extends Controller
         private readonly CreateBookPurchaseApply $createBookPurchaseApply,
         private readonly AcceptBookPurchaseApply $acceptBookPurchaseApply,
         private readonly DoneBookPurchaseApply $doneBookPurchaseApply,
+        private readonly RefuseBookPurchaseApply $refuseBookPurchaseApply,
     ) {
     }
 
@@ -101,19 +103,7 @@ class BookPurchaseApplyController extends Controller
 
     public function refuse(string $workspaceId, string $bookId): JsonResponse
     {
-        $workspace = Workspace::find($workspaceId);
-        $this->authorize('affiliation', $workspace);
-        DB::transaction(function () use ($bookId): void {
-            Book::find($bookId)->purchaseApply->update([
-                'step' => BookPurchaseApply::REFUSED,
-            ]);
-            BookHistory::create([
-                'book_id' => $bookId,
-                'user_id' => Auth::id(),
-                'action' => 'purchase refused',
-            ]);
-        });
-
+        $this->refuseBookPurchaseApply->refuse($workspaceId, $bookId);
         return response()->json([]);
     }
 

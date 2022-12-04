@@ -8,7 +8,7 @@ class BookPurchaseApply
         private readonly string $reason,
         private readonly int $price,
         private readonly int $step,
-        private readonly string | null $location,
+        private readonly string|null $location,
     ) {
     }
 

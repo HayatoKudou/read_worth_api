@@ -4,7 +4,6 @@ namespace ReadWorth\Application\UseCase\BookPurchaseApplies;
 
 use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\User;
-use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Domain\Entities\BookPurchaseApply;
 use ReadWorth\Application\UseCase\Books\StoreBookImage;
 use ReadWorth\Infrastructure\Repository\BookRepository;
@@ -14,7 +13,7 @@ use ReadWorth\Application\UseCase\Slack\SlackNotification;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookPurchaseApplyRepository;
 
-class AcceptBookPurchaseApply
+class RefuseBookPurchaseApply
 {
     use AuthorizesRequests;
 
@@ -27,7 +26,7 @@ class AcceptBookPurchaseApply
     ) {
     }
 
-    public function accept(string $workspaceId, string $bookId): void
+    public function refuse(string $workspaceId, string $bookId): void
     {
         $workspace = $this->workspaceRepository->findById($workspaceId);
         $this->authorize('affiliation', $workspace);
@@ -38,7 +37,7 @@ class AcceptBookPurchaseApply
         $book = new Book(
             id: $bookRepo->id,
             category: $bookRepo->category,
-            status: BookStatus::STATUS_CAN_LEND,
+            status: $bookRepo->status,
             title: $bookRepo->title,
             description: $bookRepo->description,
             imagePath: $bookRepo->image_path,
@@ -48,10 +47,10 @@ class AcceptBookPurchaseApply
         $bookPurchaseApply = new BookPurchaseApply(
             reason: $bookRepo->purchaseApply->reason,
             price: $bookRepo->purchaseApply->price,
-            step: BookPurchaseApplySteps::NEED_BUY,
-            location: null
+            step: BookPurchaseApplySteps::REFUSED,
+            location: $bookRepo->purchaseApply->location
         );
 
-        $this->bookPurchaseApplyRepository->accept($book, $user, $bookPurchaseApply);
+        $this->bookPurchaseApplyRepository->done($book, $user, $bookPurchaseApply);
     }
 }
