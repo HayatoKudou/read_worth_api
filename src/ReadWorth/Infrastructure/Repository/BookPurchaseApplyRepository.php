@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\Domain\ValueObjects\BookPurchaseApplySteps;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookPurchaseApplyRepository
@@ -39,6 +40,20 @@ class BookPurchaseApplyRepository
                 'book_id' => $bookRepo->id,
                 'user_id' => $user->getId(),
                 'action' => 'purchase book',
+            ]);
+        });
+    }
+
+    public function accept(string $bookId, string $userId): void
+    {
+        DB::transaction(function () use ($bookId, $userId): void {
+            Book::find($bookId)->purchaseApply->update([
+                'step' => BookPurchaseApplySteps::NEED_BUY,
+            ]);
+            BookHistory::create([
+                'book_id' => $bookId,
+                'user_id' => $userId,
+                'action' => 'purchase accepted',
             ]);
         });
     }

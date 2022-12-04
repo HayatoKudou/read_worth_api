@@ -19,12 +19,14 @@ use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 use ReadWorth\UI\Http\Requests\CreateBookPurchaseApplyRequest;
 use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\AcceptBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\CreateBookPurchaseApply;
 
 class BookPurchaseApplyController extends Controller
 {
     public function __construct(
         private readonly CreateBookPurchaseApply $createBookPurchaseApply,
+        private readonly AcceptBookPurchaseApply $acceptBookPurchaseApply,
     ) {
     }
 
@@ -79,18 +81,7 @@ class BookPurchaseApplyController extends Controller
 
     public function accept(string $workspaceId, string $bookId): JsonResponse
     {
-        $workspace = Workspace::find($workspaceId);
-        $this->authorize('affiliation', $workspace);
-        DB::transaction(function () use ($bookId): void {
-            Book::find($bookId)->purchaseApply->update([
-                'step' => BookPurchaseApply::NEED_BUY,
-            ]);
-            BookHistory::create([
-                'book_id' => $bookId,
-                'user_id' => Auth::id(),
-                'action' => 'purchase accepted',
-            ]);
-        });
+        $this->acceptBookPurchaseApply->accept($workspaceId, $bookId);
         return response()->json([]);
     }
 
