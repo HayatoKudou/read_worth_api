@@ -13,8 +13,9 @@ use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookPurchaseApplyRepository;
+use ReadWorth\UI\Http\Resources\DoneBookPurchaseApplyResource;
 
-class AcceptBookPurchaseApply
+class DoneBookPurchaseApply
 {
     use AuthorizesRequests;
 
@@ -27,12 +28,12 @@ class AcceptBookPurchaseApply
     ) {
     }
 
-    public function accept(string $workspaceId, string $bookId): void
+    public function done(DoneBookPurchaseApplyResource $resource): void
     {
-        $workspace = $this->workspaceRepository->findById($workspaceId);
+        $workspace = $this->workspaceRepository->findById($resource->getWorkspaceId());
         $this->authorize('affiliation', $workspace);
 
-        $bookRepo = $this->bookRepository->findById($bookId);
+        $bookRepo = $this->bookRepository->findById($resource->getBookId());
         $auth = \Auth::user();
 
         $book = new Book(
@@ -48,10 +49,10 @@ class AcceptBookPurchaseApply
         $bookPurchaseApply = new BookPurchaseApply(
             reason: $bookRepo->purchaseApply->reason,
             price: $bookRepo->purchaseApply->price,
-            step: BookPurchaseApplySteps::NEED_BUY,
-            location: null
+            step: BookPurchaseApplySteps::NEED_NOTIFICATION,
+            location: $resource->getLocation()
         );
 
-        $this->bookPurchaseApplyRepository->accept($book, $user, $bookPurchaseApply);
+        $this->bookPurchaseApplyRepository->done($book, $user, $bookPurchaseApply);
     }
 }

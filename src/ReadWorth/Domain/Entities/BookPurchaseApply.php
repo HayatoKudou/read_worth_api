@@ -8,6 +8,7 @@ class BookPurchaseApply
         private readonly string $reason,
         private readonly int $price,
         private readonly int $step,
+        private readonly string | null $location,
     ) {
     }
 
@@ -24,5 +25,10 @@ class BookPurchaseApply
     public function getStep(): int
     {
         return $this->step;
+    }
+
+    public function getLocation(): string
+    {
+        return $this->location;
     }
 }

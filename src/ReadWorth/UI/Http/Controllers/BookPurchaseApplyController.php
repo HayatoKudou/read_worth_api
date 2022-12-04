@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\DoneBookPurchaseApply;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
@@ -19,6 +20,7 @@ use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 use ReadWorth\UI\Http\Requests\CreateBookPurchaseApplyRequest;
 use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
+use ReadWorth\UI\Http\Resources\DoneBookPurchaseApplyResource;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\AcceptBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\CreateBookPurchaseApply;
 
@@ -27,6 +29,7 @@ class BookPurchaseApplyController extends Controller
     public function __construct(
         private readonly CreateBookPurchaseApply $createBookPurchaseApply,
         private readonly AcceptBookPurchaseApply $acceptBookPurchaseApply,
+        private readonly DoneBookPurchaseApply $doneBookPurchaseApply,
     ) {
     }
 
@@ -87,21 +90,12 @@ class BookPurchaseApplyController extends Controller
 
     public function done(string $workspaceId, string $bookId, DoneRequest $request): JsonResponse
     {
-        $workspace = Workspace::find($workspaceId);
-        $this->authorize('affiliation', $workspace);
-        DB::transaction(function () use ($request, $bookId): void {
-            $book = Book::find($bookId);
-            $book->update(['status' => Book::STATUS_CAN_LEND]);
-            $book->purchaseApply->update([
-                'step' => BookPurchaseApply::NEED_NOTIFICATION,
-                'location' => $request->get('location'),
-            ]);
-            BookHistory::create([
-                'book_id' => $bookId,
-                'user_id' => Auth::id(),
-                'action' => 'purchase done',
-            ]);
-        });
+        $validated = $request->validated();
+        $this->doneBookPurchaseApply->done(new DoneBookPurchaseApplyResource(
+            workspaceId: $workspaceId,
+            bookId: $bookId,
+            location: $validated['location']
+        ));
         return response()->json([]);
     }
 

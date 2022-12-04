@@ -50,7 +50,8 @@ class CreateBookPurchaseApply
         $bookPurchaseApply = new BookPurchaseApply(
             reason: $resource->getReason(),
             price: $resource->getPrice(),
-            step: BookPurchaseApplySteps::NEED_ACCEPT
+            step: BookPurchaseApplySteps::NEED_ACCEPT,
+            location: null
         );
 
         $this->bookPurchaseApplyRepository->store($workspace, $user, $book, $bookPurchaseApply);

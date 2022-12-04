@@ -44,16 +44,33 @@ class BookPurchaseApplyRepository
         });
     }
 
-    public function accept(string $bookId, string $userId): void
+    public function accept(Entities\Book $book, Entities\User $user, Entities\BookPurchaseApply $bookPurchaseApply): void
     {
-        DB::transaction(function () use ($bookId, $userId): void {
-            Book::find($bookId)->purchaseApply->update([
-                'step' => BookPurchaseApplySteps::NEED_BUY,
+        DB::transaction(function () use ($book, $user, $bookPurchaseApply): void {
+            Book::find($book->getId())->purchaseApply->update([
+                'step' => $bookPurchaseApply->getStep(),
             ]);
             BookHistory::create([
-                'book_id' => $bookId,
-                'user_id' => $userId,
+                'book_id' => $book->getId(),
+                'user_id' => $user->getId(),
                 'action' => 'purchase accepted',
+            ]);
+        });
+    }
+
+    public function done(Entities\Book $book, Entities\User $user, Entities\BookPurchaseApply $bookPurchaseApply): void
+    {
+        DB::transaction(function () use ($book, $user, $bookPurchaseApply): void {
+            $bookRepo = Book::find($book->getId());
+            $bookRepo->update(['status' => $book->getStatus()]);
+            $bookRepo->purchaseApply->update([
+                'step' => $bookPurchaseApply->getStep(),
+                'location' => $bookPurchaseApply->getLocation(),
+            ]);
+            BookHistory::create([
+                'book_id' => $book->getId(),
+                'user_id' => $user->getId(),
+                'action' => 'purchase done',
             ]);
         });
     }
