@@ -51,6 +51,6 @@ class RefuseBookPurchaseApply
             location: $bookRepo->purchaseApply->location
         );
 
-        $this->bookPurchaseApplyRepository->done($book, $user, $bookPurchaseApply);
+        $this->bookPurchaseApplyRepository->refuse($book, $user, $bookPurchaseApply);
     }
 }
