@@ -1,6 +1,6 @@
 <?php
 
-namespace ReadWorth\Application\UseCase;
+namespace ReadWorth\Application\UseCase\Books;
 
 use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\User;

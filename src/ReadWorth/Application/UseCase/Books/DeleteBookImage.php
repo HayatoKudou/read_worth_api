@@ -1,6 +1,6 @@
 <?php
 
-namespace ReadWorth\Application\UseCase;
+namespace ReadWorth\Application\UseCase\Books;
 
 use ReadWorth\Infrastructure\Repository\BookRepository;
 

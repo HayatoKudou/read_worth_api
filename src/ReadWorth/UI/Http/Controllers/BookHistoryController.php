@@ -4,7 +4,7 @@ namespace ReadWorth\UI\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use ReadWorth\Application\UseCase\GetBookHistories;
+use ReadWorth\Application\UseCase\BookHistories\GetBookHistories;
 
 class BookHistoryController extends Controller
 {

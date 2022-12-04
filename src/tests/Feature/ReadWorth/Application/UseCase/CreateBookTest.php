@@ -3,14 +3,14 @@
 namespace Tests\Feature\ReadWorth\Application\UseCase;
 
 use Tests\TestCase;
-use ReadWorth\Application\UseCase\CreateBook;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
-use ReadWorth\Application\UseCase\StoreBookImage;
 use Illuminate\Auth\Access\AuthorizationException;
+use ReadWorth\Application\UseCase\Books\CreateBook;
 use ReadWorth\UI\Http\Resources\CreateBookResource;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Application\UseCase\Books\StoreBookImage;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;

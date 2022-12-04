@@ -1,6 +1,6 @@
 <?php
 
-namespace ReadWorth\Application\UseCase;
+namespace ReadWorth\Application\UseCase\Slack;
 
 use GuzzleHttp\Client;
 use App\Slack\SlackApiClient;

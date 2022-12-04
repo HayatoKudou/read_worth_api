@@ -4,12 +4,12 @@ namespace ReadWorth\UI\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
-use ReadWorth\Application\UseCase\CreateBookCategory;
-use ReadWorth\Application\UseCase\DeleteBookCategory;
 use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 use ReadWorth\UI\Http\Requests\DeleteBookCategoryRequest;
 use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
 use ReadWorth\UI\Http\Resources\DeleteBookCategoryResource;
+use ReadWorth\Application\UseCase\BookCategories\CreateBookCategory;
+use ReadWorth\Application\UseCase\BookCategories\DeleteBookCategory;
 
 class BookCategoryController extends Controller
 {

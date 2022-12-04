@@ -1,6 +1,6 @@
 <?php
 
-namespace ReadWorth\Application\UseCase;
+namespace ReadWorth\Application\UseCase\BookPurchaseApplies;
 
 use ReadWorth\Domain\Entities\Book;
 use ReadWorth\Domain\Entities\User;
@@ -8,8 +8,10 @@ use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\ValueObjects\BookId;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Domain\Entities\BookPurchaseApply;
+use ReadWorth\Application\UseCase\Books\StoreBookImage;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use ReadWorth\Domain\ValueObjects\BookPurchaseApplySteps;
+use ReadWorth\Application\UseCase\Slack\SlackNotification;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
 use ReadWorth\Infrastructure\Repository\BookPurchaseApplyRepository;

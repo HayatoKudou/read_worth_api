@@ -14,12 +14,12 @@ use ReadWorth\Infrastructure\EloquentModel\Book;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
-use ReadWorth\Application\UseCase\CreateBookPurchaseApply;
 use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 use ReadWorth\UI\Http\Requests\CreateBookPurchaseApplyRequest;
 use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\CreateBookPurchaseApply;
 
 class BookPurchaseApplyController extends Controller
 {

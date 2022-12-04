@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Contracts\View\View;
-use ReadWorth\Application\UseCase\CallbackSlack;
+use ReadWorth\Application\UseCase\Slack\CallbackSlack;
 
 class SlackController extends Controller
 {

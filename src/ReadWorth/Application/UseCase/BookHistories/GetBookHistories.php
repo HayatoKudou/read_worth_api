@@ -1,25 +1,25 @@
 <?php
 
-namespace ReadWorth\Application\UseCase;
+namespace ReadWorth\Application\UseCase\BookHistories;
 
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ReadWorth\Infrastructure\QueryService\BooksQueryService;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
+use ReadWorth\Infrastructure\QueryService\BookHistoriesQueryService;
 
-class GetBooks
+class GetBookHistories
 {
     use AuthorizesRequests;
 
     public function __construct(
         private readonly WorkspaceRepository $workspaceRepository,
-        private readonly BooksQueryService $booksQueryService
+        private readonly BookHistoriesQueryService $bookHistoriesQueryService
     ) {
     }
 
-    public function get(string $workspaceId): array
+    public function get(int $workspaceId, int $bookId): array
     {
         $workspace = $this->workspaceRepository->findById($workspaceId);
         $this->authorize('affiliation', $workspace);
-        return $this->booksQueryService->getBooks($workspaceId);
+        return $this->bookHistoriesQueryService->getBookHistories($bookId);
     }
 }

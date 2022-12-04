@@ -6,13 +6,13 @@ use Tests\TestCase;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use ReadWorth\Application\UseCase\CreateBookCategory;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
+use ReadWorth\Application\UseCase\BookCategories\CreateBookCategory;
 
 class CreateBookCategoryTest extends TestCase
 {

@@ -4,18 +4,18 @@ namespace Tests\Feature\ReadWorth\Application\UseCase;
 
 use Tests\TestCase;
 use ReadWorth\Domain\Services\BookService;
-use ReadWorth\Application\UseCase\UpdateBook;
 use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\Role;
 use ReadWorth\Infrastructure\EloquentModel\User;
-use ReadWorth\Application\UseCase\StoreBookImage;
 use Illuminate\Auth\Access\AuthorizationException;
-use ReadWorth\Application\UseCase\DeleteBookImage;
+use ReadWorth\Application\UseCase\Books\UpdateBook;
 use ReadWorth\UI\Http\Resources\UpdateBookResource;
 use ReadWorth\Infrastructure\EloquentModel\Belonging;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
+use ReadWorth\Application\UseCase\Books\StoreBookImage;
 use ReadWorth\Infrastructure\Repository\BookRepository;
+use ReadWorth\Application\UseCase\Books\DeleteBookImage;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 

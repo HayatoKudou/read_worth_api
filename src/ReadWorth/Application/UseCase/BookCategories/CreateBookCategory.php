@@ -1,16 +1,16 @@
 <?php
 
-namespace ReadWorth\Application\UseCase;
+namespace ReadWorth\Application\UseCase\BookCategories;
 
 use ReadWorth\Domain\Entities\Workspace;
 use ReadWorth\Domain\Entities\BookCategory;
 use ReadWorth\Domain\ValueObjects\BookCategoryId;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
-use ReadWorth\UI\Http\Resources\DeleteBookCategoryResource;
+use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookCategoryRepository;
 
-class DeleteBookCategory
+class CreateBookCategory
 {
     use AuthorizesRequests;
 
@@ -20,7 +20,7 @@ class DeleteBookCategory
     ) {
     }
 
-    public function delete(DeleteBookCategoryResource $resource): void
+    public function create(CreateBookCategoryResource $resource): void
     {
         $workspace = $this->workspaceRepository->findById($resource->getWorkspaceId());
         $this->authorize('affiliation', $workspace);
@@ -31,11 +31,6 @@ class DeleteBookCategory
         $workspace = new Workspace(id: $resource->getWorkspaceId(), name: $workspace->name);
         $bookCategory = new BookCategory(id: $bookCategoryId->getBookCategoryId(), name: $resource->getName());
 
-        // ALLカテゴリは削除させない
-        if ('ALL' === $bookCategory->getName()) {
-            abort(422);
-        }
-
-        $this->bookCategoryRepository->delete($workspace, $bookCategory);
+        $this->bookCategoryRepository->store($workspace, $bookCategory);
     }
 }
