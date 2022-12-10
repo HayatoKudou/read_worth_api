@@ -3,27 +3,23 @@
 namespace ReadWorth\UI\Http\Controllers;
 
 use Carbon\Carbon;
-use GuzzleHttp\Client;
-use App\Slack\SlackApiClient;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-use ReadWorth\Infrastructure\EloquentModel\Book;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;
-use ReadWorth\Infrastructure\EloquentModel\BookHistory;
-use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 use App\Http\Requests\BookPurchaseApply\NotificationRequest;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 use ReadWorth\UI\Http\Requests\CreateBookPurchaseApplyRequest;
 use ReadWorth\UI\Http\Resources\DoneBookPurchaseApplyResource;
 use ReadWorth\UI\Http\Resources\CreateBookPurchaseApplyResource;
+use ReadWorth\UI\Http\Resources\NotificationBookPurchaseApplyResource;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\DoneBookPurchaseApply;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\InitBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\AcceptBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\CreateBookPurchaseApply;
 use ReadWorth\Application\UseCase\BookPurchaseApplies\RefuseBookPurchaseApply;
+use ReadWorth\Application\UseCase\BookPurchaseApplies\NotificationBookPurchaseApply;
 
 class BookPurchaseApplyController extends Controller
 {
@@ -32,6 +28,8 @@ class BookPurchaseApplyController extends Controller
         private readonly AcceptBookPurchaseApply $acceptBookPurchaseApply,
         private readonly DoneBookPurchaseApply $doneBookPurchaseApply,
         private readonly RefuseBookPurchaseApply $refuseBookPurchaseApply,
+        private readonly InitBookPurchaseApply $initBookPurchaseApply,
+        private readonly NotificationBookPurchaseApply $notificationBookPurchaseApply,
     ) {
     }
 
@@ -109,56 +107,20 @@ class BookPurchaseApplyController extends Controller
 
     public function init(string $workspaceId, string $bookId): JsonResponse
     {
-        $workspace = Workspace::find($workspaceId);
-        $this->authorize('affiliation', $workspace);
-        DB::transaction(function () use ($bookId): void {
-            Book::find($bookId)->purchaseApply->update([
-                'step' => BookPurchaseApply::NEED_ACCEPT,
-            ]);
-            BookHistory::create([
-                'book_id' => $bookId,
-                'user_id' => Auth::id(),
-                'action' => 'purchase init',
-            ]);
-        });
+        $this->initBookPurchaseApply->init($workspaceId, $bookId);
         return response()->json([]);
     }
 
-    public function notification(string $workspaceId, string $bookId, NotificationRequest $request): JsonResponse
+    public function notification(NotificationRequest $request): JsonResponse
     {
-        $workspace = Workspace::find($workspaceId);
-        $this->authorize('affiliation', $workspace);
         $validated = $request->validated();
-
-        try {
-            DB::transaction(function () use ($workspaceId, $bookId, $validated) {
-                $book = Book::find($bookId);
-                $book->purchaseApply->delete();
-
-                if ($validated['skip']) {
-                    return response()->json([]);
-                }
-
-                // 通知が失敗したらロールバック
-                $slackCredential = SlackCredential::where('workspace_id', $workspaceId)->first();
-
-                if (!$slackCredential) {
-                    return response()->json(['errors' => [
-                        'slack' => 'Slack連携がされていません。',
-                    ]], 500);
-                }
-                $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
-                // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
-                $slackClient->postMessage($slackCredential->channel_id, $validated['title'], $validated['message']);
-            });
-            return response()->json([]);
-        } catch (\RuntimeException $e) {
-            if ('not_in_channel' === $e->getMessage()) {
-                return response()->json(['errors' => [
-                    'slack' => 'Slackチャンネルにアプリが追加されていないため通知に失敗しました。',
-                ]], 500);
-            }
-            return response()->json([], 500);
-        }
+        $this->notificationBookPurchaseApply->notification(new NotificationBookPurchaseApplyResource(
+            workspaceId: $request->route('workspaceId'),
+            bookId: $request->route('bookId'),
+            title: $validated['title'],
+            message: $validated['message'],
+            skip: $validated['skip']
+        ));
+        return response()->json([]);
     }
 }

@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\BookHistory;
 use ReadWorth\Infrastructure\EloquentModel\BookCategory;
+use ReadWorth\Infrastructure\EloquentModel\SlackCredential;
 use ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply;
 
 class BookPurchaseApplyRepository
@@ -86,5 +87,30 @@ class BookPurchaseApplyRepository
                 'action' => 'purchase refused',
             ]);
         });
+    }
+
+    public function init(Entities\Book $book, Entities\User $user, Entities\BookPurchaseApply $bookPurchaseApply): void
+    {
+        DB::transaction(function () use ($book, $user, $bookPurchaseApply): void {
+            Book::find($book->getId())->purchaseApply->update([
+                'step' => $bookPurchaseApply->getStep(),
+            ]);
+            BookHistory::create([
+                'book_id' => $book->getId(),
+                'user_id' => $user->getId(),
+                'action' => 'purchase init',
+            ]);
+        });
+    }
+
+    public function notification(string $bookId): void
+    {
+        $book = Book::find($bookId);
+        $book->purchaseApply->delete();
+    }
+
+    public function findSlackCredentialByWorkspaceId(string $workspaceId): SlackCredential
+    {
+        return SlackCredential::where('workspace_id', $workspaceId)->firstOrFail();
     }
 }
