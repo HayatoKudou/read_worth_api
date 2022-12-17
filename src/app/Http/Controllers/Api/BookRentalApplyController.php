@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Requests\BookRentalApply\CreateRequest;
@@ -23,7 +24,7 @@ class BookRentalApplyController extends Controller
 
             return DB::transaction(function () use ($request, $workspaceId, $bookId): JsonResponse {
                 $book = Book::find($bookId);
-                $book->update(['status' => Book::STATUS_CAN_NOT_LEND]);
+                $book->update(['status' => BookStatus::STATUS_CAN_NOT_LEND]);
                 $bookRentalApply = $request->createBookRentalApply();
                 $bookRentalApply::create([
                     'user_id' => Auth::id(),

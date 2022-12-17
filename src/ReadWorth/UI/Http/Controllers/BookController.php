@@ -7,6 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Application\UseCase\Books\GetBooks;
 use ReadWorth\UI\Http\Requests\CreateBookRequest;
@@ -111,7 +112,7 @@ class BookController extends Controller
                         $book->update([
                             'workspace_id' => $workspaceId,
                             'book_category_id' => $bookCategory->id,
-                            'status' => Book::STATUS_CAN_LEND,
+                            'status' => BookStatus::STATUS_CAN_LEND,
                             'title' => $csvData['タイトル'],
                             'description' => $csvData['本の説明'],
                             'image_path' => $imagePath,
@@ -121,7 +122,7 @@ class BookController extends Controller
                         $book = Book::create([
                             'workspace_id' => $workspaceId,
                             'book_category_id' => $bookCategory->id,
-                            'status' => Book::STATUS_CAN_LEND,
+                            'status' => BookStatus::STATUS_CAN_LEND,
                             'title' => $csvData['タイトル'],
                             'description' => $csvData['本の説明'],
                             'image_path' => $imagePath,

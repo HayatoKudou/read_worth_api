@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\BookReview\CreateRequest;
+use ReadWorth\Domain\ValueObjects\BookStatus;
 use ReadWorth\Infrastructure\EloquentModel\Book;
 use ReadWorth\Infrastructure\EloquentModel\User;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -32,7 +33,7 @@ class BookReviewController extends Controller
                     'review' => $request->get('review'),
                 ]);
                 BookRentalApply::where('book_id', $bookId)->update(['rental_date' => Carbon::now()]);
-                Book::find($bookId)->update(['status' => Book::STATUS_CAN_LEND]);
+                Book::find($bookId)->update(['status' => BookStatus::STATUS_CAN_LEND]);
                 return response()->json([], 201);
             });
         } catch (AuthorizationException $e) {
