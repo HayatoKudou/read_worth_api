@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace ReadWorth\UI\Http\Controllers;
 
 use App\Slack\SlackApiClient;
 use Illuminate\Http\JsonResponse;

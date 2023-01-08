@@ -4,7 +4,6 @@ namespace ReadWorth\UI\Http\Controllers;
 
 use Carbon\Carbon;
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\BookPurchaseApply\DoneRequest;
 use ReadWorth\Infrastructure\EloquentModel\Workspace;

@@ -35,14 +35,14 @@ services:
     environment:
       SWAGGER_FILE: /opt/api_oas_v3.yaml
 
-  mailhog:
-    container_name: read_worth_mailhog
-    image: mailhog/mailhog
-    ports:
-      - target: 8025
-        published: 8025
-        protocol: tcp
-        mode: host
+#  mailhog:
+#    container_name: read_worth_mailhog
+#    image: mailhog/mailhog
+#    ports:
+#      - target: 8025
+#        published: 8025
+#        protocol: tcp
+#        mode: host
 
   https-portal:
     image: steveltn/https-portal:1

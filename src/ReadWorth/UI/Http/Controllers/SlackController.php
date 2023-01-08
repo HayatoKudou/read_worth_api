@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace ReadWorth\UI\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;

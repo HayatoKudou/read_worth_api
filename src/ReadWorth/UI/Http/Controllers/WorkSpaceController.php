@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace ReadWorth\UI\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\Workspace\CreateRequest;
 use App\Http\Requests\Workspace\UpdateRequest;

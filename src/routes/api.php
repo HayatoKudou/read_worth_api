@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\Api\FeedBackController;
-use App\Http\Controllers\Api\WorkSpaceController;
 use ReadWorth\UI\Http\Controllers\BookController;
-use App\Http\Controllers\Api\BookReviewController;
-use App\Http\Controllers\Api\BookRentalApplyController;
+use ReadWorth\UI\Http\Controllers\UserController;
+use ReadWorth\UI\Http\Controllers\FeedBackController;
+use ReadWorth\UI\Http\Controllers\WorkSpaceController;
+use ReadWorth\UI\Http\Controllers\BookReviewController;
 use ReadWorth\UI\Http\Controllers\BookHistoryController;
 use ReadWorth\UI\Http\Controllers\BookCategoryController;
+use ReadWorth\UI\Http\Controllers\BookRentalApplyController;
 use ReadWorth\UI\Http\Controllers\BookPurchaseApplyController;
 
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);

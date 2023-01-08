@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\SlackController;
+use ReadWorth\UI\Http\Controllers\SlackController;
 use ReadWorth\UI\Http\Controllers\ConnectController;
 
 Route::get('/', function () {

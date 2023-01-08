@@ -3,7 +3,6 @@
 namespace ReadWorth\UI\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
-use App\Http\Controllers\Controller;
 use ReadWorth\UI\Http\Requests\CreateBookCategoryRequest;
 use ReadWorth\UI\Http\Requests\DeleteBookCategoryRequest;
 use ReadWorth\UI\Http\Resources\CreateBookCategoryResource;
