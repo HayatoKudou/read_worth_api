@@ -19,10 +19,10 @@ Route::group(['prefix' => '{workspaceId}', 'middleware' => ['auth:api']], functi
     Route::post('/user', [UserController::class, 'create']);
     Route::put('/user', [UserController::class, 'update']);
     Route::get('/users', [UserController::class, 'list']);
-    Route::delete('/user', [UserController::class, 'delete']);
     Route::get('/workspace', [WorkSpaceController::class, 'info']);
     Route::put('/workspace', [WorkSpaceController::class, 'update']);
     Route::post('/workspace', [WorkSpaceController::class, 'create']);
+    Route::delete('/workspace/user', [WorkSpaceController::class, 'excludeUser']);
     Route::get('/workspaces', [WorkSpaceController::class, 'list']);
     Route::get('/books', [BookController::class, 'list']);
     Route::put('/book', [BookController::class, 'update']);

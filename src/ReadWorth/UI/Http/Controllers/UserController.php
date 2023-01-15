@@ -7,7 +7,6 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\User\CreateRequest;
-use App\Http\Requests\User\DeleteRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Http\Requests\User\MeUpdateRequest;
 use ReadWorth\Infrastructure\EloquentModel\Role;
@@ -145,31 +144,6 @@ class UserController extends Controller
                 ]);
                 return response()->json();
             });
-        } catch (AuthorizationException $e) {
-            return response()->json([], 403);
-        }
-    }
-
-    public function delete(string $workspaceId, DeleteRequest $request): JsonResponse
-    {
-        try {
-            $workspace = Workspace::find($workspaceId);
-            $this->authorize('affiliation', $workspace);
-            $this->authorize('isAccountManager', $workspace);
-            DB::transaction(function () use ($request): void {
-                $request->collect('userIds')->each(function ($userId): void {
-                    $user = User::find($userId);
-                    $user->bookPurchaseApply()->delete();
-                    $user->bookRentalApply()->delete();
-                    $user->bookReview()->delete();
-                    $user->belongings->each(function ($belonging): void {
-                        $belonging->delete();
-                        $belonging->role()->delete();
-                    });
-                    $user->delete();
-                });
-            });
-            return response()->json([]);
         } catch (AuthorizationException $e) {
             return response()->json([], 403);
         }

@@ -3,7 +3,6 @@
 namespace ReadWorth\Infrastructure\EloquentModel;
 
 use Laravel\Sanctum\HasApiTokens;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticate;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,21 +51,6 @@ class User extends Authenticate
             Role::class,
             'belongings',
         )->where('workspace_id', $workspaceId)->first();
-    }
-
-    public function bookPurchaseApply(): HasOne
-    {
-        return $this->hasOne(BookPurchaseApply::class);
-    }
-
-    public function bookRentalApply(): HasOne
-    {
-        return $this->hasOne(BookRentalApply::class);
-    }
-
-    public function bookReview(): HasOne
-    {
-        return $this->hasOne(BookReview::class);
     }
 
     public function belongings(): HasMany
