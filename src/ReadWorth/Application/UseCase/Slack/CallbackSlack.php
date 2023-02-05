@@ -3,10 +3,10 @@
 namespace ReadWorth\Application\UseCase\Slack;
 
 use GuzzleHttp\Client;
-use App\Slack\SlackApiClient;
 use Illuminate\Contracts\View\View;
 use ReadWorth\Infrastructure\Repository\UserRepository;
 use ReadWorth\Infrastructure\Repository\SlackCredentialRepository;
+use ReadWorth\Infrastructure\SlackAPI\SlackApiClient;
 
 class CallbackSlack
 {
