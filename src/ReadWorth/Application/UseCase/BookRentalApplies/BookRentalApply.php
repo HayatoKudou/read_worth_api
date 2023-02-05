@@ -38,7 +38,8 @@ class BookRentalApply
 
         $title = '書籍貸出のお知らせ';
         $message = '【申請者】' . $user->name . "\n【貸出理由】" . $reason . "\n【返却予定日】" . $expectedReturnDate;
-        $this->slackNotification->notification($title, $message, $workspace->id, $book->image_path);
+        $imagePath = config('app.url') . '/storage/' . $book->image_path;
+        $this->slackNotification->notification($title, $message, $workspace->id, $imagePath);
 
         return DB::transaction(function () use ($book, $user, $workspaceId, $bookId, $reason, $expectedReturnDate): JsonResponse {
             $book->update(['status' => BookStatus::STATUS_CAN_NOT_LEND]);

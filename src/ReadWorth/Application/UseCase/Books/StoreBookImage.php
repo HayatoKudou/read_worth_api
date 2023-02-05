@@ -14,6 +14,7 @@ class StoreBookImage
         @[, $file_data] = explode(';', $imageBinary);
         @[, $file_data] = explode(',', $imageBinary);
         $imagePath = $workspaceId . '/' . $user->id . '/' . Str::random(10) . '.' . 'png';
+        // URL例: http://localhost:8000/storage/1/3003/mIv2eG0Lgr.png
         Storage::put($imagePath, base64_decode($file_data, true));
         return $imagePath;
     }
