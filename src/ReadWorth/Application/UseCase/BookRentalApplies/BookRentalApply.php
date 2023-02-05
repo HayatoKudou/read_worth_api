@@ -37,7 +37,7 @@ class BookRentalApply
         $user = EloquentModel\User::find(Auth::id());
 
         $title = '書籍貸出のお知らせ';
-        $message = '【申請者】' . $user->name . "\n【貸出理由】" . $reason . "\n【返却予定日】" . $expectedReturnDate;
+        $message = '【申請者】' . $user->name . "\n【貸出理由】" . $reason . "\n【返却予定日】" . Carbon::parse($expectedReturnDate)->format('Y-m-d');
         $imagePath = config('app.url') . '/storage/' . $book->image_path;
         $this->slackNotification->notification($title, $message, $workspace->id, $imagePath);
 
