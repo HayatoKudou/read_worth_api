@@ -2,14 +2,12 @@
 
 namespace ReadWorth\Application\UseCase\BookPurchaseApplies;
 
-use GuzzleHttp\Client;
 use ReadWorth\Application\UseCase\Books\StoreBookImage;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use ReadWorth\Application\UseCase\Slack\SlackNotification;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
 use ReadWorth\Infrastructure\Repository\BookPurchaseApplyRepository;
-use ReadWorth\Infrastructure\SlackAPI\SlackApiClient;
 use ReadWorth\UI\Http\Resources\NotificationBookPurchaseApplyResource;
 
 class NotificationBookPurchaseApply
@@ -34,10 +32,7 @@ class NotificationBookPurchaseApply
             $this->bookPurchaseApplyRepository->notification($resource->getBookId());
 
             if (!$resource->getSkip()) {
-                $slackCredential = $this->bookPurchaseApplyRepository->findSlackCredentialByWorkspaceId($resource->getWorkspaceId());
-                $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
-                // TODO: 本の画像を入れる $request->getHttpHost().'/storage'.$book->image_path
-                $slackClient->postMessage($slackCredential->channel_id, $resource->getTitle(), $resource->getMessage());
+                $this->slackNotification->notification($resource->getTitle(), $resource->getMessage(), $resource->getWorkspaceId());
             }
         });
     }

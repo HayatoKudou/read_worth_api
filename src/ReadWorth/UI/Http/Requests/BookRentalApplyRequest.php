@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Http\Requests\BookRentalApply;
+namespace ReadWorth\UI\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use ReadWorth\Infrastructure\EloquentModel\BookRentalApply;
 
-class CreateRequest extends FormRequest
+class BookRentalApplyRequest extends FormRequest
 {
     public function rules(): array
     {
@@ -21,10 +20,5 @@ class CreateRequest extends FormRequest
             'reason' => '申請理由',
             'expected_return_date' => '返却予定日',
         ];
-    }
-
-    public function createBookRentalApply(): BookRentalApply
-    {
-        return new BookRentalApply($this->validated());
     }
 }

@@ -2,8 +2,8 @@
 
 namespace App\Exceptions;
 
-use ReadWorth\Infrastructure\SlackAPI\SlackApiClient;
 use Throwable;
+use ReadWorth\Infrastructure\SlackAPI\SlackApiClient;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler

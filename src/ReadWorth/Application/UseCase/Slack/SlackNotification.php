@@ -13,13 +13,13 @@ class SlackNotification
     ) {
     }
 
-    public function notification(string $title, string $message, int $workspaceId): void
+    public function notification(string $title, string $message, int $workspaceId, string $imagePath = null): void
     {
         $slackCredential = $this->slackCredentialRepository->findByWorkspaceId($workspaceId);
 
         if ($slackCredential) {
             $slackClient = new SlackApiClient(new Client(), $slackCredential->access_token);
-            $slackClient->postMessage($slackCredential->channel_id, $title, $message);
+            $slackClient->postMessage($slackCredential->channel_id, $title, $message, $imagePath);
         }
     }
 }
