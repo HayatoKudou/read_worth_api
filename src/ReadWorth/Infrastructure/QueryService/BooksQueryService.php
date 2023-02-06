@@ -12,9 +12,15 @@ class BooksQueryService
 {
     public function getBooks($workspaceId): array
     {
-        $books = Book::organization($workspaceId)->with('purchaseApply')->get();
+        $books = Book::organization($workspaceId)
+            ->with('category')
+            ->with('purchaseApply.user')
+            ->with('rentalApply.user')
+            ->with('reviews')
+            ->get();
+
         $bookCategories = BookCategory::organization($workspaceId)->get();
-        return [
+        return  [
             'books' => $books->map(fn (Book $book) => [
                 'id' => $book->id,
                 'status' => $book->status,
