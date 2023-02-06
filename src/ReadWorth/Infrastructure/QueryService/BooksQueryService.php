@@ -12,6 +12,7 @@ class BooksQueryService
 {
     public function getBooks($workspaceId): array
     {
+        \DB::enableQueryLog();
         $books = Book::organization($workspaceId)
             ->with('category')
             ->with('purchaseApply.user')
@@ -20,7 +21,7 @@ class BooksQueryService
             ->get();
 
         $bookCategories = BookCategory::organization($workspaceId)->get();
-        return  [
+        $a =  [
             'books' => $books->map(fn (Book $book) => [
                 'id' => $book->id,
                 'status' => $book->status,
@@ -51,5 +52,7 @@ class BooksQueryService
                 'name' => $bookCategory->name,
             ]),
         ];
+        \Log::debug(\DB::getQueryLog());
+        return $a;
     }
 }
