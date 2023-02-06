@@ -22,6 +22,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \ReadWorth\Infrastructure\EloquentModel\User $user
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\BookRentalApplyFactory factory(...$parameters)
  * @method static Builder|BookRentalApply newModelQuery()
  * @method static Builder|BookRentalApply newQuery()
  * @method static Builder|BookRentalApply organization(string $workspaceId)

@@ -2,16 +2,15 @@
 
 namespace ReadWorth\Application\UseCase\Books;
 
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Auth;
-use ReadWorth\Application\UseCase\Slack\SlackNotification;
 use ReadWorth\Domain\Entities\User;
+use Illuminate\Support\Facades\Auth;
 use ReadWorth\Domain\ValueObjects\BookId;
+use ReadWorth\Infrastructure\EloquentModel;
 use ReadWorth\UI\Http\Resources\ReturnBookResource;
 use ReadWorth\Infrastructure\Repository\BookRepository;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use ReadWorth\Application\UseCase\Slack\SlackNotification;
 use ReadWorth\Infrastructure\Repository\WorkspaceRepository;
-use ReadWorth\Infrastructure\EloquentModel;
 
 class ReturnBook
 {

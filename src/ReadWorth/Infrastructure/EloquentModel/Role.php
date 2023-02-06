@@ -18,6 +18,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \ReadWorth\Infrastructure\EloquentModel\User $user
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\RoleFactory factory(...$parameters)
  * @method static Builder|Role newModelQuery()
  * @method static Builder|Role newQuery()
  * @method static Builder|Role query()

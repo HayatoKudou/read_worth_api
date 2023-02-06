@@ -19,12 +19,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property null|\Illuminate\Support\Carbon $created_at
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\Belonging[] $belongings
- * @property null|\ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply $bookPurchaseApply
- * @property null|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply $bookRentalApply
- * @property null|\ReadWorth\Infrastructure\EloquentModel\BookReview $bookReview
  * @property \Illuminate\Database\Eloquent\Collection|\Laravel\Sanctum\PersonalAccessToken[] $tokens
  * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\Workspace[] $workspaces
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\UserFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|User query()

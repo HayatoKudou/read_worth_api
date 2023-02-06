@@ -25,6 +25,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
  * @property null|\ReadWorth\Infrastructure\EloquentModel\SlackCredential $slackCredential
  * @property Collection|\ReadWorth\Infrastructure\EloquentModel\User[] $users
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\WorkspaceFactory factory(...$parameters)
  * @method static Builder|Workspace newModelQuery()
  * @method static Builder|Workspace newQuery()
  * @method static Builder|Workspace query()

@@ -12,16 +12,16 @@ class BooksQueryService
 {
     public function getBooks($workspaceId): array
     {
-        \DB::enableQueryLog();
         $books = Book::organization($workspaceId)
             ->with('category')
             ->with('purchaseApply.user')
             ->with('rentalApply.user')
             ->with('reviews')
+            ->with('rentalApplies')
             ->get();
 
         $bookCategories = BookCategory::organization($workspaceId)->get();
-        $a =  [
+        return [
             'books' => $books->map(fn (Book $book) => [
                 'id' => $book->id,
                 'status' => $book->status,
@@ -46,13 +46,11 @@ class BooksQueryService
                     'reviewedAt' => Carbon::parse($bookReview->created_at)->format('Y年m月d日 H時i分'),
                     'reviewer' => $bookReview->user->name,
                 ]),
-                'rentalCount' => $book->rentalHistories->count(),
+                'rentalCount' => $book->rentalApplies->count(),
             ]),
             'bookCategories' => $bookCategories->map(fn (BookCategory $bookCategory) => [
                 'name' => $bookCategory->name,
             ]),
         ];
-        \Log::debug(\DB::getQueryLog());
-        return $a;
     }
 }

@@ -17,6 +17,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|\Illuminate\Support\Carbon $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\Book[] $books
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\BookCategoryFactory factory(...$parameters)
  * @method static Builder|BookCategory newModelQuery()
  * @method static Builder|BookCategory newQuery()
  * @method static Builder|BookCategory organization(string $workspaceId)

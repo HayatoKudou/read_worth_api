@@ -30,10 +30,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|\ReadWorth\Infrastructure\EloquentModel\Workspace $client
  * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookHistory[] $histories
  * @property null|\ReadWorth\Infrastructure\EloquentModel\BookPurchaseApply $purchaseApply
+ * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply[] $rentalApplies
  * @property null|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply $rentalApply
- * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookRentalApply[] $rentalHistories
  * @property \Illuminate\Database\Eloquent\Collection|\ReadWorth\Infrastructure\EloquentModel\BookReview[] $reviews
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\BookFactory factory(...$parameters)
  * @method static Builder|Book newModelQuery()
  * @method static Builder|Book newQuery()
  * @method static Builder|Book organization(string $workspaceId)
@@ -66,7 +67,7 @@ class Book extends Model
         return $this->hasOne(BookRentalApply::class)->whereNull('return_date');
     }
 
-    public function rentalHistories(): HasMany
+    public function rentalApplies(): HasMany
     {
         return $this->hasMany(BookRentalApply::class);
     }

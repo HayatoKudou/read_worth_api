@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|\ReadWorth\Infrastructure\EloquentModel\Workspace $client
  * @property \ReadWorth\Infrastructure\EloquentModel\Role $role
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\BelongingFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Belonging query()

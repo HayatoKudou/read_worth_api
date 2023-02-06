@@ -21,6 +21,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
  * @property null|Carbon $updated_at
  * @property Collection|\ReadWorth\Infrastructure\EloquentModel\User[] $users
  *
+ * @method static \Database\Factories\ReadWorth\Infrastructure\EloquentModel\PlanFactory factory(...$parameters)
  * @method static Builder|Plan newModelQuery()
  * @method static Builder|Plan newQuery()
  * @method static Builder|Plan query()
