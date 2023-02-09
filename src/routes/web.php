@@ -15,3 +15,6 @@ Route::group(['prefix' => '/api/slack'], function (): void {
 
 Route::get('/connect/google', [ConnectController::class, 'generateGoogleAuthUrl']);
 Route::get('/connect/google-callback', [ConnectController::class, 'callbackGoogleAuth']);
+Route::get('/debug-sentry', function () {
+    throw new Exception('My first Sentry error!');
+});

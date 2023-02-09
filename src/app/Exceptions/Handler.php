@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Throwable;
+use Sentry\Laravel\Integration;
 use ReadWorth\Infrastructure\SlackAPI\SlackApiClient;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
@@ -40,11 +41,9 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-//        $this->reportable(function (Throwable $e): void {
-//            if (app()->bound('sentry')) {
-//                app('sentry')->captureException($e);
-//            }
-//        });
+        $this->reportable(function (Throwable $e) {
+            Integration::captureUnhandledException($e);
+        });
     }
 
     public function report(Throwable $e): void
