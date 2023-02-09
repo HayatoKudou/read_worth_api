@@ -42,7 +42,9 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e) {
-            Integration::captureUnhandledException($e);
+            if (app()->bound("sentry")) {
+                app("sentry")->captureException($e);
+            }
         });
     }
 
@@ -57,6 +59,7 @@ class Handler extends ExceptionHandler
             $postMessage = sprintf("File: %s\nLine: %d\nMessage: %s", $e->getFile(), $e->getLine(), $e->getMessage());
             $slackClient = new SlackApiClient(new \GuzzleHttp\Client(), config('slack.errorChannelAccessToken'));
             $slackClient->postMessage(config('slack.errorChannelId'), '', $postMessage);
+            app("sentry")->captureException($e);
         }
     }
 }
