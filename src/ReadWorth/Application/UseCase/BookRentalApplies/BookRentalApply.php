@@ -53,7 +53,7 @@ class BookRentalApply
             ]);
             EloquentModel\BookHistory::create([
                 'book_id' => $book->id,
-                'user_id' => Auth::id(),
+                'user_id' => $user->id,
                 'action' => 'lend book',
             ]);
             return response()->json([], 201);

@@ -31,8 +31,6 @@ class BookReviewController extends Controller
                     'rate' => $request->get('rate'),
                     'review' => $request->get('review'),
                 ]);
-                BookRentalApply::where('book_id', $bookId)->update(['rental_date' => Carbon::now()]);
-                Book::find($bookId)->update(['status' => BookStatus::STATUS_CAN_LEND]);
                 return response()->json([], 201);
             });
         } catch (AuthorizationException $e) {
