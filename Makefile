@@ -16,7 +16,7 @@ test:
 docker/setup:
 	docker build --pull --tag read_worth_backend src/.
 	$(MAKE) docker/up
-	$(MAKE) docker/exec command="make setup"
+	$(MAKE) docker/exec docker_option="-T" command="make setup"
 
 docker/up:
 	docker-compose up -d

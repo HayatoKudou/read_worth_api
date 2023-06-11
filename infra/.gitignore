@@ -1,0 +1,7 @@
+# Dir
+.terraform
+
+# File
+*.tfvars
+/bin/terraform
+app-env-vars.txt
