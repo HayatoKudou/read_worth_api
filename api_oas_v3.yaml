@@ -565,6 +565,16 @@ paths:
       responses:
         "200":
           description: "OK"
+  /api/totals:
+    get:
+      summary: 累計登録データ数
+      responses:
+        "200":
+          description: "OK"
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/totals"
 
 components:
   securitySchemes:
@@ -1262,3 +1272,16 @@ components:
           createdAt:
             type: string
             example: "2022/08/01"
+    totals:
+      type: object
+      required:
+        - userCount
+        - bookCount
+      properties:
+        userCount:
+          type: integer
+          example: 1000
+        bookCount:
+          type: integer
+          example: 1000
+

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use ReadWorth\UI\Http\Controllers\BookController;
+use ReadWorth\UI\Http\Controllers\LpController;
 use ReadWorth\UI\Http\Controllers\UserController;
 use ReadWorth\UI\Http\Controllers\FeedBackController;
 use ReadWorth\UI\Http\Controllers\WorkSpaceController;
@@ -11,6 +12,7 @@ use ReadWorth\UI\Http\Controllers\BookCategoryController;
 use ReadWorth\UI\Http\Controllers\BookRentalApplyController;
 use ReadWorth\UI\Http\Controllers\BookPurchaseApplyController;
 
+Route::get('/totals', [LpController::class, 'getTotalCount']);
 Route::post('/feedBack/send', [FeedBackController::class, 'send']);
 
 Route::group(['prefix' => '{workspaceId}', 'middleware' => ['auth:api']], function (): void {
